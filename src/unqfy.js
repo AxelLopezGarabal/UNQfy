@@ -124,7 +124,7 @@ class UNQfy {
       * un metodo duration() que retorne la duración de la playlist.
       * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
   */
-    return new PlaylistGenerator().generate(id, name, genresToInclude, maxDuration, this.tracks)
+    return new PlaylistGenerator().generate(this._generateUniqueId(), name, genresToInclude, maxDuration, this.tracks)
 
   }
 
