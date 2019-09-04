@@ -42,7 +42,17 @@ describe('Playlist', ()=> {
     expect(playlist.hasTrack(track01)).to.equal(true)
     expect(playlist.hasTrack(track02)).to.equal(false)
   })
+
+  it('su duracion es igual a la suma de lo que dure cada track', () => {
+    const track01 = createTrack('track01', 100)
+    const track02 = createTrack('track02', 200)
+    
+    playlist.addTrack(track01)
+    playlist.addTrack(track02)
+  
+    expect(playlist.duration).to.equal(track01.duration + track02.duration)
+  });
   
 })
 
-const createTrack = name => new Track({ name })
+const createTrack = (name, duration=1) => new Track({ name, duration })

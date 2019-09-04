@@ -6,6 +6,8 @@ const Artist = require('./Artist.js')
 const Album  = require('./Album.js')
 const Track  = require('./Track.js')
 
+const PlaylistGenerator = require('./PlaylistGenerator.js')
+
 class UNQfy {
   constructor() {
     this._artists = []
@@ -122,6 +124,7 @@ class UNQfy {
       * un metodo duration() que retorne la duración de la playlist.
       * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
   */
+    return new PlaylistGenerator().generate(id, name, genresToInclude, maxDuration, this.tracks)
 
   }
 
