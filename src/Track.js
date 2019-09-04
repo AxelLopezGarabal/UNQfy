@@ -13,6 +13,8 @@ class Track {
   get duration() { return this._duration }
   get genres()   { return this._genres }
 
+  set name(newName) { this._name = newName }
+
   // Testing
   matchGenre(aGenre) {
     return this.genres.includes(aGenre)

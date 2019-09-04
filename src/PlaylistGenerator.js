@@ -16,7 +16,7 @@ class PlaylistGenerator {
   }
 
   _doesNotExcedeMaxDurationAfterAdding(aTrack, aPlaylist, aDuration) {
-    return aTrack.duration + aPlaylist.duration <= aDuration
+    return aTrack.duration + aPlaylist.duration() <= aDuration
   }
 
 }

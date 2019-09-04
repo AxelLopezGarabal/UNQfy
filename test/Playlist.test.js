@@ -50,7 +50,7 @@ describe('Playlist', ()=> {
     playlist.addTrack(track01)
     playlist.addTrack(track02)
   
-    expect(playlist.duration).to.equal(track01.duration + track02.duration)
+    expect(playlist.duration()).to.equal(track01.duration + track02.duration)
   });
   
 })

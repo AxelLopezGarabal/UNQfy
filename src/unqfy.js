@@ -10,23 +10,34 @@ const PlaylistGenerator = require('./PlaylistGenerator.js')
 
 class UNQfy {
   constructor() {
-    this._artists = []
+    this._playlists = []
+    this._artists   = []
+    this.nextId     = 0
   }
 
-  get artists() { return this._artists }
+  get playlists() { return this._playlists }
+  get artists()   { return this._artists }
   //get albums()  { return this.artists.flatMap(artist => artist.albums) } // TODO: ver por que no anda flatMap
-  get albums()  { return this.artists.reduce((acc, artist) => [...acc, ...artist.albums], []) }
-  //get tracks()  { return this.albums.flatMap(album => album.tracks) }
-  get tracks()  { return this.albums.reduce((acc, album) => [...acc, ...album.tracks], []) }
+  get albums()    { return this.artists.reduce((acc, artist) => [...acc, ...artist.albums], []) }
+  get tracks()    { return this.albums.reduce((acc, album) => [...acc, ...album.tracks], []) }
   
-  _generateUniqueId() { return Date.now() }
+  _generateUniqueId() { return this.nextId++ }
 
   _createContent(aClass,  dataObject) {
     return new aClass({ id: this._generateUniqueId(), ...dataObject })
   }
 
   searchByName(aName) {
-    return [...this.artists, ...this.albums, ...this.tracks].filter(element => element.name === aName)
+    return {
+      artists: this._searchByNameIn(this.artists, aName),
+      albums: this._searchByNameIn(this.albums, aName),
+      tracks: this._searchByNameIn(this.tracks, aName),
+      playlists: this._searchByNameIn(this.playlists, aName),
+    }
+  }
+
+  _searchByNameIn(aCollection, aName) {
+    return aCollection.filter(anElement => anElement.name = aName)
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -124,8 +135,9 @@ class UNQfy {
       * un metodo duration() que retorne la duración de la playlist.
       * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
   */
-    return new PlaylistGenerator().generate(this._generateUniqueId(), name, genresToInclude, maxDuration, this.tracks)
-
+    const newPlaylist = new PlaylistGenerator().generate(this._generateUniqueId(), name, genresToInclude, maxDuration, this.tracks)
+    this.playlists.push(newPlaylist)
+    return newPlaylist
   }
 
   save(filename) {

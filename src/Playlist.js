@@ -9,7 +9,10 @@ class Playlist {
   get id()       { return this._id }
   get name()     { return this._name }
   get tracks()   { return this._tracks }
-  get duration() { return this.tracks.reduce((total, aTrack) => total + aTrack.duration, 0) }
+  //get duration() { return this.tracks.reduce((total, aTrack) => total + aTrack.duration, 0) }
+  duration() { return this.tracks.reduce((total, aTrack) => total + aTrack.duration, 0) }
+
+  set name(newName) { this._name = newName }
 
   addTrack(aTrack) {
     this.tracks.push(aTrack)

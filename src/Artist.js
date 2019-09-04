@@ -12,6 +12,8 @@ class Artist {
   get name()    { return this._name }
   get country() { return this._country }
   get albums()  { return this._albums }
+
+  set name(newName) { this._name = newName }
   
   get allTracks() {
     return this.albums.reduce((tracks, anAlbum) => [...tracks, ...anAlbum.tracks], [])

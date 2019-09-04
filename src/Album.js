@@ -12,6 +12,8 @@ class Album {
   get year()   { return this._year }
   get tracks() { return this._tracks }
 
+  set name(newName) { this._name = newName }
+
   addTrack(aTrack) {
     this._validateIsNewTrack(aTrack)
     this.tracks.push(aTrack)
