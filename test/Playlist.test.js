@@ -32,6 +32,16 @@ describe('Playlist', ()=> {
     expect(playlist.tracks.length).to.equal(2)
     expect(playlist.tracks).to.include(track01)
   })
+
+  it('se le puede preguntar si tiene un track', () => {
+    const track01 = createTrack('track01')
+    const track02 = createTrack('track02')
+
+    playlist.addTrack(track01)
+
+    expect(playlist.hasTrack(track01)).to.equal(true)
+    expect(playlist.hasTrack(track02)).to.equal(false)
+  })
   
 })
 

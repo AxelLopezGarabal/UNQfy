@@ -13,6 +13,10 @@ class Playlist {
   addTrack(aTrack) {
     this.tracks.push(aTrack)
   }
+
+  hasTrack(aTrack) {
+    return this.tracks.includes(aTrack)
+  }
 }
 
 module.exports = Playlist
