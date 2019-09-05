@@ -27,8 +27,7 @@ describe('Artist', () => {
     artista.addAlbum(album1)
     artista.addAlbum(album2)
 
-    expect(artista.albums).to.include(album1)
-    expect(artista.albums).to.include(album2)
+    expect(artista.albums).to.include.members([album1, album2])
   })
 
   it('no puede registrar un mismo album mas de una vez', () => {
@@ -47,9 +46,8 @@ describe('Artist', () => {
     artista.addAlbum(album01)
     artista.addAlbum(album02)
 
-    expect(artista.allTracks.length).to.equal(2)
-    expect(artista.allTracks).to.include(track01)
-    expect(artista.allTracks).to.include(track02)
+    expect(artista.allTracks).to.have.lengthOf(2)
+    expect(artista.allTracks).to.include.members([track01, track02])
   })
   
 })

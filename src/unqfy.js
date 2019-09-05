@@ -1,4 +1,3 @@
-
 const picklify = require('picklify') // para cargar/guarfar unqfy
 const fs = require('fs') // para cargar/guarfar unqfy
 
@@ -20,7 +19,7 @@ class UNQfy {
   //get albums()  { return this.artists.flatMap(artist => artist.albums) } // TODO: ver por que no anda flatMap
   get albums()    { return this.artists.reduce((acc, artist) => [...acc, ...artist.albums], []) }
   get tracks()    { return this.albums.reduce((acc, album) => [...acc, ...album.tracks], []) }
-  
+
   _generateUniqueId() { return this.nextId++ }
 
   _createContent(aClass,  dataObject) {
@@ -29,16 +28,27 @@ class UNQfy {
 
   searchByName(aName) {
     return {
-      artists: this._searchByNameIn(this.artists, aName),
-      albums: this._searchByNameIn(this.albums, aName),
-      tracks: this._searchByNameIn(this.tracks, aName),
+      artists  : this._searchByNameIn(this.artists  , aName),
+      albums   : this._searchByNameIn(this.albums   , aName),
+      tracks   : this._searchByNameIn(this.tracks   , aName),
       playlists: this._searchByNameIn(this.playlists, aName),
     }
+  }
+
+  getArtistById(id)   { return this._getByIdIn(this.artists   , id) }
+  getAlbumById(id)    { return this._getByIdIn(this.albums    , id) }
+  getTrackById(id)    { return this._getByIdIn(this.tracks    , id) }
+  getPlaylistById(id) { return this._getByIdIn(this.playlists , id) } // TODO: falta test
+
+  getArtistByName(aName) {
+    return this.artists.find(anArtist => anArtist.name === aName)
   }
 
   _searchByNameIn(aCollection, aName) {
     return aCollection.filter(anElement => anElement.name = aName)
   }
+
+  _getByIdIn(aCollection, id) { return aCollection.find(anObject => anObject.id === id) }
 
   /////////////////////////////////////////////////////////////////////////////
 
@@ -97,17 +107,6 @@ class UNQfy {
 
     return newTrack
   }
-
-  getArtistById(id)   { return this._getByIdIn(this.artists, id) }
-  getAlbumById(id)    { return this._getByIdIn(this.albums, id)  }
-  getTrackById(id)    { return this._getByIdIn(this.tracks, id)  }
-  getPlaylistById(id) {  }
-
-  getArtistByName(aName) {
-    return this.artists.find(anArtist => anArtist.name === aName)
-  }
-
-  _getByIdIn(aCollection, id) { return aCollection.find(anObject => anObject.id === id) }
 
   // genres: array de generos(strings)
   // retorna: los tracks que contenga alguno de los generos en el parametro genres

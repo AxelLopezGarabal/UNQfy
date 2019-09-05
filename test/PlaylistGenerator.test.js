@@ -1,7 +1,5 @@
 const expect   = require('chai').expect
 const Track    = require('../src/Track.js')
-const Album    = require('../src/Album.js')
-const Playlist = require('../src/Playlist.js')
 
 const PlaylistGenerator = require('../src/PlaylistGenerator.js')
  
@@ -22,7 +20,7 @@ describe('PlaylistGenerator', () => {
 
     const aPlaylist = playlistGenerator.generate(1, 'playlistName', genresToInclude, maxDuration, trackListToChooseFrom)
     
-    expect(aPlaylist.tracks.length).to.equal(1)
+    expect(aPlaylist.tracks).to.have.lengthOf(1)
     expect(aPlaylist.tracks).to.include(trackRock100)
   })
 
@@ -37,9 +35,8 @@ describe('PlaylistGenerator', () => {
 
     const aPlaylist = playlistGenerator.generate(1, 'playlistName', genresToInclude, maxDuration, trackListToChooseFrom)
     
-    expect(aPlaylist.tracks.length).to.equal(2)
-    expect(aPlaylist.tracks).to.include(trackRock100)
-    expect(aPlaylist.tracks).to.include(trackPop200)
+    expect(aPlaylist.tracks).to.have.lengthOf(2)
+    expect(aPlaylist.tracks).to.include.members([trackPop200, trackRock100])
   })
 
   it('solo agrega tracks de los generos indicados', () => {
@@ -52,7 +49,7 @@ describe('PlaylistGenerator', () => {
 
     const aPlaylist = playlistGenerator.generate(1, 'playlistName', genresToInclude, maxDuration, trackListToChooseFrom)
     
-    expect(aPlaylist.tracks.length).to.equal(1)
+    expect(aPlaylist.tracks).to.have.lengthOf(1)
     expect(aPlaylist.tracks).to.include(trackRock100)
   });
 

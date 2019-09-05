@@ -29,7 +29,7 @@ describe('Playlist', ()=> {
     playlist.addTrack(track01)
     playlist.addTrack(track01)
 
-    expect(playlist.tracks.length).to.equal(2)
+    expect(playlist.tracks).to.have.lengthOf(2)
     expect(playlist.tracks).to.include(track01)
   })
 
@@ -39,8 +39,8 @@ describe('Playlist', ()=> {
 
     playlist.addTrack(track01)
 
-    expect(playlist.hasTrack(track01)).to.equal(true)
-    expect(playlist.hasTrack(track02)).to.equal(false)
+    expect(playlist.hasTrack(track01)).to.be.true
+    expect(playlist.hasTrack(track02)).to.be.false
   })
 
   it('su duracion es igual a la suma de lo que dure cada track', () => {
