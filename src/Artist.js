@@ -1,3 +1,5 @@
+require('./aux/extenciones').extendArray()
+
 class Artist {
 
   constructor({id, name, country}) {
@@ -16,7 +18,7 @@ class Artist {
   set name(newName) { this._name = newName }
   
   get allTracks() {
-    return this.albums.reduce((tracks, anAlbum) => [...tracks, ...anAlbum.tracks], [])
+    return this.albums.flatMap(album => album.tracks)
   }
 
   // Commands

@@ -1,17 +1,13 @@
 const picklify = require('picklify') // para cargar/guarfar unqfy
 const fs = require('fs') // para cargar/guarfar unqfy
 
+require('./aux/extenciones').extendArray()
+
 const Artist = require('./Artist.js')
 const Album  = require('./Album.js')
 const Track  = require('./Track.js')
 
 const PlaylistGenerator = require('./PlaylistGenerator.js')
-
-
-Array.prototype.flatMap = function(f) {
-  return this.map(f).reduce((z, xs) => z.concat(xs), [])
-}
-
 
 class UNQfy {
   constructor() {

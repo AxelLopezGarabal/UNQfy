@@ -1,3 +1,5 @@
+require('./aux/extenciones').extendArray()
+
 class Playlist {
 
   constructor({ id, name, tracks = [] }) {
