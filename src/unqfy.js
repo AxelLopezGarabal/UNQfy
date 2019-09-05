@@ -7,6 +7,12 @@ const Track  = require('./Track.js')
 
 const PlaylistGenerator = require('./PlaylistGenerator.js')
 
+
+Array.prototype.flatMap = function(f) {
+  return this.map(f).reduce((z, xs) => z.concat(xs), [])
+}
+
+
 class UNQfy {
   constructor() {
     this._playlists = []
@@ -16,9 +22,8 @@ class UNQfy {
 
   get playlists() { return this._playlists }
   get artists()   { return this._artists }
-  //get albums()  { return this.artists.flatMap(artist => artist.albums) } // TODO: ver por que no anda flatMap
-  get albums()    { return this.artists.reduce((acc, artist) => [...acc, ...artist.albums], []) }
-  get tracks()    { return this.albums.reduce((acc, album) => [...acc, ...album.tracks], []) }
+  get albums()    { return this.artists.flatMap(artist => artist.albums) }
+  get tracks()    { return this.albums.flatMap(album => album.tracks) }
 
   _generateUniqueId() { return this.nextId++ }
 
