@@ -2,7 +2,9 @@ require('./aux/extenciones').extendArray()
 
 class Playlist {
 
-  constructor({ id, name, tracks = [] }) {
+  constructor(dataObject) {
+    if (!dataObject) return // Hubo que hacer esto por culpa del framework de persistencia
+    const { id, name, tracks = [] } = dataObject
     this._id     = id
     this._name   = name
     this._tracks = tracks

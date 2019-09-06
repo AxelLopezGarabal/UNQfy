@@ -1,6 +1,8 @@
 class Track {
 
-  constructor({ id, name, duration, genres }) {
+  constructor(dataObject) {
+    if (!dataObject) return // Hubo que hacer esto por culpa del framework de persistencia
+    const { id, name, duration, genres } = dataObject
     this._id       = id
     this._name     = name
     this._duration = duration
