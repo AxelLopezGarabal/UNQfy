@@ -9,6 +9,13 @@ class Artist {
     this._albums  = []
   }
 
+  /*constructor(id, name, country){
+    this._id      = id
+    this._name    = name
+    this._country = country
+    this._albums  = [] 
+  }*/
+
   // Queries
   get id()      { return this._id }
   get name()    { return this._name }

@@ -1,21 +1,3 @@
-
-
-const fs = require('fs'); // necesitado para guardar/cargar unqfy
-const unqmod = require('./unqfy'); // importamos el modulo unqfy
-
-// Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
-function getUNQfy(filename = 'data.json') {
-  let unqfy = new unqmod.UNQfy();
-  if (fs.existsSync(filename)) {
-    unqfy = unqmod.UNQfy.load(filename);
-  }
-  return unqfy;
-}
-
-function saveUNQfy(unqfy, filename = 'data.json') {
-  unqfy.save(filename);
-}
-
 /*
  En esta funcion deberán interpretar los argumentos pasado por linea de comandos
  e implementar los diferentes comandos.
@@ -46,9 +28,41 @@ function saveUNQfy(unqfy, filename = 'data.json') {
 
 */
 
+const fs = require('fs'); // necesitado para guardar/cargar unqfy
+const unqmod = require('./unqfy'); // importamos el modulo unqfy
+
+
+// Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
+function getUNQfy(filename = 'data.json') {
+  let unqfy = new unqmod.UNQfy();
+  if (fs.existsSync(filename)) {
+    unqfy = unqmod.UNQfy.load(filename);
+  }
+  return unqfy;
+}
+
+function saveUNQfy(unqfy, filename = 'data.json') {
+  unqfy.save(filename);
+}
+
+//node main addArtista "Deadmau5" "Canada"
+
+
 function main() {
+  let unqfy = getUNQfy('backUp.json');
   console.log('arguments: ');
+
   process.argv.forEach(argument => console.log(argument));
+
+  let f = process.argv[2];
+  let p1 = process.argv[3];
+  let p2 = process.argv[4];
+
+  console.log(unqfy[f]({"name":p1, "country":p2}));
+    
+
+  console.log(unqfy)
+  saveUNQfy(unqfy, 'backUp.json')
 }
 
 main();

@@ -21,7 +21,7 @@ class UNQfy {
   get albums()    { return this.artists.flatMap(artist => artist.albums) }
   get tracks()    { return this.albums.flatMap(album => album.tracks) }
 
-  _generateUniqueId() { return this.nextId++ }
+  _generateUniqueId() { this.nextId++; return this.nextId; }
 
   _createContent(aClass,  dataObject) {
     return new aClass({ id: this._generateUniqueId(), ...dataObject })
@@ -153,8 +153,15 @@ class UNQfy {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'})
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy]
+    const classes = [UNQfy, Artist, Album, Track];
     return picklify.unpicklify(JSON.parse(serializedData), classes)
+  }
+
+  addArtista(artistData){
+    let newArtist = new Artist(this.nextId, artistData.name, artistData.country);
+    this.nextId = this.nextId ++;
+    this.artists.push(newArtist)
+    return newArtist
   }
 }
 
