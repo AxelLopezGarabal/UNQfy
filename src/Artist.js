@@ -2,13 +2,6 @@ require('./aux/extenciones').extendArray()
 
 class Artist {
 
-  // constructor({id, name, country}) {
-  //   this._id      = id
-  //   this._name    = name
-  //   this._country = country
-  //   this._albums  = []
-  // }
-
   constructor(dataObject) {
     if (!dataObject) return // Hubo que hacer esto por culpa del framework de persistencia
     const {id, name, country} = dataObject

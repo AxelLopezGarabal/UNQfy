@@ -30,6 +30,7 @@
 
 const fs = require('fs'); // necesitado para guardar/cargar unqfy
 const unqmod = require('./unqfy'); // importamos el modulo unqfy
+const controllerModule = require('./Controller');
 
 
 // Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
@@ -46,22 +47,36 @@ function saveUNQfy(unqfy, filename = 'data.json') {
 }
 
 //node main addArtista "Deadmau5" "Canada"
+//node main addAlbum "Deadmau5" "2x4" "2012"
+//node main addTrack "2x4" "Animal Rigths" "200s" ["electro"]
+//node main removeArtista "Deadmau5"
 
+//> >  TODO < <
+
+//node main createPlaylist Playlist_name, genres, MAX_duration
+//node main removeAlbum "Deadmau5" "2x4"
+//node main removeTrack "2x4" "Animal Rigths"
+//node main removePlaylist Playlist_name
 
 function main() {
   let unqfy = getUNQfy('backUp.json');
-  console.log('arguments: ');
-
-  process.argv.forEach(argument => console.log(argument));
+  let controller = new controllerModule.Controller();
+  controller.setUNQfy(unqfy);
 
   let f = process.argv[2];
-  let p1 = process.argv[3];
-  let p2 = process.argv[4];
+  let args = process.argv.slice(3);
 
-  console.log(unqfy[f]({"name":p1, "country":p2}));
-    
+  console.log("");
+  console.log(args);
+  
+  try{
+    controller[f](args);
+  }catch(error){
+    console.log(error)
+  }
 
-  console.log(unqfy)
+  console.log("");
+  console.log(unqfy);
   saveUNQfy(unqfy, 'backUp.json')
 }
 

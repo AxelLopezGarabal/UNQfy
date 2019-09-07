@@ -157,11 +157,8 @@ class UNQfy {
     return picklify.unpicklify(JSON.parse(serializedData), classes)
   }
 
-  addArtista(artistData){
-    let newArtist = new Artist(this.nextId, artistData.name, artistData.country);
-    this.nextId = this.nextId ++;
-    this.artists.push(newArtist)
-    return newArtist
+  removeArtist(artistName){
+    this._artists = this._artists.filter(function(value){ return value.name != artistName; });
   }
 }
 
