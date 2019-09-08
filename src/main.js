@@ -46,17 +46,20 @@ function saveUNQfy(unqfy, filename = 'data.json') {
   unqfy.save(filename);
 }
 
-//node main addArtista "Deadmau5" "Canada"
+//> >  DONE < <
+//node main addArtist "Deadmau5" "Canada"
 //node main addAlbum "Deadmau5" "2x4" "2012"
-//node main addTrack "2x4" "Animal Rigths" "200s" ["electro"]
-//node main removeArtista "Deadmau5"
+//node main addTrack "2x4" "Animal Rigths" "200s" ["electro"] << TODO le cambia el nombre al artista por el del album
+//node main createPlaylist Playlist_name, genres, MAX_duration
+//node main removeArtista "Deadmau5" 
+//node main removeAlbum "Deadmau5" "2x4"
+//node main removePlaylist Playlist_name
 
 //> >  TODO < <
 
-//node main createPlaylist Playlist_name, genres, MAX_duration
-//node main removeAlbum "Deadmau5" "2x4"
+
 //node main removeTrack "2x4" "Animal Rigths"
-//node main removePlaylist Playlist_name
+
 
 function main() {
   let unqfy = getUNQfy('backUp.json');

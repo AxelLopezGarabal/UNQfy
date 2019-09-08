@@ -6,7 +6,7 @@ require('./aux/extenciones').extendArray()
 const Artist = require('./Artist.js')
 const Album  = require('./Album.js')
 const Track  = require('./Track.js')
-
+const Playlist = require('./Playlist.js')
 const PlaylistGenerator = require('./PlaylistGenerator.js')
 
 class UNQfy {
@@ -153,12 +153,26 @@ class UNQfy {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'})
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy, Artist, Album, Track];
+    const classes = [UNQfy, Artist, Album, Track, Playlist];
     return picklify.unpicklify(JSON.parse(serializedData), classes)
   }
 
   removeArtist(artistName){
     this._artists = this._artists.filter(function(value){ return value.name != artistName; });
+  }
+
+  removePlaylist(playlistName){
+    this._playlists = this._playlists.filter(function(value){ return value.name != playlistName; }); 
+  }
+
+  removeTracksFromAllPlaylist(allTracks){
+    allTracks.forEach(track => {
+      this._playlists.forEach(playlist => playlist.removeTrack(track));
+    });
+  }
+
+  removeAlbumFromArtist(album, artist){
+    artist.albums = artist.albums.filter(function(value){ return value != album; });
   }
 }
 

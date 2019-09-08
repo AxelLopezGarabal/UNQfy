@@ -31,6 +31,10 @@ class Playlist {
   hasTrack(aTrack) {
     return this.tracks.includes(aTrack)
   }
+
+  removeTrack(aTrack){
+    this._tracks = this._tracks.filter(function(elem){ return elem != aTrack; });
+  }
 }
 
 module.exports = Playlist

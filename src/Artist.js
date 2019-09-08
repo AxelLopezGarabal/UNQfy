@@ -18,6 +18,7 @@ class Artist {
   get albums()  { return this._albums }
 
   set name(newName) { this._name = newName }
+  set albums(newalbums) { this._albums = newalbums }
   
   get allTracks() {
     return this.albums.flatMap(album => album.tracks)
