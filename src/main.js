@@ -28,22 +28,22 @@
 
 */
 
-const fs = require('fs'); // necesitado para guardar/cargar unqfy
-const unqmod = require('./unqfy'); // importamos el modulo unqfy
-const controllerModule = require('./Controller');
+const fs         = require('fs') // necesitado para guardar/cargar unqfy
+const unqmod     = require('./unqfy') // importamos el modulo unqfy
+const Controller = require('./Controller')
 
 
 // Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
 function getUNQfy(filename = 'data.json') {
-  let unqfy = new unqmod.UNQfy();
+  let unqfy = new unqmod.UNQfy()
   if (fs.existsSync(filename)) {
-    unqfy = unqmod.UNQfy.load(filename);
+    unqfy = unqmod.UNQfy.load(filename)
   }
-  return unqfy;
+  return unqfy
 }
 
 function saveUNQfy(unqfy, filename = 'data.json') {
-  unqfy.save(filename);
+  unqfy.save(filename)
 }
 
 //> >  DONE < <
@@ -62,25 +62,23 @@ function saveUNQfy(unqfy, filename = 'data.json') {
 
 
 function main() {
-  let unqfy = getUNQfy('backUp.json');
-  let controller = new controllerModule.Controller();
-  controller.setUNQfy(unqfy);
+  let unqfy      = getUNQfy('backUp.json')
+  let controller = new Controller(unqfy)
 
-  let f = process.argv[2];
-  let args = process.argv.slice(3);
+  const [,,messageName, ...args] = process.argv
 
-  console.log("");
-  console.log(args);
+  console.log(`args [${args}]`)
   
   try{
-    controller[f](args);
-  }catch(error){
-    console.log(error)
+    controller[messageName](args)
+  } catch (error) {
+    console.log(`comando incorrecto: ${error}`)
   }
 
-  console.log("");
-  console.log(unqfy);
+  console.log("")
+  console.log(unqfy)
+
   saveUNQfy(unqfy, 'backUp.json')
 }
 
-main();
+main()

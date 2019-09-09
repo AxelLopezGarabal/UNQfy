@@ -1,18 +1,16 @@
 
 class Controller{
-	contructor() {
-		this._unqfy
+
+	constructor(unqfy) {
+		this._unqfy = unqfy
 	}
-
-	getUNQfy() { return this._unqfy }
-
-	setUNQfy(unqfy) { this._unqfy = unqfy }
 
 	addArtist(args) {
 		if (args.length != 2) {
 			throw "ERROR : should pass two args as follow => Artist_name, country"
 		}
 		else {
+			console.log("unqfyyyy " + this._uqfy)
 			this._unqfy.addArtist({name: args[0], country: args[1]})
 		}
 	}
@@ -103,4 +101,4 @@ class Controller{
 	}
 }
 
-module.exports = {Controller}
+module.exports = Controller
