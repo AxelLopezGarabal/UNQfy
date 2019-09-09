@@ -1,10 +1,13 @@
-class AddTrackCommand {
+const TerminalCommand = require('./TerminalCommand')
 
-  static canHandle(args) {
-    
+class AddTrackCommand extends TerminalCommand {
+
+  _validateArgs(args) {
+    if (args.length != 4)
+      throw ''
   }
 
-  handle(unqfy, [albumId, trackName, duration, genres]) {
+  _excecute(unqfy, [albumId, trackName, duration, genres]) {
 		unqfy.addTrack(albumId, {name: trackName, duration: parseInt(duration), genres})
 	}
 

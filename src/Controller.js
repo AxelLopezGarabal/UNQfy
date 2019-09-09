@@ -1,3 +1,4 @@
+const { AddArtistCommand, AddAlbumCommand } = require('./terminal/terminalCommands')
 
 class Controller{
 
@@ -5,27 +6,8 @@ class Controller{
 		this._unqfy = unqfy
 	}
 
-	addArtist(args) {
-		if (args.length != 2) {
-			throw "ERROR : should pass two args as follow => Artist_name, country"
-		}
-		else {
-			console.log("unqfyyyy " + this._uqfy)
-			this._unqfy.addArtist({name: args[0], country: args[1]})
-		}
-	}
-
-	addAlbum(args) {
-		if (args.length != 3) {
-			throw "ERROR : should pass three args as follow => Artist_name, Album_name, Album_year"
-		}
-		else {
-			this._unqfy.addAlbum(
-				this._unqfy.getArtistByName(args[0]).id, 
-				{"name": args[1], "year": args[2], "tracks": []}
-			)
-		}
-	}
+	addArtist(args) { new AddArtistCommand().handle(this._unqfy, args)	}
+	addAlbum(args)  { new AddAlbumCommand().handle(this._unqfy, args)	}
 
 	addTrack(args) {
 		if (args.length != 4) {

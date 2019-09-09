@@ -1,10 +1,13 @@
-class AddAlbumCommand {
+const TerminalCommand = require('./TerminalCommand')
 
-  static canHandle(args) {
-    
+class AddAlbumCommand extends TerminalCommand {
+
+  _validateArgs(args) {
+    if (args.length != 3)
+      throw ''
   }
 
-  handle(unqfy, [artistId, albumName, year]) {
+  _excecute(unqfy, [artistId, albumName, year]) {
 		unqfy.addAlbum(artistId, {name: albumName, year})
 	}
 

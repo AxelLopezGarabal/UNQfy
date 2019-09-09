@@ -6,24 +6,36 @@ const AddAlbumCommand  = require('../../src/terminal/AddAlbumCommand')
 const AddTrackCommand  = require('../../src/terminal/AddTrackCommand')
 
 describe('AddArtistCommand', () => {
-  let command
+  let addArtistCommand
   let unqfy
 
   const artistName  = 'artistName'
   const countryName = 'country name'
   
   beforeEach(() => {
-    unqfy   = new UNQfy()
-    command = new AddArtistCommand()
+    unqfy            = new UNQfy()
+    addArtistCommand = new AddArtistCommand()
   })
 
   it('correct arguments', () => {
-    command.handle(unqfy, [artistName, countryName])
+    addArtistCommand.handle(unqfy, [artistName, countryName])
 
     const anArtist = unqfy.getArtistByName(artistName)
 
     expect(anArtist.name).to.equal(artistName)
     expect(anArtist.country).to.equal(countryName)
+  })
+
+  it('sobran argumentos', () => {
+    expect(() =>
+      addArtistCommand.handle(unqfy, [artistName, countryName, 'esto_esta_de_mas'])
+    ).to.throw('ERROR: should pass two args as follow => Artist_name, country')
+  })
+
+  it('faltan argumentos', () => {
+    expect(() =>
+      addArtistCommand.handle(unqfy, [artistName])
+    ).to.throw('ERROR: should pass two args as follow => Artist_name, country')
   })
 
 })

@@ -36,10 +36,18 @@ class UNQfy {
     }
   }
 
-  getArtistById(id)   { return this._getByIdIn(this.artists   , id) }
+  
+  getArtistById(id)   { return this.artists.find(x => x.id == id) }
+  getAlbumById(id)    { return this.albums.find(x => x.id == id) }
+  getTrackById(id)    { return this.tracks.find(x => x.id == id) }
+  getPlaylistById(id) { return this.playlists.find(x => x.id == id) }
+  // TODO: revisar por que getArtistById returna undefined
+  /*getArtistById(id)   { return this._getByIdIn(this.artists   , id) }
   getAlbumById(id)    { return this._getByIdIn(this.albums    , id) }
   getTrackById(id)    { return this._getByIdIn(this.tracks    , id) }
   getPlaylistById(id) { return this._getByIdIn(this.playlists , id) } // TODO: falta test
+
+  _getByIdIn(aCollection, id) { return aCollection.find(anObject => anObject.id == id) }*/
 
   getArtistByName(aName) {
     return this.artists.find(anArtist => anArtist.name === aName)
@@ -48,8 +56,6 @@ class UNQfy {
   _searchByNameIn(aCollection, aName) {
     return aCollection.filter(anElement => anElement.name = aName)
   }
-
-  _getByIdIn(aCollection, id) { return aCollection.find(anObject => anObject.id === id) }
 
   /////////////////////////////////////////////////////////////////////////////
 
