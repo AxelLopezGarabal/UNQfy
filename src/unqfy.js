@@ -164,21 +164,21 @@ class UNQfy {
   }
 
   removeArtist(artistName){
-    this._artists = this._artists.filter(function(value){ return value.name != artistName; });
+    this._artists = this._artists.filter(anArtist => anArtist.name !== artistName)
   }
 
   removePlaylist(playlistName){
-    this._playlists = this._playlists.filter(function(value){ return value.name != playlistName; }); 
+    this._playlists = this._playlists.filter(aPlaylist => aPlaylist.name !== playlistName) 
   }
 
   removeTracksFromAllPlaylist(allTracks){
     allTracks.forEach(track => {
-      this._playlists.forEach(playlist => playlist.removeTrack(track));
-    });
+      this._playlists.forEach(playlist => playlist.removeTrack(track))
+    })
   }
 
-  removeAlbumFromArtist(album, artist){
-    artist.albums = artist.albums.filter(function(value){ return value != album; });
+  removeAlbumFromArtist(albumToBeRemoved, artist){
+    artist.albums = artist.albums.filter(anAlbum => anAlbum !== albumToBeRemoved)
   }
 }
 
