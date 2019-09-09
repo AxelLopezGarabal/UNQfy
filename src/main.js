@@ -76,7 +76,10 @@ function main() {
   }
 
   console.log("")
-  console.log(unqfy)
+  //console.log(unqfy)
+  unqfy.artists.forEach(artist => {
+    console.log(`${artist.name} ${artist.country}`)
+  })
 
   saveUNQfy(unqfy, 'backUp.json')
 }

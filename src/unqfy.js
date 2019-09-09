@@ -21,7 +21,7 @@ class UNQfy {
   get albums()    { return this.artists.flatMap(artist => artist.albums) }
   get tracks()    { return this.albums.flatMap(album => album.tracks) }
 
-  _generateUniqueId() { this.nextId++; return this.nextId; }
+  _generateUniqueId() { return this.nextId++ }
 
   _createContent(aClass,  dataObject) {
     return new aClass({ id: this._generateUniqueId(), ...dataObject })
@@ -36,18 +36,12 @@ class UNQfy {
     }
   }
 
-  
-  getArtistById(id)   { return this.artists.find(x => x.id == id) }
-  getAlbumById(id)    { return this.albums.find(x => x.id == id) }
-  getTrackById(id)    { return this.tracks.find(x => x.id == id) }
-  getPlaylistById(id) { return this.playlists.find(x => x.id == id) }
-  // TODO: revisar por que getArtistById returna undefined
-  /*getArtistById(id)   { return this._getByIdIn(this.artists   , id) }
+  getArtistById(id)   { return this._getByIdIn(this.artists   , id) }
   getAlbumById(id)    { return this._getByIdIn(this.albums    , id) }
   getTrackById(id)    { return this._getByIdIn(this.tracks    , id) }
   getPlaylistById(id) { return this._getByIdIn(this.playlists , id) } // TODO: falta test
-
-  _getByIdIn(aCollection, id) { return aCollection.find(anObject => anObject.id == id) }*/
+  
+  _getByIdIn(aCollection, id) { return aCollection.find(anObject => anObject.id == id) }
 
   getArtistByName(aName) {
     return this.artists.find(anArtist => anArtist.name === aName)
@@ -178,6 +172,7 @@ class UNQfy {
   removeAlbumFromArtist(albumToBeRemoved, artist){
     artist.albums = artist.albums.filter(anAlbum => anAlbum !== albumToBeRemoved)
   }
+
 }
 
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
