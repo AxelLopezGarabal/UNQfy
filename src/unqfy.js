@@ -1,16 +1,16 @@
 const picklify = require('picklify') // para cargar/guarfar unqfy
 const fs = require('fs') // para cargar/guarfar unqfy
-
 require('./aux/extenciones').extendArray()
 
 const { Artist, Album, Track, Playlist } = require('./entities/all_entities')
 const PlaylistGenerator = require('./PlaylistGenerator.js')
 
 class UNQfy {
+
   constructor() {
     this._playlists = []
     this._artists   = []
-    this.nextId     = 0
+    this._nextId     = 0
   }
 
   get playlists() { return this._playlists }
@@ -18,38 +18,7 @@ class UNQfy {
   get albums()    { return this.artists.flatMap(artist => artist.albums) }
   get tracks()    { return this.albums.flatMap(album => album.tracks) }
 
-  _generateUniqueId() { return this.nextId++ }
-
-  _createContent(aClass,  dataObject) {
-    return new aClass({ id: this._generateUniqueId(), ...dataObject })
-  }
-
-  searchByName(aName) {
-    return {
-      artists  : this._searchByNameIn(this.artists  , aName),
-      albums   : this._searchByNameIn(this.albums   , aName),
-      tracks   : this._searchByNameIn(this.tracks   , aName),
-      playlists: this._searchByNameIn(this.playlists, aName),
-    }
-  }
-
-  getArtistById(id)   { return this._getByIdIn(this.artists   , id) }
-  getAlbumById(id)    { return this._getByIdIn(this.albums    , id) }
-  getTrackById(id)    { return this._getByIdIn(this.tracks    , id) }
-  getPlaylistById(id) { return this._getByIdIn(this.playlists , id) } // TODO: falta test
-  
-  _getByIdIn(aCollection, id) { return aCollection.find(anObject => anObject.id == id) }
-
-  getArtistByName(aName) {
-    return this.artists.find(anArtist => anArtist.name === aName)
-  }
-
-  _searchByNameIn(aCollection, aName) {
-    return aCollection.filter(anElement => anElement.name = aName)
-  }
-
-  /////////////////////////////////////////////////////////////////////////////
-
+  /** CREACION DE CONTENIDO **/
   // artistData: objeto JS con los datos necesarios para crear un artista
   //   artistData.name (string)
   //   artistData.country (string)
@@ -106,21 +75,6 @@ class UNQfy {
     return newTrack
   }
 
-  // genres: array de generos(strings)
-  // retorna: los tracks que contenga alguno de los generos en el parametro genres
-  getTracksMatchingGenres(genres) {
-    return this.tracks.filter(track => track.matchSomeGenreFrom(genres))
-  }
-
-  // artistName: nombre de artista(string)
-  // retorna: los tracks interpredatos por el artista con nombre artistName
-  getTracksMatchingArtist(artistName) {
-    // TODO: en el test pasa "un artista" pero el parametro se llama "artistName"
-    //return this.getArtistByName(artistName).allTracks
-    return artistName.allTracks
-  }
-
-
   // name: nombre de la playlist
   // genresToInclude: array de generos
   // maxDuration: duración en segundos
@@ -137,23 +91,65 @@ class UNQfy {
     return newPlaylist
   }
 
-  save(filename) {
-    const listenersBkp = this.listeners
-    this.listeners = []
+  _generateUniqueId() { return this._nextId++ }
 
-    const serializedData = picklify.picklify(this)
-
-    this.listeners = listenersBkp
-    fs.writeFileSync(filename, JSON.stringify(serializedData, null, 2))
+  _createContent(aClass,  dataObject) {
+    return new aClass({ id: this._generateUniqueId(), ...dataObject })
   }
 
-  static load(filename) {
-    const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'})
-    //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy, Artist, Album, Track, Playlist];
-    return picklify.unpicklify(JSON.parse(serializedData), classes)
+  /** BUSQUEDAS **/
+  searchByNamePartial(aPartialName) {
+    return {
+      artists  : this._searchByNamePartialIn(this.artists  , aName),
+      albums   : this._searchByNamePartialIn(this.albums   , aName),
+      tracks   : this._searchByNamePartialIn(this.tracks   , aName),
+      playlists: this._searchByNamePartialIn(this.playlists, aName),
+    }
+  }
+  
+  _searchByNamePartialIn(aCollection, aPartialName) {
+    return aCollection.filter(anEntity => RegExp(aPartialName).test(anEntity.name))
   }
 
+  // genres: array de generos(strings)
+  // retorna: los tracks que contenga alguno de los generos en el parametro genres
+  searchByName(aName) {
+    return {
+      artists  : this._searchByNameIn(this.artists  , aName),
+      albums   : this._searchByNameIn(this.albums   , aName),
+      tracks   : this._searchByNameIn(this.tracks   , aName),
+      playlists: this._searchByNameIn(this.playlists, aName),
+    }
+  }
+
+  _searchByNameIn(aCollection, aName) {
+    return aCollection.filter(anElement => anElement.name = aName)
+  }
+
+  getArtistById(id)   { return this._getByIdIn(this.artists   , id) }
+  getAlbumById(id)    { return this._getByIdIn(this.albums    , id) }
+  getTrackById(id)    { return this._getByIdIn(this.tracks    , id) }
+  getPlaylistById(id) { return this._getByIdIn(this.playlists , id) } // TODO: falta test
+  
+  _getByIdIn(aCollection, id) { return aCollection.find(anObject => anObject.id === id) }
+
+  getArtistByName(aName) {
+    return this.artists.find(anArtist => anArtist.name === aName)
+  }
+
+  getTracksMatchingGenres(genres) {
+    return this.tracks.filter(track => track.matchSomeGenreFrom(genres))
+  }
+
+  // artistName: nombre de artista(string)
+  // retorna: los tracks interpredatos por el artista con nombre artistName
+  getTracksMatchingArtist(artistName) {
+    // TODO: en el test pasa "un artista" pero el parametro se llama "artistName"
+    //return this.getArtistByName(artistName).allTracks
+    return artistName.allTracks
+  }
+
+  /** ELIMINACIONES **/
   removeArtist(artistName){
     this.removeTracksFromAllPlaylist(this.getArtistByName(artistName).allTracks)
     this._artists = this._artists.filter(anArtist => anArtist.name !== artistName)
@@ -170,6 +166,24 @@ class UNQfy {
   removeAlbumFromArtist(albumToBeRemoved, artist){
     this.removeTracksFromAllPlaylist(albumToBeRemoved.tracks)
     artist.albums = artist.albums.filter(anAlbum => anAlbum !== albumToBeRemoved)
+  }
+
+  /** PERSISTENCIA **/
+  save(filename) {
+    const listenersBkp = this.listeners
+    this.listeners = []
+
+    const serializedData = picklify.picklify(this)
+
+    this.listeners = listenersBkp
+    fs.writeFileSync(filename, JSON.stringify(serializedData, null, 2))
+  }
+
+  static load(filename) {
+    const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'})
+    //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
+    const classes = [UNQfy, Artist, Album, Track, Playlist];
+    return picklify.unpicklify(JSON.parse(serializedData), classes)
   }
 
 }
