@@ -35,6 +35,10 @@ class Playlist {
   removeTrack(aTrack){
     this._tracks = this._tracks.filter(elem => elem != aTrack)
   }
+
+  removeAll(tracks) {
+    tracks.forEach(track => this.removeTrack(track))
+  }
 }
 
 module.exports = Playlist

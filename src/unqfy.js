@@ -171,10 +171,8 @@ class UNQfy {
     this._playlists = this._playlists.filter(aPlaylist => aPlaylist.name !== playlistName) 
   }
 
-  removeTracksFromAllPlaylist(allTracks){
-    allTracks.forEach(track => {
-      this._playlists.forEach(playlist => playlist.removeTrack(track))
-    })
+  removeTracksFromAllPlaylist(tracks){
+    this.playlists.forEach(playlist => playlist.removeAll(tracks))
   }
 
   removeAlbumFromArtist(albumToBeRemoved, artist){
