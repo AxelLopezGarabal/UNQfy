@@ -1,4 +1,4 @@
-require('./aux/extenciones').extendArray()
+require('../aux/extenciones').extendArray()
 
 class Playlist {
 

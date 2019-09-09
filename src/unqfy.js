@@ -3,10 +3,10 @@ const fs = require('fs') // para cargar/guarfar unqfy
 
 require('./aux/extenciones').extendArray()
 
-const Artist = require('./Artist.js')
-const Album  = require('./Album.js')
-const Track  = require('./Track.js')
-const Playlist = require('./Playlist.js')
+const Artist = require('./entities/Artist')
+const Album  = require('./entities/Album')
+const Track  = require('./entities/Track')
+const Playlist = require('./entities/Playlist')
 const PlaylistGenerator = require('./PlaylistGenerator.js')
 
 class UNQfy {

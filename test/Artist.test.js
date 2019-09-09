@@ -1,6 +1,6 @@
 const expect = require('chai').expect
-const Album = require('../src/Album.js')
-const Artist = require('../src/Artist.js')
+const Album = require('../src/entities/Album.js')
+const Artist = require('../src/entities/Artist.js')
 
 describe('Artist', () => {
   let id      = 123
