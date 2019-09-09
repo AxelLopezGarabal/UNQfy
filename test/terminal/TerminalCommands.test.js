@@ -1,24 +1,29 @@
 const expect = require('chai').expect
 
-const { UNQfy }        = require('../../src/unqfy')
-const AddArtistCommand = require('../../src/terminal/AddArtistCommand')
-const AddAlbumCommand  = require('../../src/terminal/AddAlbumCommand')
-const AddTrackCommand  = require('../../src/terminal/AddTrackCommand')
+const { UNQfy } = require('../../src/unqfy')
 
-describe('AddArtistCommand', () => {
-  let addArtistCommand
+const Command = require('../../src/terminal/command/Command')
+
+const {
+  AddArtistCommandHandler,
+  AddAlbumCommandHandler,
+  AddTrackCommandHandler
+} = require('../../src/terminal/command_handlers/terminalCommandHandlers')
+
+describe('AddArtistCommandHandler', () => {
+  let handler
   let unqfy
 
   const artistName  = 'artistName'
   const countryName = 'country name'
   
   beforeEach(() => {
-    unqfy            = new UNQfy()
-    addArtistCommand = new AddArtistCommand()
+    unqfy   = new UNQfy()
+    handler = new AddArtistCommandHandler()
   })
 
   it('correct arguments', () => {
-    addArtistCommand.handle(unqfy, [artistName, countryName])
+    handler.handle(unqfy, new Command('', [artistName, countryName]))
 
     const anArtist = unqfy.getArtistByName(artistName)
 
@@ -28,20 +33,20 @@ describe('AddArtistCommand', () => {
 
   it('sobran argumentos', () => {
     expect(() =>
-      addArtistCommand.handle(unqfy, [artistName, countryName, 'esto_esta_de_mas'])
+      handler.handle(unqfy, new Command('', [artistName, countryName, 'esto_esta_de_mas']))
     ).to.throw('ERROR: should pass two args as follow => Artist_name, country')
   })
 
   it('faltan argumentos', () => {
     expect(() =>
-      addArtistCommand.handle(unqfy, [artistName])
+      handler.handle(unqfy, new Command('', [artistName]))
     ).to.throw('ERROR: should pass two args as follow => Artist_name, country')
   })
 
 })
 
-describe('AddAlbumCommand', () => {
-  let command
+describe('AddAlbumCommandHandler', () => {
+  let handler
   let unqfy
 
   const artistName  = 'artistName'
@@ -49,7 +54,7 @@ describe('AddAlbumCommand', () => {
   
   beforeEach(() => {
     unqfy   = new UNQfy()
-    command = new AddAlbumCommand()
+    handler = new AddAlbumCommandHandler()
   })
 
   it('correct arguments', () => {
@@ -57,7 +62,7 @@ describe('AddAlbumCommand', () => {
     const albumName = 'albumName'
     const year      = 2019
 
-    command.handle(unqfy, [anArtist.id, albumName, year])
+    handler.handle(unqfy, new Command('', [anArtist.id, albumName, year]))
 
     expect(anArtist.albums).to.have.lengthOf(1)
     expect(anArtist.albums[0].name).to.equal(albumName)
@@ -66,8 +71,8 @@ describe('AddAlbumCommand', () => {
 
 })
 
-describe('AddTrackCommand', () => {
-  let addTrackCommand
+describe('AddTrackCommandHandler', () => {
+  let handler
   let unqfy
 
   const artistName  = 'artistName'
@@ -81,15 +86,15 @@ describe('AddTrackCommand', () => {
   const genres    = ['Genre1', 'Genre2']
   
   beforeEach(() => {
-    unqfy           = new UNQfy()
-    addTrackCommand = new AddTrackCommand()
+    unqfy   = new UNQfy()
+    handler = new AddTrackCommandHandler()
   })
 
   it('correct arguments', () => {
     const anArtist  = unqfy.addArtist({ name: artistName, country: countryName })
     const anAlbum   = unqfy.addAlbum(anArtist.id, { name: albumName, year, genres })
 
-    addTrackCommand.handle(unqfy, [anAlbum.id, trackName, duration, genres])
+    handler.handle(unqfy, new Command('', [anAlbum.id, trackName, duration, genres]))
 
     expect(anAlbum.tracks).to.have.lengthOf(1)
     expect(anAlbum.tracks[0].name).to.equal(trackName)

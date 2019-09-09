@@ -1,4 +1,4 @@
-const { AddArtistCommand, AddAlbumCommand } = require('./terminal/terminalCommands')
+const { AddArtistCommandHandler, AddAlbumCommandHandler } = require('./terminal/terminalCommands')
 
 class Controller{
 
@@ -6,8 +6,8 @@ class Controller{
 		this._unqfy = unqfy
 	}
 
-	addArtist(args) { new AddArtistCommand().handle(this._unqfy, args)	}
-	addAlbum(args)  { new AddAlbumCommand().handle(this._unqfy, args)	}
+	addArtist(args) { new AddArtistCommandHandler().handle(this._unqfy, args)	}
+	addAlbum(args)  { new AddAlbumCommandHandler().handle(this._unqfy, args)	}
 
 	addTrack(args) {
 		if (args.length != 4) {
