@@ -33,7 +33,7 @@ class Playlist {
   }
 
   removeTrack(aTrack){
-    this._tracks = this._tracks.filter(function(elem){ return elem != aTrack; });
+    this._tracks = this._tracks.filter(elem => elem != aTrack)
   }
 }
 

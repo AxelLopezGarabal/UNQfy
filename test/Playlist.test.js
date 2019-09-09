@@ -51,6 +51,19 @@ describe('Playlist', ()=> {
     playlist.addTrack(track02)
   
     expect(playlist.duration()).to.equal(track01.duration + track02.duration)
+  })
+
+  it('puede remover un track', () => {
+    const track01 = createTrack('track01', 100)
+    const track02 = createTrack('track02', 200)
+    
+    playlist.addTrack(track01)
+    playlist.addTrack(track02)
+
+    playlist.removeTrack(track02)
+
+    expect(playlist.tracks).to.have.lengthOf(1)
+    expect(playlist.tracks).to.include(track01)
   });
   
 })
