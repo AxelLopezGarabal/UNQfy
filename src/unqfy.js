@@ -3,10 +3,7 @@ const fs = require('fs') // para cargar/guarfar unqfy
 
 require('./aux/extenciones').extendArray()
 
-const Artist = require('./entities/Artist')
-const Album  = require('./entities/Album')
-const Track  = require('./entities/Track')
-const Playlist = require('./entities/Playlist')
+const { Artist, Album, Track, Playlist } = require('./entities/all_entities')
 const PlaylistGenerator = require('./PlaylistGenerator.js')
 
 class UNQfy {
@@ -158,6 +155,7 @@ class UNQfy {
   }
 
   removeArtist(artistName){
+    this.removeTracksFromAllPlaylist(this.getArtistByName(artistName).allTracks)
     this._artists = this._artists.filter(anArtist => anArtist.name !== artistName)
   }
 
@@ -170,6 +168,7 @@ class UNQfy {
   }
 
   removeAlbumFromArtist(albumToBeRemoved, artist){
+    this.removeTracksFromAllPlaylist(albumToBeRemoved.tracks)
     artist.albums = artist.albums.filter(anAlbum => anAlbum !== albumToBeRemoved)
   }
 
