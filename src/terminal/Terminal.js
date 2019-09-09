@@ -17,11 +17,7 @@ class Terminal {
     }
 
     findCommandHandlerFor(aCommand) {
-        const aClass = this._commandHandlers.find(handler => {
-            console.log("handler ->", handler.canHandle(aCommand))
-            return handler.canHandle(aCommand)
-        })
-        console.log(aClass)
+        const aClass = this._commandHandlers.find(handler => handler.canHandle(aCommand))
         return new aClass(aCommand)
     }
     
