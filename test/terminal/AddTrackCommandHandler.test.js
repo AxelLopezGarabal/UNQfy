@@ -1,10 +1,10 @@
 const expect = require('chai').expect
 const { UNQfy } = require('../../src/unqfy')
 const Command = require('../../src/terminal/command/Command')
-const { AddTrackCommandHandler } = require('../../src/terminal/command_handlers/terminalCommandHandlers')
+const { AddTrackCommand } = require('../../src/terminal/command/all')
 
-describe('AddTrackCommandHandler', () => {
-  let handler
+describe('AddTrackCommand', () => {
+  let command
   let unqfy
 
   const artistName  = 'artistName'
@@ -19,14 +19,14 @@ describe('AddTrackCommandHandler', () => {
   
   beforeEach(() => {
     unqfy   = new UNQfy()
-    handler = new AddTrackCommandHandler()
+    command = new AddTrackCommand()
   })
 
   it('correct arguments', () => {
     const anArtist  = unqfy.addArtist({ name: artistName, country: countryName })
     const anAlbum   = unqfy.addAlbum(anArtist.id, { name: albumName, year, genres })
 
-    handler.handle(unqfy, new Command('', [anAlbum.id, trackName, duration, genres]))
+    command.handle(unqfy, [anAlbum.id, trackName, duration, genres])
 
     expect(anAlbum.tracks).to.have.lengthOf(1)
     expect(anAlbum.tracks[0].name).to.equal(trackName)

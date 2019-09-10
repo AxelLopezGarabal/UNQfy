@@ -1,10 +1,9 @@
 const expect = require('chai').expect
 const { UNQfy } = require('../../src/unqfy')
-const Command = require('../../src/terminal/command/Command')
-const { AddArtistCommandHandler } = require('../../src/terminal/command_handlers/terminalCommandHandlers')
+const { AddArtistCommand } = require('../../src/terminal/command/all')
 
-describe('AddArtistCommandHandler', () => {
-  let handler
+describe('AddArtistCommand', () => {
+  let command
   let unqfy
 
   const artistName  = 'artistName'
@@ -12,12 +11,11 @@ describe('AddArtistCommandHandler', () => {
   
   beforeEach(() => {
     unqfy   = new UNQfy()
-    handler = new AddArtistCommandHandler()
+    command = new AddArtistCommand()
   })
 
   it('correct arguments', () => {
-    handler.handle(unqfy, new Command('addArtist', [artistName, countryName]))
-
+    command.handle(unqfy, [artistName, countryName])
     const anArtist = unqfy.getArtistByName(artistName)
 
     expect(anArtist.name).to.equal(artistName)
@@ -26,14 +24,14 @@ describe('AddArtistCommandHandler', () => {
 
   it('sobran argumentos', () => {
     expect(() =>
-      handler.handle(unqfy, new Command('addArtist', [artistName, countryName, 'esto_esta_de_mas']))
-    ).to.throw('ERROR: should pass two args as follow => Artist_name, country')
+    command.handle(unqfy, [artistName, countryName, 'esto_esta_de_mas'])
+    ).to.throw('ERROR: should pass 2 args as follow => name,country')
   })
 
   it('faltan argumentos', () => {
     expect(() =>
-      handler.handle(unqfy, new Command('addArtist', [artistName]))
-    ).to.throw('ERROR: should pass two args as follow => Artist_name, country')
+      command.handle(unqfy, [artistName])
+    ).to.throw('ERROR: should pass 2 args as follow => name,country')
   })
 
 })

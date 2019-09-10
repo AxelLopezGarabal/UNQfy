@@ -67,19 +67,11 @@ function main() {
   const terminal = new Terminal(unqfy)
 
   const [,,commandName, ...args] = process.argv
-  const aCommand = new Command(commandName, args)
 
-  try{
-    terminal.run(aCommand)
-  } catch (error) {
-    console.log(`Error: ${error}`)
-  }
+  terminal.run(commandName, args)
 
   console.log("")
-  //console.log(unqfy)
-  unqfy.artists.forEach(artist => {
-    console.log(`${artist.name} ${artist.country}`)
-  })
+  console.log(unqfy)
 
   saveUNQfy(unqfy, 'backUp.json')
 }

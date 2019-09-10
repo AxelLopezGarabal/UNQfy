@@ -1,23 +1,37 @@
-const terminalCommandHandlers = require('./command_handlers/terminalCommandHandlers')
-const defaultCommandHandlers  = Object.values(terminalCommandHandlers)
+const commandsModule = require('./command/all')
+
+const defaultCommands = Object.values(commandsModule).map(aClass => new aClass())
+const defaultResultHandler = result => console.log(result)
+const defaultErrorHandler  = error  => console.log(error)
 
 module.exports =
 class Terminal {
 
-    constructor(anUNQfy, commandHandlers=defaultCommandHandlers) {
-        this._unqfy           = anUNQfy
-        this._commandHandlers = commandHandlers
+    constructor(
+        anUNQfy,
+        commands= defaultCommands,
+        resultHandler=defaultResultHandler,
+        errorHandler=defaultErrorHandler)
+    {
+        this._unqfy         = anUNQfy
+        this._commands      = defaultCommands
+        this._resultHandler = resultHandler
+        this._errorHandler  = errorHandler
     }
 
-    run(aCommand) {
-        this
-            .findCommandHandlerFor(aCommand)
-            .handle(this._unqfy, aCommand)
+    run(commandName, args) {
+        let returnedValue
+        try {
+            returnedValue = this.findCommand(commandName).handle(this._unqfy, args)
+        } catch(anError) {
+            this._errorHandler(anError)
+        }
+        this._resultHandler({command: [commandName, ...args].join(' '), returned: returnedValue || 'nothing' })
+        return returnedValue
     }
 
-    findCommandHandlerFor(aCommand) {
-        const aClass = this._commandHandlers.find(handler => handler.canHandle(aCommand))
-        return new aClass(aCommand)
+    findCommand(commandName) {
+        return this._commands.find(aCommand => aCommand.name === commandName)
     }
 
 }
