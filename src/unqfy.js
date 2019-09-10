@@ -10,13 +10,15 @@ class UNQfy {
   constructor() {
     this._playlists = []
     this._artists   = []
-    this._nextId     = 0
+    this._nextId    = 0
   }
 
   get playlists() { return this._playlists }
   get artists()   { return this._artists }
   get albums()    { return this.artists.flatMap(artist => artist.albums) }
   get tracks()    { return this.albums.flatMap(album => album.tracks) }
+  
+  get _allEntities() { return [...this.artists, ...this.albums, ...this.tracks, ...this.playlists] }
 
   /** CREACION DE CONTENIDO **/
   // artistData: objeto JS con los datos necesarios para crear un artista
@@ -126,12 +128,12 @@ class UNQfy {
     return aCollection.filter(anElement => anElement.name = aName)
   }
 
-  getArtistById(id)   { return this._getByIdIn(this.artists   , id) }
-  getAlbumById(id)    { return this._getByIdIn(this.albums    , id) }
-  getTrackById(id)    { return this._getByIdIn(this.tracks    , id) }
-  getPlaylistById(id) { return this._getByIdIn(this.playlists , id) } // TODO: falta test
+  getArtistById(id)   { return this._getEntityById(id) }
+  getAlbumById(id)    { return this._getEntityById(id) }
+  getTrackById(id)    { return this._getEntityById(id) }
+  getPlaylistById(id) { return this._getEntityById(id) } // TODO: falta test
   
-  _getByIdIn(aCollection, id) { return aCollection.find(anObject => anObject.id === id) }
+  _getEntityById(id) { return this._allEntities.find(anEntity => anEntity.id === id) }
 
   getArtistByName(aName) {
     return this.artists.find(anArtist => anArtist.name === aName)
