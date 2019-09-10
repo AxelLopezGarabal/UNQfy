@@ -112,10 +112,10 @@ class UNQfy {
   /** BUSQUEDAS **/
   searchByNamePartial(aPartialName) {
     return {
-      artists  : this._searchByNamePartialIn(this.artists  , aName),
-      albums   : this._searchByNamePartialIn(this.albums   , aName),
-      tracks   : this._searchByNamePartialIn(this.tracks   , aName),
-      playlists: this._searchByNamePartialIn(this.playlists, aName),
+      artists  : this._searchByNamePartialIn(this.artists  , aPartialName),
+      albums   : this._searchByNamePartialIn(this.albums   , aPartialName),
+      tracks   : this._searchByNamePartialIn(this.tracks   , aPartialName),
+      playlists: this._searchByNamePartialIn(this.playlists, aPartialName)
     }
   }
   
