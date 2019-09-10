@@ -70,8 +70,8 @@ function main() {
 
   terminal.run(commandName, args)
 
-  console.log("")
-  console.log(unqfy)
+//  console.log("")
+//  console.log(unqfy)
 
   saveUNQfy(unqfy, 'backUp.json')
 }
