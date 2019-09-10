@@ -11,7 +11,11 @@ class Command {
         throw `ERROR: should pass ${this._expectedNumberOfArgs} args as follow => ${this._argsNames}`
     }
 
-    _excecute(unqfy, args) { throw 'Subclass responsability' }
+    _excecute(unqfy, args) {
+		return unqfy[this.name](...this._parse(args))
+    }
+
+    _parse(args)           { throw 'Subclass responsability' }
     get name()             { throw 'Subclass responsability' }
     get _argsDescription() { throw 'Subclass responsability' }
 
