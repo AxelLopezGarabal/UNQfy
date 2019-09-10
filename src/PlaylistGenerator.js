@@ -1,4 +1,4 @@
-const Playlist = require('./Playlist.js')
+const Playlist = require('./entities/Playlist')
 
 class PlaylistGenerator {
 

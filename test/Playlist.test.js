@@ -1,7 +1,7 @@
 const expect   = require('chai').expect
-const Track    = require('../src/Track.js')
-const Album    = require('../src/Album.js')
-const Playlist = require('../src/Playlist.js')
+const Track    = require('../src/entities/Track.js')
+const Album    = require('../src/entities/Album.js')
+const Playlist = require('../src/entities/Playlist.js')
 
 describe('Playlist', ()=> {
   const id   = 123
@@ -64,7 +64,22 @@ describe('Playlist', ()=> {
 
     expect(playlist.tracks).to.have.lengthOf(1)
     expect(playlist.tracks).to.include(track01)
-  });
+  })
+
+  it('puede remover varios tracks', () => {
+    const track01 = createTrack('track01', 100)
+    const track02 = createTrack('track02', 200)
+    const track03 = createTrack('track03', 300)
+    
+    playlist.addTrack(track01)
+    playlist.addTrack(track02)
+    playlist.addTrack(track03)
+
+    playlist.removeAll([track01, track02])
+
+    expect(playlist.tracks).to.have.lengthOf(1)
+    expect(playlist.tracks).to.include(track03)
+  })
   
 })
 

@@ -1,6 +1,6 @@
 const expect = require('chai').expect
-const Track  = require('../src/Track.js')
-const Album  = require('../src/Album.js')
+const Track  = require('../src/entities/Track.js')
+const Album  = require('../src/entities/Album.js')
 
 describe('Album', () => {
   const id   = 123

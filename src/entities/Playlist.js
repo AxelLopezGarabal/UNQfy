@@ -1,4 +1,4 @@
-require('./aux/extenciones').extendArray()
+require('../aux/extenciones').extendArray()
 
 class Playlist {
 
@@ -34,6 +34,10 @@ class Playlist {
 
   removeTrack(aTrack){
     this._tracks = this._tracks.filter(elem => elem != aTrack)
+  }
+
+  removeAll(tracks) {
+    tracks.forEach(track => this.removeTrack(track))
   }
 }
 

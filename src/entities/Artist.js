@@ -1,4 +1,4 @@
-require('./aux/extenciones').extendArray()
+require('../aux/extenciones').extendArray()
 
 class Artist {
 
@@ -9,6 +9,11 @@ class Artist {
     this._name    = name
     this._country = country
     this._albums  = []
+  }
+
+  // Testing
+  isTheAutorOf(anAlbum) {
+    return this.albums.includes(anAlbum)
   }
 
   // Queries
@@ -30,16 +35,21 @@ class Artist {
     this.albums.push(anAlbum)
   }
 
+  removeAlbum(anAlbum) {
+    this._validateisTheAutorOf(anAlbum)
+    this._albums.remove(anAlbum)
+  }
+
   // private
   // Command
   _validateIsNewAlbum(anAlbum) {
-    if (this._hasAlbum(anAlbum))
+    if (this.isTheAutorOf(anAlbum))
       throw 'No se puede registrar un mismo album mas de una vez'
   }
 
-  // Testing
-  _hasAlbum(anAlbum) {
-    return this.albums.includes(anAlbum)
+  _validateisTheAutorOf(anAlbum) {
+    if (!this.isTheAutorOf(anAlbum))
+      throw `${this.name} no tiene registrado el album ${anAlbum.name}`
   }
 
 }

@@ -1,16 +1,34 @@
 module.exports =
 class Command {
     
-    constructor(name, args) {
-        this._name = name
-        this._args = args
+    handle(unqfy, args) {
+        this._validate(args)
+        return this._excecute(unqfy, args)
+    }
+    
+    _validate(args) {
+    if (!this._isCorrectNumberOfArgs(args)) // TODO: check arg type
+        throw `ERROR: should pass ${this._expectedNumberOfArgs} args as follow => ${this._argsNames}`
     }
 
-    get name()         { return this._name }
-    get args()         { return this._args }
-    get numberOfArgs() { return this.args.length }
+    _excecute(unqfy, args) {
+		return unqfy[this.name](...this._parse(args))
+    }
 
-    numberOfArgsIs(aNumber)    { return this.numberOfArgs === aNumber }
-    numberOfArgsIsNot(aNumber) { return !this.numberOfArgsIs(aNumber) }
+    _parse(args)           { throw 'Subclass responsability' }
+    get name()             { throw 'Subclass responsability' }
+    get _argsDescription() { throw 'Subclass responsability' }
+
+    get _expectedNumberOfArgs() {
+        return this._argsDescription.length
+    }
+
+    get _argsNames() {
+        return this._argsDescription.map(arg => arg.name)
+    }
+
+    _isCorrectNumberOfArgs(args) {
+        return args.length === this._expectedNumberOfArgs
+    }
 
 }
