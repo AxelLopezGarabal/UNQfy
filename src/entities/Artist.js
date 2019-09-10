@@ -11,6 +11,11 @@ class Artist {
     this._albums  = []
   }
 
+  // Testing
+  isTheAutorOf(anAlbum) {
+    return this.albums.includes(anAlbum)
+  }
+
   // Queries
   get id()      { return this._id }
   get name()    { return this._name }
@@ -30,16 +35,21 @@ class Artist {
     this.albums.push(anAlbum)
   }
 
+  removeAlbum(albumToBeRemoved) {
+    this._validateisTheAutorOf(albumToBeRemoved)
+    this._albums = this._albums.filter(anAlbum => anAlbum !== albumToBeRemoved)
+  }
+
   // private
   // Command
   _validateIsNewAlbum(anAlbum) {
-    if (this._hasAlbum(anAlbum))
+    if (this.isTheAutorOf(anAlbum))
       throw 'No se puede registrar un mismo album mas de una vez'
   }
 
-  // Testing
-  _hasAlbum(anAlbum) {
-    return this.albums.includes(anAlbum)
+  _validateisTheAutorOf(anAlbum) {
+    if (!this.isTheAutorOf(anAlbum))
+      throw `${this.name} no tiene registrado el album ${anAlbum.name}`
   }
 
 }

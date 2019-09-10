@@ -141,6 +141,10 @@ class UNQfy {
     return this.tracks.filter(track => track.matchSomeGenreFrom(genres))
   }
 
+  _searchAuthorOf(anAlbum) {
+    return this.artists.find(anArtist => anArtist.isTheAutorOf(anAlbum))
+  }
+
   // artistName: nombre de artista(string)
   // retorna: los tracks interpredatos por el artista con nombre artistName
   getTracksMatchingArtist(artistName) {
@@ -150,22 +154,24 @@ class UNQfy {
   }
 
   /** ELIMINACIONES **/
-  removeArtist(artistName){
-    this.removeTracksFromAllPlaylist(this.getArtistByName(artistName).allTracks)
-    this._artists = this._artists.filter(anArtist => anArtist.name !== artistName)
+  removeArtist(artistId) {
+    const artistToBeRemoved = this.getArtistById(artistId)
+    this._removeTracksFromAllPlaylist(artistToBeRemoved.allTracks)
+    this._artists = this._artists.filter(anArtist => anArtist !== artistToBeRemoved)
   }
 
-  removePlaylist(playlistName){
-    this._playlists = this._playlists.filter(aPlaylist => aPlaylist.name !== playlistName) 
+  removeAlbum(albumId) {
+    const albumToBeRemoved = this.getAlbumById(albumId)
+    this._searchAuthorOf(albumToBeRemoved).removeAlbum(albumToBeRemoved)
+    this._removeTracksFromAllPlaylist(albumToBeRemoved.tracks)
   }
 
-  removeTracksFromAllPlaylist(tracks){
+  removePlaylist(playlistId){
+    this._playlists = this._playlists.filter(aPlaylist => aPlaylist.id !== playlistId) 
+  }
+
+  _removeTracksFromAllPlaylist(tracks){
     this.playlists.forEach(playlist => playlist.removeAll(tracks))
-  }
-
-  removeAlbumFromArtist(albumToBeRemoved, artist){
-    this.removeTracksFromAllPlaylist(albumToBeRemoved.tracks)
-    artist.albums = artist.albums.filter(anAlbum => anAlbum !== albumToBeRemoved)
   }
 
   /** PERSISTENCIA **/

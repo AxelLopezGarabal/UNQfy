@@ -38,6 +38,15 @@ describe('Artist', () => {
     ).to.throw('No se puede registrar un mismo album mas de una vez')
   })
 
+  it('sabe ti tiene es el autor de un album', () => {
+    const album01 = createAlbum('album1')
+    const album02 = createAlbum('album2')
+    artista.addAlbum(album01)
+    expect(artista.isTheAutorOf(album01)).to.be.true
+    expect(artista.isTheAutorOf(album02)).to.be.false
+
+  });
+
   it('se le puede pedir los tracks de todos sus albumes', () => {
     const track01 = createTrack()
     const track02 = createTrack()
@@ -48,6 +57,29 @@ describe('Artist', () => {
 
     expect(artista.allTracks).to.have.lengthOf(2)
     expect(artista.allTracks).to.include.members([track01, track02])
+  })
+
+  it('puede eliminar un album', () => {
+    const track01 = createTrack()
+    const track02 = createTrack()
+    const album01 = createAlbum('album01', [track01])
+    const album02 = createAlbum('album01', [track02])
+    artista.addAlbum(album01)
+    artista.addAlbum(album02)
+    
+    artista.removeAlbum(album01)
+
+    expect(artista.albums).to.have.lengthOf(1)
+    expect(artista.albums).to.include(album02)
+  })
+
+  it('no puede eliminar un album que no tiene registrado', () => {
+    const track = createTrack()
+    const album = createAlbum('album', [track])
+    
+    expect(
+      () => artista.removeAlbum(album)
+    ).to.throw(`${artista.name} no tiene registrado el album ${album.name}`)
   })
   
 })

@@ -25,7 +25,7 @@ describe('UNQfy', () => {
     describe('Cuando se elimina un album...', () => {
         
         beforeEach(() => 
-            unqfy.removeAlbumFromArtist(album01, artist)
+            unqfy.removeAlbum(album01.id)
         )
 
         it('...el sistema ya no lo tiene registrado', () => {
@@ -46,7 +46,7 @@ describe('UNQfy', () => {
 
     describe('cuando se elimina un artista...', () => {
         beforeEach(() => {
-            unqfy.removeArtist(artist.name)
+            unqfy.removeArtist(artist.id)
         })
 
         it('el sistema ya no lo recuerda', () => {
