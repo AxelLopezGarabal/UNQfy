@@ -62,6 +62,13 @@ describe('UNQfy', () => {
         })
     })
 
+    it('se pueden eliminar playlists', () => {
+        const anotherPlaylist = unqfy.createPlaylist('p1', ['un genero'], 1000)
+        unqfy.removePlaylist(playlist.id)
+        expect(unqfy.playlists).to.have.lengthOf(1)
+        expect(unqfy.playlists).to.include(anotherPlaylist)
+    });
+
 })
 
 const makeArtistData = () => ({name: 'pepe', country: 'argentina'})

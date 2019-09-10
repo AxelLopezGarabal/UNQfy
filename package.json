@@ -5,6 +5,7 @@
   "main": "./src/main.js",
   "dependencies": {
     "chai": "^4.1.2",
+    "immutable": "^4.0.0-rc.12",
     "picklify": "github:lwoites/picklify"
   },
   "devDependencies": {

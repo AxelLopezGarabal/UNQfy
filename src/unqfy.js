@@ -1,6 +1,7 @@
 const picklify = require('picklify') // para cargar/guarfar unqfy
 const fs = require('fs') // para cargar/guarfar unqfy
-require('./aux/extenciones').extendArray()
+//require('./aux/extenciones').extendArray()
+const { List } = require('immutable')
 
 const { Artist, Album, Track, Playlist } = require('./entities/all_entities')
 const PlaylistGenerator = require('./PlaylistGenerator.js')
@@ -157,25 +158,25 @@ class UNQfy {
 
   /** ELIMINACIONES **/
   removeArtist(artistId) {
-    const artistToBeRemoved = this.getArtistById(artistId)
-    this._removeTracksFromAllPlaylist(artistToBeRemoved.allTracks)
-    this._artists = this._artists.filter(anArtist => anArtist !== artistToBeRemoved)
+    const artist = this.getArtistById(artistId)
+    this._removeTracksFromAllPlaylist(artist.allTracks)
+    this._artists.remove(artist)
   }
 
   removeAlbum(albumId) {
-    const albumToBeRemoved = this.getAlbumById(albumId)
-    this._searchAuthorOf(albumToBeRemoved).removeAlbum(albumToBeRemoved)
-    this._removeTracksFromAllPlaylist(albumToBeRemoved.tracks)
+    const album = this.getAlbumById(albumId)
+    this._searchAuthorOf(album).removeAlbum(album)
+    this._removeTracksFromAllPlaylist(album.tracks)
   }
 
-  removeTrack(trackId) {
-    const trackToBeRemoved = this.getTrackById(trackId)
-    _searchAlbumOf(trackToBeRemoved).removeTrack(trackToBeRemoved)
-    this._removeTracksFromAllPlaylist([tracks])
+  removeTrack(trackId) { // TODO: test
+    const track = this.getTrackById(trackId)
+    _searchAlbumOf(track).removeTrack(track)
+    this._removeTracksFromAllPlaylist([track])
   }
 
   removePlaylist(playlistId){
-    this._playlists = this._playlists.filter(aPlaylist => aPlaylist.id !== playlistId) 
+    this._playlists.remove(this.getPlaylistById(playlistId))
   }
 
   _removeTracksFromAllPlaylist(tracks){

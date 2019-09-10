@@ -35,9 +35,9 @@ class Artist {
     this.albums.push(anAlbum)
   }
 
-  removeAlbum(albumToBeRemoved) {
-    this._validateisTheAutorOf(albumToBeRemoved)
-    this._albums = this._albums.filter(anAlbum => anAlbum !== albumToBeRemoved)
+  removeAlbum(anAlbum) {
+    this._validateisTheAutorOf(anAlbum)
+    this._albums.remove(anAlbum)
   }
 
   // private
