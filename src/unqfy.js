@@ -128,12 +128,13 @@ class UNQfy {
     return aCollection.filter(anElement => anElement.name = aName)
   }
 
-  getArtistById(id)   { return this._getByIdIn(this.artists,   id) }
-  getAlbumById(id)    { return this._getByIdIn(this.albums,    id) }
-  getTrackById(id)    { return this._getByIdIn(this.tracks,    id) }
-  getPlaylistById(id) { return this._getByIdIn(this.playlists, id) } // TODO: falta test
+  getArtistById(id)   { return this._getByIdIn('artists',   id) }
+  getAlbumById(id)    { return this._getByIdIn('albums',    id) }
+  getTrackById(id)    { return this._getByIdIn('tracks',    id) }
+  getPlaylistById(id) { return this._getByIdIn('playlists', id) } // TODO: falta test
   
-  _getByIdIn(aCollection, id) { return aCollection.find(anEntity => anEntity.id === id) }
+  _getByIdIn(aCollectionName, id) { return this[aCollectionName].find(anEntity => anEntity.id === id) }
+
 
   getArtistByName(aName) {
     return this.artists.find(anArtist => anArtist.name === aName)

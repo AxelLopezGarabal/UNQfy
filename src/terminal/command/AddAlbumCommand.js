@@ -4,7 +4,7 @@ module.exports =
 class AddAlbumCommand extends Command {
     
     _excecute(unqfy, [artistId, albumName, year]) {
-		  unqfy.addAlbum(artistId, {name: albumName, year})
+		  unqfy.addAlbum(parseInt(artistId), {name: albumName, year})
     }
     
     get name() { return 'addAlbum' }

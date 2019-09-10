@@ -4,7 +4,7 @@ module.exports =
 class GetArtistByIdCommand extends Command {
     
     _excecute(unqfy, [id]) {
-        return unqfy.getArtistById(id)
+        return unqfy.getArtistById(parseInt(id))
     }
 
     get name() { return 'getArtistById' }
