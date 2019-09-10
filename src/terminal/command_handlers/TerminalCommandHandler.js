@@ -7,7 +7,7 @@ class TerminalCommandHandler {
 
   handle(unqfy, aCommand) {
     this._validate(aCommand)
-		this._excecute(unqfy, aCommand.args)
+		return this._excecute(unqfy, aCommand.args)
 	}
 
   _validate(aCommand) {
