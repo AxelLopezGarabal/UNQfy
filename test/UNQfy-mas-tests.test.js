@@ -67,7 +67,18 @@ describe('UNQfy', () => {
         unqfy.removePlaylist(playlist.id)
         expect(unqfy.playlists).to.have.lengthOf(1)
         expect(unqfy.playlists).to.include(anotherPlaylist)
-    });
+    })
+
+    describe('registro de artistas...', () => {
+        it('no se puede registrar un artista cuando ya existe uno con el mismo nombre', () => {
+            const nombre = 'juan'
+            unqfy.addArtist({ name: nombre, country: 'argentina' })
+            
+            expect(() =>
+                unqfy.addArtist({ name: nombre, country: 'uruguay' })
+            ).to.throw(`Ya esta registrado un artista llamado ${nombre}`)
+        })
+    })
 
 })
 

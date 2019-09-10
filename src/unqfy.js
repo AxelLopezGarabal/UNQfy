@@ -31,11 +31,21 @@ class UNQfy {
     - una propiedad name (string)
     - una propiedad country (string)
   */
+    this._validateArtistCreation(artistData)
     const newArtist = this._createContent(Artist, artistData)
     this.artists.push(newArtist)
     return newArtist
   }
 
+  _validateArtistCreation(artistData) {
+    if (this._hasArtistCalled(artistData.name)) {
+      throw `Ya esta registrado un artista llamado ${artistData.name}`
+    }
+  }
+
+  _hasArtistCalled(aName) {
+    return this.artists.some(artist => artist.name === aName)
+  }
 
   // albumData: objeto JS con los datos necesarios para crear un album
   //   albumData.name (string)

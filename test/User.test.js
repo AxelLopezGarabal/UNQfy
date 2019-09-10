@@ -23,12 +23,12 @@ describe('User', () => {
 
   it('registra las escuchas realizadas', () => {
     const track01 = makeTrack('track01')
-
-    const listening = user.listen(track01)
     
+    expect(listening.date).to.eql(unaFecha)
     expect(listening.track).to.eql(track01)
     expect(user.listenings).to.be.lengthOf(1)
     expect(user.listenings).to.include.members([listening])
+    
   })
 
   it('se le puede preguntas si escucho un track', () => {
