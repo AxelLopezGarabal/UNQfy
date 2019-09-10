@@ -1,3 +1,5 @@
+const { RepeatedTrackInAlbum } = require('../exceptions/all')
+
 class Album {
 
   constructor(dataObject) {
@@ -24,7 +26,7 @@ class Album {
   // private
   _validateIsNewTrack(aTrack) {
     if (this.tracks.includes(aTrack))
-      throw `El track ${aTrack.name} ya forma parte del album`
+      throw new RepeatedTrackInAlbum(aTrack, this)
   }
 
 }

@@ -2,6 +2,8 @@ const expect = require('chai').expect
 const Album = require('../src/entities/Album.js')
 const Artist = require('../src/entities/Artist.js')
 
+const { RepeatedTrackInAlbum } = require('../src/exceptions/all')
+
 describe('Artist', () => {
   let id      = 123
   let name    = "Pepe Apellido"
@@ -35,7 +37,7 @@ describe('Artist', () => {
     artista.addAlbum(unAlbum)
     expect(
       () => artista.addAlbum(unAlbum)
-    ).to.throw('No se puede registrar un mismo album mas de una vez')
+    ).to.throw(`${artista.name} ya tiene registrado el album ${unAlbum.name}`)
   })
 
   it('sabe ti tiene es el autor de un album', () => {

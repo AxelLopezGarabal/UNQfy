@@ -1,4 +1,5 @@
 require('../auxi/extenciones').extendArray()
+const { RepeatedAlbumInArtist, ArtistaNoTieneRegistradoUnAlbum } = require('../exceptions/all')
 
 class Artist {
 
@@ -44,12 +45,12 @@ class Artist {
   // Command
   _validateIsNewAlbum(anAlbum) {
     if (this.isTheAutorOf(anAlbum))
-      throw 'No se puede registrar un mismo album mas de una vez'
+      throw new RepeatedAlbumInArtist(this, anAlbum)
   }
 
   _validateisTheAutorOf(anAlbum) {
     if (!this.isTheAutorOf(anAlbum))
-      throw `${this.name} no tiene registrado el album ${anAlbum.name}`
+      throw new ArtistaNoTieneRegistradoUnAlbum(this, anAlbum)
   }
 
 }

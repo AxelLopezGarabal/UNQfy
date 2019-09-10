@@ -1,3 +1,5 @@
+const { IncorrectNumbersOfArgsForCommand } = require('../../exceptions/all')
+
 module.exports =
 class Command {
     
@@ -8,7 +10,8 @@ class Command {
     
     _validate(args) {
     if (!this._isCorrectNumberOfArgs(args)) // TODO: check arg type
-        throw `ERROR: should pass ${this._expectedNumberOfArgs} args as follow => ${this._argsNames}`
+        throw new IncorrectNumbersOfArgsForCommand(this)
+        //throw `ERROR: should pass ${this._expectedNumberOfArgs} args as follow => ${this._argsNames}`
     }
 
     _excecute(unqfy, args) {
