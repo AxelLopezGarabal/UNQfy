@@ -168,6 +168,12 @@ class UNQfy {
     this._removeTracksFromAllPlaylist(albumToBeRemoved.tracks)
   }
 
+  removeTrack(trackId) {
+    const trackToBeRemoved = this.getTrackById(trackId)
+    _searchAlbumOf(trackToBeRemoved).removeTrack(trackToBeRemoved)
+    this._removeTracksFromAllPlaylist([tracks])
+  }
+
   removePlaylist(playlistId){
     this._playlists = this._playlists.filter(aPlaylist => aPlaylist.id !== playlistId) 
   }
