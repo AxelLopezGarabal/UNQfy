@@ -1,6 +1,6 @@
 const picklify = require('picklify') // para cargar/guarfar unqfy
 const fs = require('fs') // para cargar/guarfar unqfy
-require('./aux/extenciones').extendArray()
+require('./auxi/extenciones').extendArray()
 
 const { Artist, Album, Track, Playlist } = require('./entities/all_entities')
 const PlaylistGenerator = require('./PlaylistGenerator.js')

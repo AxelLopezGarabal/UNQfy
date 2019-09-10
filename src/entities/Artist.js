@@ -1,4 +1,4 @@
-require('../aux/extenciones').extendArray()
+require('../auxi/extenciones').extendArray()
 
 class Artist {
 
