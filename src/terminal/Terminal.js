@@ -2,7 +2,7 @@ const commandsModule = require('./command/all')
 
 const defaultCommands = Object.values(commandsModule).map(aClass => new aClass())
 const defaultResultHandler = result => console.log(result)
-const defaultErrorHandler  = error  => console.log(error)
+const defaultErrorHandler  = error  => console.log(error.message)
 
 module.exports =
 class Terminal {
@@ -21,6 +21,9 @@ class Terminal {
 
     run(commandName, args) {
         let returnedValue
+        const command = this.findCommand(commandName)
+        if (command == null) throw 'command not found'
+
         try {
             returnedValue = this.findCommand(commandName).handle(this._unqfy, args)
         } catch(anError) {
