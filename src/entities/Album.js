@@ -1,3 +1,4 @@
+require('../auxi/extenciones').extendArray()
 const { RepeatedTrackInAlbum } = require('../exceptions/all')
 
 class Album {
@@ -21,6 +22,10 @@ class Album {
   addTrack(aTrack) {
     this._validateIsNewTrack(aTrack)
     this.tracks.push(aTrack)
+  }
+
+  removeTrack(aTrack) {
+    this.tracks.remove(aTrack)
   }
 
   // private

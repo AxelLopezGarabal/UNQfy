@@ -14,7 +14,7 @@ class Playlist {
   get name()     { return this._name }
   get tracks()   { return this._tracks }
   //get duration() { return this.tracks.reduce((total, aTrack) => total + aTrack.duration, 0) }
-  duration() { return this.tracks.reduce((total, aTrack) => total + aTrack.duration, 0) }
+  duration() { return this.tracks.reduce((totalDuration, aTrack) => totalDuration + aTrack.duration, 0) }
 
   set name(newName) { this._name = newName }
 

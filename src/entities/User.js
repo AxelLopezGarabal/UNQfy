@@ -9,13 +9,17 @@ class User {
     this._listenings = []
   }
 
-  get id()                  { return this._id }
-  get name()                { return this._name }
-  get listenings()          { return this._listenings }
-  get listenedTracks()      { return [...new Set(this._allListenedTracksInOrder)] }
+  get id()             { return this._id }
+  get name()           { return this._name }
+  get listenings()     { return this._listenings }
+  get listenedTracks() { return [...new Set(this._allListenedTracksInOrder)] }
+
+  hasListened(aTrack) {
+    return this.listenedTracks.includes(aTrack)
+  }
 
   timesListened(aTrack) {
-    return this._allListenedTracksInOrder.filter(each => each === aTrack).length
+    return this._allListeneningsOf(aTrack).length
   }
 
   mostListenedTracks(amountResults) {
@@ -23,8 +27,6 @@ class User {
       .sort((x,y) => this.timesListened(y) - (this.timesListened(x)))
       .slice(0, amountResults)
   }
-
-  hasListened(aTrack) { return this.listenedTracks.includes(aTrack) }
 
   listen(aTrack) {
     const listening = new Listening(aTrack)
@@ -36,8 +38,12 @@ class User {
     tracks.forEach(track => this.listen(track))
   }
 
-  // private
+  /* PRIVATE */
   get _allListenedTracksInOrder() {
     return this.listenings.map(aListening => aListening.track)
+  }
+
+  _allListeneningsOf(aTrack) {
+    return this.listenings.filter(aListening => aListening.track === aTrack)
   }
 }

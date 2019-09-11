@@ -23,7 +23,7 @@ class Artist {
   get country() { return this._country }
   get albums()  { return this._albums }
 
-  set name(newName) { this._name = newName }
+  set name(newName)     { this._name   = newName }
   set albums(newalbums) { this._albums = newalbums }
   
   get allTracks() {
@@ -37,18 +37,17 @@ class Artist {
   }
 
   removeAlbum(anAlbum) {
-    this._validateisTheAutorOf(anAlbum)
+    this._validateIsTheAutorOf(anAlbum)
     this._albums.remove(anAlbum)
   }
 
-  // private
-  // Command
+  /* PRIVATE */
   _validateIsNewAlbum(anAlbum) {
     if (this.isTheAutorOf(anAlbum))
       throw new RepeatedAlbumInArtist(this, anAlbum)
   }
 
-  _validateisTheAutorOf(anAlbum) {
+  _validateIsTheAutorOf(anAlbum) {
     if (!this.isTheAutorOf(anAlbum))
       throw new ArtistaNoTieneRegistradoUnAlbum(this, anAlbum)
   }

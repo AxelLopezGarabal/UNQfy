@@ -37,6 +37,13 @@ describe('Album', () => {
     ).to.throw(`El track ${aTrack.name} ya forma parte del album`)
   })
 
+  it('se le pueden quitar tracks', () => {
+    const aTrack = createTrackNamed('track01')
+    album.addTrack(aTrack)
+    album.removeTrack(aTrack)
+    expect(album.tracks).to.be.empty
+  })
+
 })
 
 function createTrackNamed(aName) {
