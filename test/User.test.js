@@ -1,5 +1,5 @@
 const expect = require('chai').expect
-const { User, Track } = require('../src/entities/all')
+const { User, Track, Playlist } = require('../src/entities/all')
 
 describe('User', () => {
   const id   = 1
@@ -97,6 +97,32 @@ describe('User', () => {
     expect(elMasEscuchado).to.include(track03)
   })
 
+  it('inicialmente no tiene ninguna playlist registrada', () => {
+    expect(user.playlists).to.be.empty
+  })
+
+  it('puede registrar una playlist', () => {
+    const aPlaylist = makePlaylist('playlist01')
+
+    user.registerPlaylist(aPlaylist)
+    
+    expect(user.playlists).to.have.lengthOf(1)
+    expect(user.playlists).to.include(aPlaylist)
+  })
+
+  it('puede eliminar una de sus playlist', () => {
+    const playlist01 = makePlaylist('playlist01')
+    const playlist02 = makePlaylist('playlist02')
+    user.registerPlaylist(playlist01)
+    user.registerPlaylist(playlist02)
+
+    user.removePlaylist(playlist01)
+
+    expect(user.playlists).to.have.lengthOf(1)
+    expect(user.playlists).to.include(playlist02)
+  })
+
 })
 
-const makeTrack = name => new Track({id: 1, name, genres: ['aGenre'], duration: 100})
+const makeTrack    = name => new Track({id: 1, name, genres: ['aGenre'], duration: 100})
+const makePlaylist = name => new Playlist(1, name, [])

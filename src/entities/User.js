@@ -7,12 +7,14 @@ class User {
     this._id         = id
     this._name       = name
     this._listenings = []
+    this._playlists  = []
   }
 
   get id()             { return this._id }
   get name()           { return this._name }
   get listenings()     { return this._listenings }
   get listenedTracks() { return [...new Set(this._allListenedTracksInOrder)] }
+  get playlists()      { return this._playlists }
 
   hasListened(aTrack) {
     return this.listenedTracks.includes(aTrack)
@@ -36,6 +38,14 @@ class User {
 
   listenAll(tracks) {
     tracks.forEach(track => this.listen(track))
+  }
+
+  registerPlaylist(aPlaylist) {
+    this.playlists.push(aPlaylist)
+  }
+
+  removePlaylist(aPlaylist) {
+    this.playlists.remove(aPlaylist)
   }
 
   /* PRIVATE */
