@@ -3,5 +3,6 @@ module.exports = {
     RepeatedAlbumInArtist:           require('./RepeatedAlbumInArtist'),
     ArtistaNoTieneRegistradoUnAlbum: require('./ArtistaNoTieneRegistradoUnAlbum'),
     RepeatedAlbumInArtist:           require('./RepeatedAlbumInArtist'),
-    IncorrectNumbersOfArgsForCommand:require('./IncorrectNumbersOfArgsForCommand')
+    IncorrectNumbersOfArgsForCommand:require('./IncorrectNumbersOfArgsForCommand'),
+    ArtistAlreadyRegisterUnderName:  require('./ArtistAlreadyRegisterUnderName')
 }

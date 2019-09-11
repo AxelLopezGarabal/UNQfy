@@ -4,6 +4,7 @@ require('./auxi/extenciones').extendArray()
 
 const { Artist, Album, Track, Playlist } = require('./entities/all')
 const PlaylistGenerator = require('./PlaylistGenerator.js')
+const { ArtistAlreadyRegisterUnderName } = require('./exceptions/all')
 
 class UNQfy {
 
@@ -39,7 +40,7 @@ class UNQfy {
 
   _validateArtistCreation(artistData) {
     if (this._hasArtistCalled(artistData.name)) {
-      throw `Ya esta registrado un artista llamado ${artistData.name}`
+      throw new ArtistAlreadyRegisterUnderName(artistData.name)
     }
   }
 
