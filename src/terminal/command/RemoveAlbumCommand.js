@@ -9,7 +9,9 @@ class RemoveAlbumCommand extends Command {
 		return {artist_Removed: album};
     }
     
-    get name() { return 'removeAlbum' }
+    get name() {
+        return 'removeAlbum'
+    }
 
     get _argsDescription() {
         return [{name: 'album name'}]

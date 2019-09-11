@@ -9,7 +9,9 @@ class RemoveArtistCommand extends Command {
 		return {artist_Removed: artist};
     }
     
-    get name() { return 'removeArtist' }
+    get name() {
+        return 'removeArtist'
+    }
 
     get _argsDescription() {
         return [{ name: 'aritst name'}]

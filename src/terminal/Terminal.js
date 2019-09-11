@@ -14,7 +14,7 @@ class Terminal {
         errorHandler=defaultErrorHandler)
     {
         this._unqfy         = anUNQfy
-        this._commands      = defaultCommands
+        this._commands      = commands
         this._resultHandler = resultHandler
         this._errorHandler  = errorHandler
     }
