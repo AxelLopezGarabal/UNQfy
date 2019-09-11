@@ -1,4 +1,8 @@
 const Command = require('./Command')
+const {
+    naturalNumberArgumentParser,
+    nameArgumentParser
+} = require('./arg_parser/argumentParsersFactory')
 
 module.exports =
 class AddAlbumCommand extends Command {
@@ -12,7 +16,13 @@ class AddAlbumCommand extends Command {
     }
 
     _parse([artistId, albumName, year]) {
-        return [parseInt(artistId), {name: albumName, year}]
+        return [
+            naturalNumberArgumentParser('artistId').parse(artistId),
+            {
+                name: nameArgumentParser('name').parse(albumName),
+                year: naturalNumberArgumentParser('year').parse(year)
+            }
+        ]
     }
 
 }

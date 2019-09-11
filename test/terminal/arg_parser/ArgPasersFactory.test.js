@@ -12,7 +12,7 @@ describe('argParsersFactory', () => {
     it('caca', () =>{
       expect(() => {
         parser.parse('pepe1')
-      }).to.throw('Argumento invalido para "nombreDelCliente" (un nombre). Valor provisto: "pepe1"')
+      }).to.throw('Argumento invalido para "nombreDelCliente", se esperaba un nombre. Valor provisto: "pepe1"')
     })
   })
 
@@ -26,7 +26,7 @@ describe('argParsersFactory', () => {
     it('caca', () =>{
       expect(() => {
         parser.parse('1.1')
-      }).to.throw('Argumento invalido para "edad" (un numero entero). Valor provisto: "1.1"')
+      }).to.throw('Argumento invalido para "edad", se esperaba un numero natural. Valor provisto: "1.1"')
     })
   })
 

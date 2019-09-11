@@ -4,7 +4,7 @@ const ArgParser = require('../../../src/terminal/command/arg_parser/ArgParser')
 describe('ArgParser', () => {
   const aNaturalNumberParser = new ArgParser({
     argName: 'aNaturalNumber',
-    typeDescription: 'un numero par',
+    typeDescription: 'un numero natural',
     validationRegex: /^\d+$/,
     parseFunction: parseInt
   })
@@ -16,7 +16,7 @@ describe('ArgParser', () => {
   it('si el string no matchea con la regex arroja una excepcion', () =>{
     expect(() => {
       aNaturalNumberParser.parse('1.1')
-    }).to.throw('Argumento invalido para "aNaturalNumber" (un numero par). Valor provisto: "1.1"')
+    }).to.throw('Argumento invalido para "aNaturalNumber", se esperaba un numero natural. Valor provisto: "1.1"')
   })
 
 })
