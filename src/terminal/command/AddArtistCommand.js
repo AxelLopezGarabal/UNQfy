@@ -12,14 +12,14 @@ class AddArtistCommand extends Command {
     }
 
     get _argsDescription() {
-        return [{ name: 'name'}, { name: 'country' }]
+        return [
+            { name: 'name',    parser: nameArgumentParser },
+            { name: 'country', parser: countryNameArgumentParser}
+        ]
     }
 
-    _parse([name, country]) {
-        return [{
-            name: nameArgumentParser('name').parse(name),
-            country: countryNameArgumentParser('country').parse(country)
-        }]
+    _arrange([name, country]) {
+        return [{name, country}]
     }
 
 }

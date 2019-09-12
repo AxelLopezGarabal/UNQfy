@@ -1,4 +1,6 @@
 const Command = require('./Command')
+const { naturalNumberArgumentParser } = require('./arg_parser/argumentParsersFactory')
+
 
 module.exports =
 class GetArtistByIdCommand extends Command {
@@ -8,11 +10,7 @@ class GetArtistByIdCommand extends Command {
     }
 
     get _argsDescription() {
-        return [{ name: 'id'}]
-    }
-
-    _parse([id]) {
-        return [parseInt(id)]
+        return [{ name: 'id', parser: naturalNumberArgumentParser}]
     }
 
 }

@@ -12,17 +12,15 @@ class AddAlbumCommand extends Command {
     }
 
     get _argsDescription() {
-        return [{ name: 'artist id'}, { name: 'name' }, { name: 'year' }]
+        return [
+            { name: 'artistId', parser: naturalNumberArgumentParser},
+            { name: 'name',     parser: nameArgumentParser },
+            { name: 'year',     parser: naturalNumberArgumentParser}
+        ]
     }
 
-    _parse([artistId, albumName, year]) {
-        return [
-            naturalNumberArgumentParser('artistId').parse(artistId),
-            {
-                name: nameArgumentParser('name').parse(albumName),
-                year: naturalNumberArgumentParser('year').parse(year)
-            }
-        ]
+    _arrange([artistId, albumName, year]) {
+        return [artistId, { name: albumName, year }]
     }
 
 }

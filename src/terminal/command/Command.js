@@ -14,10 +14,19 @@ class Command {
     }
 
     _excecute(unqfy, args) {
-		return unqfy[this.name](...this._parse(args))
+		return unqfy[this.name](...this._arrange(this._parse(args)))
+    }
+    
+    _arrange(args) {
+        return [...args]
+    }
+    
+    _parse(argsToParse) {
+        return this._argsDescription.map((argDescription, index) =>
+            argDescription.parser(argDescription.name).parse(argsToParse[index]))
     }
 
-    _parse(args)           { throw 'Subclass responsability' }
+    //_parse(args)           { throw 'Subclass responsability' }
     get name()             { throw 'Subclass responsability' }
     get _argsDescription() { throw 'Subclass responsability' }
 
