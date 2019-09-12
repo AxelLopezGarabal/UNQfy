@@ -3,6 +3,7 @@ const ArgParser = require('./ArgParser')
 const nameRegex          = /^[a-z]+$/i
 const countryNameRegex   = /^[a-z\s]+$/i
 const naturalNumberRegex = /^\d+$/
+const alphanumericRegex  = /.+/
 
 module.exports = {
 
@@ -23,6 +24,13 @@ module.exports = {
 		typeDescription: 'un numero natural',
 		validationRegex: naturalNumberRegex,
 		parseFunction: parseInt
+	}),
+
+	alphanumericArgumentParser: argName => new ArgParser({
+		argName: argName,
+		typeDescription: 'alphanumerico',
+		validationRegex: alphanumericRegex
 	})
+
 
 }
