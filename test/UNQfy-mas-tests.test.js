@@ -80,6 +80,78 @@ describe('UNQfy', () => {
         })
     })
 
+    describe('Busquedas', () => {
+        it('se le puede pedir todas las entidades que se tengan el mismo nombre', () => {
+            const juanName = 'juan'
+
+            const juanArtist = unqfy.addArtist({ name: juanName, country: 'argentina' })
+            const juanAlbum  = unqfy.addAlbum(juanArtist.id, { name: juanName, year: 2019 })
+            const juanTrack  = unqfy.addTrack(juanAlbum.id, { name: juanName, duration: 10, genres: [] })
+
+            const pabloArtist = unqfy.addArtist({ name: 'pablo', country: 'argentina' })
+            const cosoAlbum   = unqfy.addAlbum(pabloArtist.id, { name: 'cosoAlbum', year: 2111 })
+            const cosoTrack   = unqfy.addTrack(cosoAlbum.id, { name: 'trackCoso', duration: 10, genres: [] })
+
+            const resultado = unqfy.searchByName(juanName)
+            
+            expect(resultado.artists).to.include(juanArtist)
+            expect(resultado.artists).not.to.include(pabloArtist)
+
+            expect(resultado.albums).to.include(juanAlbum)
+            expect(resultado.albums).not.to.include(cosoAlbum)
+
+            expect(resultado.tracks).to.include(juanTrack)
+            expect(resultado.tracks).not.to.include(cosoTrack)
+        })
+
+        it('se le puede pedir todas las entidades que matcheen parcialmente con un nombre', () => {
+            const juString = 'ju'
+
+            const juanArtist = unqfy.addArtist({ name: 'juan', country: 'argentina' })
+            const juanAlbum  = unqfy.addAlbum(juanArtist.id, { name: 'jujuy', year: 2019 })
+            const juanTrack  = unqfy.addTrack(juanAlbum.id, { name: 'naranju', duration: 10, genres: [] })
+
+            const pabloArtist = unqfy.addArtist({ name: 'pablo', country: 'argentina' })
+            const cosoAlbum   = unqfy.addAlbum(pabloArtist.id, { name: 'cosoAlbum', year: 2111 })
+            const cosoTrack   = unqfy.addTrack(cosoAlbum.id, { name: 'trackCoso', duration: 10, genres: [] })
+
+            const resultado = unqfy.searchByNamePartial(juString)
+            
+            expect(resultado.artists).to.include(juanArtist)
+            expect(resultado.artists).not.to.include(pabloArtist)
+
+            expect(resultado.albums).to.include(juanAlbum)
+            expect(resultado.albums).not.to.include(cosoAlbum)
+
+            expect(resultado.tracks).to.include(juanTrack)
+            expect(resultado.tracks).not.to.include(cosoTrack)
+        })
+
+        it('se puede buscar un artista por id', () => {
+            const juanArtist  = unqfy.addArtist({ name: 'juan', country: 'argentina' })
+            const pedroArtist = unqfy.addArtist({ name: 'pedro', country: 'argentina' })
+
+            expect(unqfy.getArtistById(juanArtist.id)).to.equal(juanArtist)
+        })
+
+        describe('Busqueda de album por id', () => {
+            it('si se lo encuentra se lo retorna', () => {
+                const artist01 = unqfy.addArtist({ name: 'juan', country: 'argentina' })
+                const album01  = unqfy.addAlbum(artist01.id, { name: 'album01', country: 'argentina' })
+
+                const artist02 = unqfy.addArtist({ name: 'pedro', country: 'argentina' })
+                const album02  = unqfy.addAlbum(artist02.id, { name: 'album02', country: 'argentina' })
+
+                expect(unqfy.getAlbumById(album02.id)).to.equal(album02)
+            })
+
+            it('si no existe se arroja una excepcion', () => {
+                unqfy.addArtist({ name: 'juan', country: 'argentina' })
+                expect(() => unqfy.getAlbumById(0)).to.throw('No se encontro entidad con id 0 en albums')
+            })
+        })
+    })
+
 })
 
 const makeArtistData = () => ({name: 'pepe', country: 'argentina'})

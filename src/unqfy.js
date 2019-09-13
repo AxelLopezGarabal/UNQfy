@@ -2,9 +2,13 @@ const picklify = require('picklify') // para cargar/guarfar unqfy
 const fs = require('fs') // para cargar/guarfar unqfy
 require('./auxi/extenciones').extendArray()
 
-const { Artist, Album, Track, Playlist } = require('./entities/all')
 const PlaylistGenerator = require('./PlaylistGenerator.js')
+const { Artist, Album, Track, Playlist } = require('./entities/all')
 const { ArtistAlreadyRegisterUnderName } = require('./exceptions/all')
+
+const ArtistCreation = require('./entities-creation/ArtistCreation')
+const AlbumCreation = require('./entities-creation/AlbumCreation')
+const TrackCreation = require('./entities-creation/TrackCreation')
 
 class UNQfy {
 
@@ -32,18 +36,12 @@ class UNQfy {
     - una propiedad name (string)
     - una propiedad country (string)
   */
-    this._validateArtistCreation(artistData)
-    const newArtist = this._createContent(Artist, artistData)
+    const newArtist = new ArtistCreation(this, artistData).handle()
     this.artists.push(newArtist)
     return newArtist
   }
 
-  _validateArtistCreation(artistData) {
-    if (this._hasArtistCalled(artistData.name)) {
-      throw new ArtistAlreadyRegisterUnderName(artistData.name)
-    }
-  }
-
+  
   _hasArtistCalled(aName) {
     return this.artists.some(artist => artist.name === aName)
   }
@@ -58,12 +56,12 @@ class UNQfy {
      - una propiedad name (string)
      - una propiedad year (number)
   */
-    const newAlbum = this._createContent(Album, albumData)
-    
+
+    const newAlbum = new AlbumCreation(this, albumData).handle()
     this
       .getArtistById(artistId)
       .addAlbum(newAlbum)
-
+    
     return newAlbum
   }
 
@@ -79,7 +77,7 @@ class UNQfy {
       - una propiedad duration (number),
       - una propiedad genres (lista de strings)
   */
-    const newTrack = this._createContent(Track, trackData)
+    const newTrack = new TrackCreation(this, trackData).handle()
 
     this
       .getAlbumById(albumId)
@@ -106,9 +104,6 @@ class UNQfy {
 
   _generateUniqueId() { return this._nextId++ }
 
-  _createContent(aClass,  dataObject) {
-    return new aClass({ id: this._generateUniqueId(), ...dataObject })
-  }
 
   /** BUSQUEDAS **/
   searchByNamePartial(aPartialName) {
@@ -119,7 +114,7 @@ class UNQfy {
       playlists: this._searchByNamePartialIn(this.playlists, aPartialName)
     }
   }
-  
+
   _searchByNamePartialIn(aCollection, aPartialName) {
     return aCollection.filter(anEntity => RegExp(aPartialName).test(anEntity.name))
   }
@@ -134,18 +129,29 @@ class UNQfy {
       playlists: this._searchByNameIn(this.playlists, aName),
     }
   }
-
+  
   _searchByNameIn(aCollection, aName) {
-    return aCollection.filter(anElement => anElement.name = aName)
+    //return aCollection.filter(anElement => anElement.name === aName)
+    return this._searchByNamePartialIn(aCollection, aName)
   }
+  
+  _getByIdIn(aCollectionName, id, errorMessage) {
+    return this._getByPredicateIn(aCollectionName, obj => obj.id === id, `No se encontro entidad con id ${id} en ${aCollectionName}`)
+  }
+
+  _getByPredicateIn(aCollectionName, predicate, errorMessage='Elemento no encontrado') {
+    const element = this[aCollectionName].find(predicate) 
+    if (element == undefined)
+      throw errorMessage
+    return element
+  }
+
+  /********************/
 
   getArtistById(id)   { return this._getByIdIn('artists',   id) }
   getAlbumById(id)    { return this._getByIdIn('albums',    id) }
   getTrackById(id)    { return this._getByIdIn('tracks',    id) }
-  getPlaylistById(id) { return this._getByIdIn('playlists', id) } // TODO: falta test
-  
-  _getByIdIn(aCollectionName, id) { return this[aCollectionName].find(anEntity => anEntity.id === id) }
-
+  getPlaylistById(id) { return this._getByIdIn('playlists', id) }
 
   getArtistByName(aName) {
     return this.artists.find(anArtist => anArtist.name === aName)
@@ -156,7 +162,7 @@ class UNQfy {
   }
 
   _searchAuthorOf(anAlbum) {
-    return this.artists.find(anArtist => anArtist.isTheAutorOf(anAlbum))
+    return this._getByPredicateIn('artists', artist => artist.isTheAutorOf(anAlbum))
   }
 
   // artistName: nombre de artista(string)

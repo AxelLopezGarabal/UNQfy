@@ -9,7 +9,7 @@ class RemoveArtistCommand extends Command {
     }
 
     get _argsDescription() {
-        return [{name: 'artistId', parser: naturalNumberArgumentDescription}]
+        return [ naturalNumberArgumentDescription('artistId') ]
     }
 
 }
