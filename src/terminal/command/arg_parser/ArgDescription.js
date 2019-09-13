@@ -1,21 +1,24 @@
 const InvalidArgument = require('./InvalidArgument.js')
 
 module.exports =
-class ArgParser {
+class ArgDescription {
 
   constructor({
-    argName,
+    name,
     typeDescription,
     validationRegex,
     parseFunction = (x => x)
   })
   {
-
-    this._argName             = argName
-    this._validationRegex     = validationRegex
-    this._typeDescription     = typeDescription
-    this._parseFunction       = parseFunction
+    this._name            = name
+    this._typeDescription = typeDescription
+    this._validationRegex = validationRegex
+    this._parseFunction   = parseFunction
   }
+
+  get name() { return this._name }
+
+  get parser() {return parseFunction}
 
   parse(stringToParse) {
     this._validate(stringToParse)
@@ -25,7 +28,7 @@ class ArgParser {
   _validate(stringToParse) {
     if (!this._validationRegex.test(stringToParse))
       throw new InvalidArgument(
-        this._argName,
+        this._name,
         this._typeDescription,
         stringToParse
       )

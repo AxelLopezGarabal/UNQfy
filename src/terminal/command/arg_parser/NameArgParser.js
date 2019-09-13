@@ -1,5 +1,0 @@
-class NameArgParser extends ArgParser {
-
-  
-
-}

@@ -1,10 +1,16 @@
 const Command = require('./Command')
+const {
+  naturalNumberArgumentDescription,
+  alphanumericArgumentDescription,
+  arrayArgumentDescription
+} = require('./arg_parser/argumentDescriptionsFactory')
+
 
 module.exports =
 class AddTrackCommand extends Command {
     
     _excecute(unqfy, [albumId, trackName, duration, genres]) {
-		  unqfy.addTrack(albumId, {name: trackName, duration: parseInt(duration), genres})
+		  unqfy.addTrack(albumId, {name: trackName, duration: duration, genres})
     }
     
     get name() {
@@ -12,7 +18,12 @@ class AddTrackCommand extends Command {
     }
 
     get _argsDescription() {
-      return [{ name: 'album id'}, { name: 'name' }, { name: 'duration' }, { name: 'genres'}]
+      return [
+        naturalNumberArgumentDescription('album id'),
+        alphanumericArgumentDescription('track name'),
+        naturalNumberArgumentDescription('duration'),
+        arrayArgumentDescription('genres'),
+      ]
     }
 
 }

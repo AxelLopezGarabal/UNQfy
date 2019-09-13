@@ -1,8 +1,8 @@
 const Command = require('./Command')
 const {
-    nameArgumentParser,
-    countryNameArgumentParser,
-} = require('./arg_parser/argumentParsersFactory')
+    nameArgumentDescription,
+    countryNameArgumentDescription,
+} = require('./arg_parser/argumentDescriptionsFactory')
 
 module.exports =
 class AddArtistCommand extends Command {
@@ -13,8 +13,8 @@ class AddArtistCommand extends Command {
 
     get _argsDescription() {
         return [
-            { name: 'name',    parser: nameArgumentParser },
-            { name: 'country', parser: countryNameArgumentParser}
+            nameArgumentDescription('name'),
+            countryNameArgumentDescription('country')
         ]
     }
 

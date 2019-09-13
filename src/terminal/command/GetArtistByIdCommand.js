@@ -1,5 +1,5 @@
 const Command = require('./Command')
-const { naturalNumberArgumentParser } = require('./arg_parser/argumentParsersFactory')
+const { naturalNumberArgumentDescription } = require('./arg_parser/argumentDescriptionsFactory')
 
 
 module.exports =
@@ -10,7 +10,7 @@ class GetArtistByIdCommand extends Command {
     }
 
     get _argsDescription() {
-        return [{ name: 'id', parser: naturalNumberArgumentParser}]
+        return [naturalNumberArgumentDescription('id')]
     }
 
 }
