@@ -1,4 +1,5 @@
 const commandsModule = require('./command/all')
+const NullCommand    = require('./command/NullCommand')
 
 const defaultCommands = Object.values(commandsModule).map(aClass => new aClass())
 const defaultResultHandler = result => console.log(result)
@@ -21,20 +22,16 @@ class Terminal {
 
     run(commandName, args) {
         let returnedValue
-        const command = this.findCommand(commandName)
-        if (command == null) throw 'command not found'
-
         try {
             returnedValue = this.findCommand(commandName).handle(this._unqfy, args)
         } catch(anError) {
-            this._errorHandler(anError)
+            return this._errorHandler(anError)
         }
         this._resultHandler({command: [commandName, ...args].join(' '), returned: returnedValue || 'nothing' })
-        return returnedValue
     }
 
     findCommand(commandName) {
-        return this._commands.find(aCommand => aCommand.name === commandName)
+        return this._commands.find(aCommand => aCommand.name === commandName) || new NullCommand(commandName)
     }
 
 }
