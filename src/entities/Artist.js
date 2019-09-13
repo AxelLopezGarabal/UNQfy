@@ -13,8 +13,12 @@ class Artist {
   }
 
   // Testing
-  isTheAutorOf(anAlbum) {
+  isTheAutorOfAlbum(anAlbum) {
     return this.albums.includes(anAlbum)
+  }
+
+  isTheAutorOfTrack(aTrack) {
+    return this.allTracks.includes(aTrack)
   }
 
   // Queries
@@ -30,6 +34,10 @@ class Artist {
     return this.albums.flatMap(album => album.tracks)
   }
 
+  findAlbumById(albumId) {
+    return this.albums.find(album => album.id === albumId)
+  }
+
   // Commands
   addAlbum(anAlbum) {
     this._validateIsNewAlbum(anAlbum)
@@ -37,18 +45,22 @@ class Artist {
   }
 
   removeAlbum(anAlbum) {
-    this._validateIsTheAutorOf(anAlbum)
+    this._validateisTheAutorOfAlbum(anAlbum)
     this._albums.remove(anAlbum)
+  }
+
+  addTrack(albumId, aTrack) { // TODO: test
+    this.findAlbumById(albumId).addTrack(aTrack)
   }
 
   /* PRIVATE */
   _validateIsNewAlbum(anAlbum) {
-    if (this.isTheAutorOf(anAlbum))
+    if (this.isTheAutorOfAlbum(anAlbum))
       throw new RepeatedAlbumInArtist(this, anAlbum)
   }
 
-  _validateIsTheAutorOf(anAlbum) {
-    if (!this.isTheAutorOf(anAlbum))
+  _validateisTheAutorOfAlbum(anAlbum) {
+    if (!this.isTheAutorOfAlbum(anAlbum))
       throw new ArtistaNoTieneRegistradoUnAlbum(this, anAlbum)
   }
 
