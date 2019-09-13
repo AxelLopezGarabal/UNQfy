@@ -17,13 +17,13 @@ class UNQfy {
     this._artists   = []
     this._nextId    = 0
   }
+  
+  _generateUniqueId() { return this._nextId++ }
 
   get playlists() { return this._playlists }
   get artists()   { return this._artists }
   get albums()    { return this.artists.flatMap(artist => artist.albums) }
   get tracks()    { return this.albums.flatMap(album => album.tracks) }
-  
-  get _allEntities() { return [...this.artists, ...this.albums, ...this.tracks, ...this.playlists] }
 
   /** CREACION DE CONTENIDO **/
   // artistData: objeto JS con los datos necesarios para crear un artista
@@ -58,6 +58,7 @@ class UNQfy {
   */
 
     const newAlbum = new AlbumCreation(this, albumData).handle()
+    
     this
       .getArtistById(artistId)
       .addAlbum(newAlbum)
@@ -101,9 +102,6 @@ class UNQfy {
     this.playlists.push(newPlaylist)
     return newPlaylist
   }
-
-  _generateUniqueId() { return this._nextId++ }
-
 
   /** BUSQUEDAS **/
   searchByNamePartial(aPartialName) {
@@ -163,6 +161,7 @@ class UNQfy {
 
   _searchAuthorOf(anAlbum) {
     return this._getByPredicateIn('artists', artist => artist.isTheAutorOf(anAlbum))
+    //return this.artists.find(artist => artist.isTheAutorOf(anAlbum))
   }
 
   // artistName: nombre de artista(string)
