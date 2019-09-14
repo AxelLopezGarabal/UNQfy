@@ -14,7 +14,9 @@ class Command {
     }
 
     _excecute(unqfy, args) {
-		return unqfy[this.name](...this._arrange(this._parse(args)))
+        return args.length === 0
+                ? unqfy[this.name]
+                : unqfy[this.name](...this._arrange(this._parse(args)))
     }
     
     _parse(argsToParse) {

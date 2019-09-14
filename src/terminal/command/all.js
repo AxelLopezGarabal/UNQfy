@@ -7,5 +7,8 @@ module.exports = {
     RemoveArtistCommand:  require('./RemoveArtistCommand'),
     RemoveAlbumCommand:   require('./RemoveAlbumCommand'),
     GetAlbumByIdCommand:  require('./GetAlbumByIdCommand'),
-    GetTrackByIdCommand:  require('./GetTrackByIdCommand')
+    GetTrackByIdCommand:  require('./GetTrackByIdCommand'),
+    ArtistsCommand:       require('./ArtistsCommand'),
+    AlbumsCommand:        require('./AlbumsCommand'),
+    TracksCommand:        require('./TracksCommand')
 }
