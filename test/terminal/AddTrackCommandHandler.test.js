@@ -13,8 +13,8 @@ describe('AddTrackCommand', () => {
   const year      = 2019
 
   const trackName = 'trackName'
-  const duration  = 100
-  const genres    = ['Genre1', 'Genre2']
+  const duration  = "100"
+  const genres    = "['Genre1', 'Genre2']"//['Genre1', 'Genre2']
   
   beforeEach(() => {
     unqfy   = new UNQfy()
@@ -30,7 +30,7 @@ describe('AddTrackCommand', () => {
     expect(anAlbum.tracks).to.have.lengthOf(1)
     expect(anAlbum.tracks[0].name).to.equal(trackName)
     expect(anAlbum.tracks[0].duration).to.equal(duration)
-    expect(anAlbum.tracks[0].genres).to.include.members(genres)
+    expect(anAlbum.tracks[0].genres).to.include.members(['Genre1', 'Genre2'])
   })
 
 })

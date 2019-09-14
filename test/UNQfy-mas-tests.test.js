@@ -153,6 +153,48 @@ describe('UNQfy', () => {
         })
     })
 
+    it('puede decir si un artista existe en base a un id', () => {
+        const artist = unqfy.addArtist('juan', 'argentina')
+        expect(unqfy.existsArtistWithId(artist.id)).to.be.true
+        expect(unqfy.existsArtistWithId(1000)).to.be.false
+    })
+
+    it('puede decir si un artista existe en base a un nombre', () => {
+        const artist = unqfy.addArtist('juan', 'argentina')
+        expect(unqfy.existArtistCalled(artist.name)).to.be.true
+        expect(unqfy.existArtistCalled('aasdasdasdas')).to.be.false
+    })
+    
+    describe('Cuando se crea un usuario', () => {
+        let user
+        
+        beforeEach(() => {
+            user = unqfy.addUser('juan')
+        })
+
+        it('lo puede buscar por id', () => {
+            expect(unqfy.getUserById(user.id)).to.equal(user)
+        })
+
+        it('aun no tiene ninguna playlist', () => {
+            expect(user.playlists).to.be.empty
+        })
+
+        it('se le puede generar una playlist generada automaticamente en base a una lista de generos y una duracion maxima', () => {
+            const playlistName    = 'playlist name'
+            const genresToInclude = ['genre1', 'genre2']
+            const maxDuration     = 400
+
+            const artistA = unqfy.addArtist('artistA', 'argentina')
+            const albumA  = unqfy.addAlbum(artistA.id, 'albumA', 2019)
+            const track1 = unqfy.addTrack(albumA.id, { name: 'track1', duration: 1, genres: [] })
+
+            unqfy.createPlaylistFor(user.id, playlistName, genresToInclude, maxDuration)
+
+            expect(user.playlists).to.have.lengthOf(1)
+            expect(user.playlists[0]).to.include(track1)
+        })
+    })
 })
 
 const makeArtistData = () => ({name: 'pepe', country: 'argentina'})

@@ -1,7 +1,7 @@
 const picklify = require('picklify') // para cargar/guarfar unqfy
 const fs = require('fs') // para cargar/guarfar unqfy
 
-const { Artist, Album, Track, Playlist } = require('./entities/all')
+const { Artist, Album, Track, User, Playlist } = require('./entities/all')
 
 const EntitiesRepository = require('./entities-repositories/EntitiesRepository')
 
@@ -25,6 +25,25 @@ class UNQfy {
   get albums()    { return this._entitiesRepository.albums }
   get tracks()    { return this._entitiesRepository.tracks }
 
+    /////////////////////
+    addUser(userData) {
+      //const newUser = new UserCreation(this, userData).handle()
+      const newUser = new User(this._generateUniqueId(), userData.name)
+      this._entitiesRepository.addUser(newUser)
+      return newUser
+    }
+  
+    getUserById(id) {
+      return this._entitiesRepository.findUserById(id)
+    }
+  
+    createPlaylistFor(userId, playlistName, genresToInclude, maxDuration) {
+      const newPlaylist = this.createPlaylist(playlistName, genresToInclude, maxDuration)
+      this.getUserById(userId).registerPlaylist(newPlaylist)
+      return newPlaylist
+    }
+
+
   /** CREACION DE CONTENIDO **/
   // artistData: objeto JS con los datos necesarios para crear un artista
   //   artistData.name (string)
@@ -41,8 +60,13 @@ class UNQfy {
     return newArtist
   }
 
-  _hasArtistCalled(aName) {
+  existsArtistWithId(artistId) {
+    return this._entitiesRepository.someArtist(artist => artist.id === artistId)
+  }
+
+  existArtistCalled(aName) {
     return this._entitiesRepository.someArtist(artist => artist.name === aName)
+
   }
 
   // albumData: objeto JS con los datos necesarios para crear un album

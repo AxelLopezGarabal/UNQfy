@@ -7,8 +7,8 @@ describe('AddTrackCommand', () => {
   let unqfy
 
   const trackName = 'trackName'
-  const duration  = 100
-  const genres    = '[punk, folk]'
+  const duration  = "100"
+  const genres    = "punk, folk"
 
   beforeEach(() => {
     unqfy = new UNQfy()
@@ -24,7 +24,7 @@ describe('AddTrackCommand', () => {
     expect(anAlbum.tracks).to.have.lengthOf(1)
     expect(anAlbum.tracks[0].name).to.equal(trackName)
     expect(anAlbum.tracks[0].duration).to.equal(duration)
-    expect(anAlbum.tracks[0].genres).to.equal(genres)
+    expect(anAlbum.tracks[0].genres).to.include.members(['punk', 'folk'])
   })
 
   it('sobran argumentos', () => {

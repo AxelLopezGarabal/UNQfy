@@ -15,7 +15,7 @@ class ArtistCreation extends EntityCreation {
   }
 
   get _isArtistNameAlreadyRegister() {
-    return this._unqfy._hasArtistCalled(this._dataObject.name)
+    return this._unqfy.existArtistCalled(this._dataObject.name)
   }
 
 }

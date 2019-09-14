@@ -9,6 +9,14 @@ class EntitiesRepository {
     this._playlists = playlists
   }
 
+  addUser(aUser) {
+    this._users.push(aUser)
+  }
+
+  findUserById(id) {
+    return this._users.find(user => user.id === id)
+  }
+
   /******* PLAYLIST **************/
   get playlists() {
     return this._playlists
@@ -67,6 +75,10 @@ class EntitiesRepository {
     return this.findArtistBy(artist => artist.isTheAutorOfAlbum(anAlbum))
   }
 
+  someArtist(aPredicate) {
+    return this.artists.some(aPredicate)
+  }
+
   /******* ALBUMS **************/
   get albums() {
     return this.artists.flatMap(artist => artist.albums)
@@ -103,11 +115,11 @@ class EntitiesRepository {
     this.findAuthorOfAlbum(album).addTrack(albumId, newTrack)
   }
 
-  removeTrack(trackId) { // TODO: test
-    const track = this.findTracks(trackId)
-    this.removeFromAllPlaylist([track])
-    this.getAuthorOfTrack(track).removeTrack(track)
-  }
+  // removeTrack(trackId) { // TODO: test
+  //   const track = this.findTracks(trackId)
+  //   this.removeFromAllPlaylist([track])
+  //   this.getAuthorOfTrack(track).removeTrack(track)
+  // }
 
   findTrackById(id) {
     return this.findTrackBy(track => track.id === id)
