@@ -43,16 +43,9 @@ class UNQfy {
   }
 
   /** CREACION DE CONTENIDO **/
-  // artistData: objeto JS con los datos necesarios para crear un artista
-  //   artistData.name (string)
-  //   artistData.country (string)
-  // retorna: el nuevo artista creado
+
+  // artistData -> {name, country}
   addArtist(artistData) {
-  /* Crea un artista y lo agrega a unqfy.
-  El objeto artista creado debe soportar (al menos):
-    - una propiedad name (string)
-    - una propiedad country (string)
-  */
     const newArtist = new ArtistCreation(this, artistData).handle()
     this._entitiesRepository.addArtist(newArtist)
     return newArtist
@@ -68,64 +61,32 @@ class UNQfy {
 
   }
 
-  // albumData: objeto JS con los datos necesarios para crear un album
-  //   albumData.name (string)
-  //   albumData.year (number)
-  // retorna: el nuevo album creado
+  // albumData {name, year}
   addAlbum(artistId, albumData) {
-  /* Crea un album y lo agrega al artista con id artistId.
-    El objeto album creado debe tener (al menos):
-     - una propiedad name (string)
-     - una propiedad year (number)
-  */
     const newAlbum = new AlbumCreation(this, albumData).handle()
     const artist   = this.getArtistById(artistId)
     artist.addAlbum(newAlbum)
     return newAlbum
   }
 
-  // trackData: objeto JS con los datos necesarios para crear un track
-  //   trackData.name (string)
-  //   trackData.duration (number)
-  //   trackData.genres (lista de strings)
-  // retorna: el nuevo track creado
+  // trackData -> {name, duration, genres}
   addTrack(albumId, trackData) {
-  /* Crea un track y lo agrega al album con id albumId.
-  El objeto track creado debe tener (al menos):
-      - una propiedad name (string),
-      - una propiedad duration (number),
-      - una propiedad genres (lista de strings)
-  */
     const newTrack = new TrackCreation(this, trackData).handle()
     const album    = this.getAlbumById(albumId)
     album.addTrack(newTrack)
     return newTrack
   }
 
-  // name: nombre de la playlist
-  // genresToInclude: array de generos
-  // maxDuration: duración en segundos
-  // retorna: la nueva playlist creada
   createPlaylist(name, genresToInclude, maxDuration) {
-  /*** Crea una playlist y la agrega a unqfy. ***
-    El objeto playlist creado debe soportar (al menos):
-      * una propiedad name (string)
-      * un metodo duration() que retorne la duración de la playlist.
-      * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
-  */
     const newPlaylist = new PlaylistGenerator().generate(this._generateUniqueId(), name, genresToInclude, maxDuration, this.tracks)
     this._entitiesRepository.addPlaylist(newPlaylist)
     return newPlaylist
   }
 
   /** BUSQUEDAS **/
-  // genres: array de generos(strings)
-  // retorna: los tracks que contenga alguno de los generos en el parametro genres
   //searchByName(aName)               { return this._entitiesRepository.filterAll(entity => entity.name === aName) }
   searchByName(aName)               { return this._entitiesRepository.filterAll(entity => new RegExp(aName).test(entity.name)) }
   searchByNamePartial(aPartialName) { return this._entitiesRepository.filterAll(entity => new RegExp(aPartialName).test(entity.name)) }
-
-  /********************/
 
   getArtistById(id)      { return this._entitiesRepository.findBy('artist'  , {prop: 'id', value: id}) }
   getAlbumById(id)       { return this._entitiesRepository.findBy('album'   , {prop: 'id', value: id}) }
@@ -136,12 +97,9 @@ class UNQfy {
   getArtistByName(aName) { return this._entitiesRepository.findBy('artist', { prop: 'name', value: aName }) }
 
   getTracksMatchingGenres(genres) {
-    const tracks = this._entitiesRepository.filterBy('track', track => track.matchSomeGenreFrom(genres))
-    return tracks
+    return this._entitiesRepository.filterBy('track', track => track.matchSomeGenreFrom(genres))
   }
 
-  // artistName: nombre de artista(string)
-  // retorna: los tracks interpredatos por el artista con nombre artistName
   getTracksMatchingArtist(artistName) {
     // TODO: en el test pasa "un artista" pero el parametro se llama "artistName"
     //return this.getArtistByName(artistName).allTracks
@@ -163,9 +121,8 @@ class UNQfy {
     this.getAuthorOfAlbum(album).removeAlbum(album)
   }
   
-  //removeTrack(trackId)       { this._entitiesRepository.removeTrack(trackId) } // TODO: probar
   removeTrack(trackId) {
-    const track = this._entitiesRepository.findBy('track', {prop: 'id', value: trackId})
+    const track = this.getTrackById(trackId)
     this._removeFromAllPlaylist([track])
     this.getAuthorOfTrack(track).removeTrack(track)
   }
