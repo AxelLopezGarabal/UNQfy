@@ -60,7 +60,6 @@ class UNQfy {
            this._entitiesRepository.someHas('user'  , {prop: 'name', value: aName})
 
   }
-
   // albumData {name, year}
   addAlbum(artistId, albumData) {
     const newAlbum = new AlbumCreation(this, albumData).handle()
@@ -107,7 +106,7 @@ class UNQfy {
   }
 
   getAuthorOfAlbum(anAlbum) {
-    return this.artists.find(artist => artist.isTheAuthorOfAlbum(anAlbum))
+    return this._entitiesRepository.find('artist', artist => artist.isTheAuthorOfAlbum(anAlbum))
   }
 
   /** ELIMINACIONES **/
@@ -117,13 +116,13 @@ class UNQfy {
   
   removeAlbum(albumId) {
     const album = this.getAlbumById(albumId)
-    this._removeFromAllPlaylist(album.tracks)
+    this._removeFromAllPlaylists(album.tracks)
     this.getAuthorOfAlbum(album).removeAlbum(album)
   }
   
   removeTrack(trackId) {
     const track = this.getTrackById(trackId)
-    this._removeFromAllPlaylist([track])
+    this._removeFromAllPlaylists([track])
     this.getAuthorOfTrack(track).removeTrack(track)
   }
 
@@ -131,8 +130,8 @@ class UNQfy {
     this._entitiesRepository.removePlaylist(playlistId)
   }
 
-  _removeFromAllPlaylist(tracks) {
-    this.playlists.forEach(playlist => playlist.removeAll(tracks))
+  _removeFromAllPlaylists(tracks) {
+    this._entitiesRepository.forEach('playlist', playlist => playlist.removeAll(tracks))
   }
 
   /** PERSISTENCIA **/

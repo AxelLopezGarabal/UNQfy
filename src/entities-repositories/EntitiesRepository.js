@@ -36,6 +36,10 @@ class EntitiesRepository {
     return this._entities(entityName).some(entiry => entiry[prop] === value)
   }
 
+  forEach(entityName, aFunction) {
+    this._entities(entityName).forEach(aFunction)
+  }
+
   filterAll(aPredicate) {
     return {
       artists  : this.artists.filter(aPredicate),
