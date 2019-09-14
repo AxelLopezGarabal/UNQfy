@@ -189,10 +189,22 @@ describe('UNQfy', () => {
             const albumA  = unqfy.addAlbum(artistA.id, 'albumA', 2019)
             const track1 = unqfy.addTrack(albumA.id, { name: 'track1', duration: 1, genres: [] })
 
-            unqfy.createPlaylistFor(user.id, playlistName, genresToInclude, maxDuration)
-
+            const userPlaylist = unqfy.createPlaylistFor(user.id, playlistName, genresToInclude, maxDuration)
+            console.log('user playlist --->', userPlaylist)
             expect(user.playlists).to.have.lengthOf(1)
-            expect(user.playlists[0]).to.include(track1)
+            expect(user.playlists[0].hasTrack(track1)).to.be.true
+        })
+
+        it('puede registrar la escucha de un track por parte de un usuario', () => {
+            const artistA = unqfy.addArtist('artistA', 'argentina')
+            const albumA  = unqfy.addAlbum(artistA.id, 'albumA', 2019)
+            const track1 = unqfy.addTrack(albumA.id, { name: 'track1', duration: 1, genres: [] })
+            const track2 = unqfy.addTrack(albumA.id, { name: 'track2', duration: 1, genres: [] })
+
+            unqfy.registerListening(user.id, track1.id)
+
+            expect(user.hasListened(track1)).to.be.true
+            expect(user.hasListened(track2)).to.be.false
         })
     })
 })

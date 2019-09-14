@@ -83,6 +83,7 @@ describe('Artist', () => {
       () => artista.removeAlbum(album)
     ).to.throw(`${artista.name} no tiene registrado el album ${album.name}`)
   })
+
   
 })
 

@@ -36,6 +36,12 @@ class UNQfy {
     getUserById(id) {
       return this._entitiesRepository.findUserById(id)
     }
+
+    registerListening(userId, trackId) {
+      const user  = this.getUserById(userId)
+      const track = this.getTrackById(trackId)
+      user.listen(track)
+    }
   
     createPlaylistFor(userId, playlistName, genresToInclude, maxDuration) {
       const newPlaylist = this.createPlaylist(playlistName, genresToInclude, maxDuration)
