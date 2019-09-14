@@ -1,6 +1,9 @@
 const picklify = require('picklify') // para cargar/guarfar unqfy
 const fs = require('fs') // para cargar/guarfar unqfy
 
+const { Artist, Album, Track, Playlist } = require('./entities/all')
+const ArtistRepository = require('./entities-repositories/ArtistRepository')
+
 const EntitiesRepository = require('./entities-repositories/EntitiesRepository')
 
 const PlaylistGenerator = require('./PlaylistGenerator.js')
@@ -41,6 +44,7 @@ class UNQfy {
 
   _hasArtistCalled(aName) {
     return this._entitiesRepository.someArtist(artist => artist.name === aName)
+    // return this.artists.some(artist => artist.name === aName)
   }
 
   // albumData: objeto JS con los datos necesarios para crear un album
@@ -94,12 +98,12 @@ class UNQfy {
   /** BUSQUEDAS **/
   // genres: array de generos(strings)
   // retorna: los tracks que contenga alguno de los generos en el parametro genres
-  searchByName(aName)               { return this._entitiesRepository.searchByName(aName) }
-  //searchByName(aName)               { return this._entitiesRepository.findAll(entity => entity.name === aName) }
-  searchByNamePartial(aPartialName) { return this._entitiesRepository.searchByNamePartial(aPartialName) }
+  //searchByName(aName)               { return this._entitiesRepository.filterAll(entity => entity.name === aName) }
+  searchByName(aName)               { return this._entitiesRepository.filterAll(entity => new RegExp(aName).test(entity.name)) }
+  searchByNamePartial(aPartialName) { return this._entitiesRepository.filterAll(entity => new RegExp(aPartialName).test(entity.name)) }
 
   /********************/
-
+  
   getArtistById(id)      { return this._entitiesRepository.findArtistById(id) }
   getAlbumById(id)       { return this._entitiesRepository.findAlbumById(id) }
   getTrackById(id)       { return this._entitiesRepository.findTrackById(id) }
@@ -140,7 +144,7 @@ class UNQfy {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'})
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy, Artist, Album, Track, Playlist];
+    const classes = [UNQfy, Artist, Album, Track, Playlist, EntitiesRepository, ArtistRepository];
     return picklify.unpicklify(JSON.parse(serializedData), classes)
   }
 

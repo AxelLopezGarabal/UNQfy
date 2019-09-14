@@ -23,7 +23,7 @@ class ArtistRepository {
     this.allArtists.remove(anArtist)
   }
 
-  filterArtists(aPredicate) {
+  filter(aPredicate) {
     return this.allArtists.filter(aPredicate)
   }
 
@@ -36,7 +36,7 @@ class ArtistRepository {
   findById(id) {
     return this.findBy(artist => artist.id === id)
   }
-
+  
   findAuthorOfAlbum(anAlbum) {
     return this.findBy(artist => artist.isTheAutorOfAlbum(anAlbum))
   }

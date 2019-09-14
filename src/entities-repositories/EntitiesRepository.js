@@ -6,7 +6,7 @@ class EntitiesRepository {
 
   constructor(artists=[], users=[], playlists=[]) {
     this._artistsRepo = new ArtistRepository(artists)
-    this._users       = users
+    // this._users       = new UsersRepository(users)
     this._playlists   = playlists
   }
 
@@ -59,7 +59,7 @@ class EntitiesRepository {
   }
 
   filterArtists(aPredicate) {
-    return this._artistsRepo.filterArtists(aPredicate)
+    return this._artistsRepo.filter(aPredicate)
   }
 
   /******* ALBUMS **************/
@@ -88,7 +88,9 @@ class EntitiesRepository {
   }
 
   /******* TRACKS **************/
-  get tracks() { return this._artistsRepo.allTracks }
+  get tracks() {
+    return this._artistsRepo.allTracks
+  }
 
   addTrack(albumId, newTrack) {
     const album = this._artistsRepo.findAlbumById(albumId)
@@ -113,19 +115,10 @@ class EntitiesRepository {
     return this._artistsRepo.filterTracks(aPredicate)
   }
 
-  /** QUERY MANY **/
-  searchByNamePartial(aPartialName) {
-    return this.filterAll(anEntity => RegExp(aPartialName).test(anEntity.name))
-  }
-
-  searchByName(aName) {
-    //return this.filterAll(entity => entity.name === aName)
-    return this.filterAll(entity => new RegExp(aName).test(entity.name))
-  }
-
+  //
   filterAll(aPredicate) {
     return {
-      artists  : this._artistsRepo.filterArtists(aPredicate),
+      artists  : this._artistsRepo.filter(aPredicate),
       albums   : this._artistsRepo.filterAlbums(aPredicate),
       tracks   : this._artistsRepo.filterTracks(aPredicate),
       playlists: this.playlists.filter(aPredicate),
