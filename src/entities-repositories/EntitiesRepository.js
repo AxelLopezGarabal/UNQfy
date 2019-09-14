@@ -1,13 +1,12 @@
 require('../auxi/extenciones').extendArray()
-const ArtistRepository = require('./ArtistRepository')
 
 module.exports = 
 class EntitiesRepository {
 
   constructor(artists=[], users=[], playlists=[]) {
-    this._artistsRepo = new ArtistRepository(artists)
-    // this._users       = new UsersRepository(users)
-    this._playlists   = playlists
+    this._artists   = artists
+    this._users     = users
+    this._playlists = playlists
   }
 
   /******* PLAYLIST **************/
@@ -33,68 +32,75 @@ class EntitiesRepository {
 
   /******* ARTIST **************/
   get artists() {
-    return this._artistsRepo.allArtists
+    return this._artists
   }
   
   addArtist(newArtist) {
-    this._artistsRepo.add(newArtist)
+    this.artists.push(newArtist)
   }
 
   removeArtist(artistId) {
-    const artist = this._artistsRepo.findById(artistId)
+    const artist = this.findArtistById(artistId)
     this.removeFromAllPlaylist(artist.allTracks)
-    this._artistsRepo.remove(artist)
+    this.artists.remove(artist)
   }
 
   someArtist(aPredicate) {
-    return this._artistsRepo.some(aPredicate)
+    return this.artists.some(aPredicate)
   }
 
   findArtistBy(aPredicate) {
-    return this._artistsRepo.findBy(aPredicate)
+    const artist = this.artists.find(aPredicate)
+    if (artist == undefined) throw 'artist not found'
+    return artist
   }
 
   findArtistById(id) {
-    return this._artistsRepo.findById(id)
+    return this.findArtistBy(artist => artist.id === id)
   }
 
   filterArtists(aPredicate) {
-    return this._artistsRepo.filter(aPredicate)
+    return this.artists.filter(aPredicate)
+  }
+
+  findAuthorOfAlbum(anAlbum) {
+    return this.findArtistBy(artist => artist.isTheAutorOfAlbum(anAlbum))
   }
 
   /******* ALBUMS **************/
   get albums() {
-    return this._artistsRepo.allAlbums
+    return this.artists.flatMap(artist => artist.albums)
+
   }
 
   addAlbum(artistId, newAlbum) {
-    this._artistsRepo.findById(artistId).addAlbum(newAlbum)
+    this.findArtistById(artistId).addAlbum(newAlbum)
   }
 
   removeAlbum(albumId) {
-    const album = this._artistsRepo.findAlbumById(albumId)
+    const album = this.findAlbumById(albumId)
     this.removeFromAllPlaylist(album.tracks)
-    this._artistsRepo.findAuthorOfAlbum(album).removeAlbum(album)
+    this.findAuthorOfAlbum(album).removeAlbum(album)
+  }
+
+  findAlbumById(id) {
+    return this.findAlbumBy(album => album.id === id)
   }
 
   findAlbumBy(aPredicate) {
     const album = this.albums.find(aPredicate)
-    if (album === undefined) throw 'album not found'
+    if (album == undefined) throw 'album not found'
     return album
-  }
-
-  findAlbumById(id) {
-    return this._artistsRepo.findAlbumById(id)
   }
 
   /******* TRACKS **************/
   get tracks() {
-    return this._artistsRepo.allTracks
+    return this.artists.flatMap(artist => artist.allTracks)
   }
 
   addTrack(albumId, newTrack) {
-    const album = this._artistsRepo.findAlbumById(albumId)
-    this._artistsRepo.findAuthorOfAlbum(album).addTrack(albumId, newTrack)
+    const album = this.findAlbumById(albumId)
+    this.findAuthorOfAlbum(album).addTrack(albumId, newTrack)
   }
 
   removeTrack(trackId) { // TODO: test
@@ -103,24 +109,26 @@ class EntitiesRepository {
     this.getAuthorOfTrack(track).removeTrack(track)
   }
 
-  findTrackBy(aPredicate) {
-    return this.find(aPredicate)
-  }
-
   findTrackById(id) {
     return this.findTrackBy(track => track.id === id)
   }
 
+  findTrackBy(aPredicate) {
+    const track = this.tracks.find(aPredicate)
+    if (track == undefined) throw 'track not found'
+    return track
+  }
+
   filterTracks(aPredicate) {
-    return this._artistsRepo.filterTracks(aPredicate)
+    return this.tracks.filter(aPredicate)
   }
 
   //
   filterAll(aPredicate) {
     return {
-      artists  : this._artistsRepo.filter(aPredicate),
-      albums   : this._artistsRepo.filterAlbums(aPredicate),
-      tracks   : this._artistsRepo.filterTracks(aPredicate),
+      artists  : this.artists.filter(aPredicate),
+      albums   : this.albums.filter(aPredicate),
+      tracks   : this.tracks.filter(aPredicate),
       playlists: this.playlists.filter(aPredicate),
     }
   }
