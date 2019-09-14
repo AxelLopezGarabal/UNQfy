@@ -44,6 +44,21 @@ describe('UNQfy', () => {
         });
     })
 
+    describe('Cuando se elimina un track', () => {
+        beforeEach(() => {
+            unqfy.removeTrack(trackAlbum01.id)
+        })
+
+        it('...el sistema ya no lo tiene registrado', () => {
+            expect(unqfy.tracks).to.have.lengthOf(1)
+            expect(unqfy.tracks).not.to.include(trackAlbum01)
+        })
+
+        it('...se elimina de las playlists', () => {
+            expect(unqfy.playlists.some(playlist => playlist.hasTrack(trackAlbum01))).to.be.false
+        })
+    })
+
     describe('cuando se elimina un artista...', () => {
         beforeEach(() => {
             unqfy.removeArtist(artist.id)
@@ -59,6 +74,10 @@ describe('UNQfy', () => {
 
         it('se eliminan de las playlists todos sus temas', () => {
             expect(playlist.tracks).to.be.empty
+        })
+
+        xit('sus followers ya no lo siguen', () => {
+
         })
     })
 
@@ -151,6 +170,7 @@ describe('UNQfy', () => {
                 //expect(() => unqfy.getAlbumById(0)).to.throw('No se encontro entidad con id 0 en albums')
             })
         })
+
     })
 
     it('puede decir si un artista existe en base a un id', () => {
@@ -205,18 +225,35 @@ describe('UNQfy', () => {
             expect(user.playlists[0].hasTrack(track1)).to.be.true
         })
 
-        it('puede registrar la escucha de un track por parte de un usuario', () => {
+        it('registra las escuchas de los usuarios', () => {
             const artistA = unqfy.addArtist('artistA', 'argentina')
             const albumA  = unqfy.addAlbum(artistA.id, 'albumA', 2019)
-            const track1 = unqfy.addTrack(albumA.id, { name: 'track1', duration: 1, genres: [] })
-            const track2 = unqfy.addTrack(albumA.id, { name: 'track2', duration: 1, genres: [] })
+            const track1  = unqfy.addTrack(albumA.id, { name: 'track1', duration: 1, genres: [] })
+            const track2  = unqfy.addTrack(albumA.id, { name: 'track2', duration: 1, genres: [] })
 
             unqfy.registerListening(user.id, track1.id)
 
             expect(user.hasListened(track1)).to.be.true
             expect(user.hasListened(track2)).to.be.false
         })
+
+        it('notifica a los artistas cuando escuchan uno de sus temas', () => {
+            const artistA = unqfy.addArtist('artistA', 'argentina')
+            const albumA  = unqfy.addAlbum(artistA.id, 'albumA', 2019)
+            const track1  = unqfy.addTrack(albumA.id, { name: 'track1', duration: 1, genres: [] })
+            const track2  = unqfy.addTrack(albumA.id, { name: 'track2', duration: 1, genres: [] })
+
+            unqfy.registerListening(user.id, track1.id)
+
+            expect(artistA.othersListeningsOfHisArt).to.have.lengthOf(1)
+        })
     })
+
+    // describe('following', () => {
+    //     it('registra el seguimiento de un artista por un usuario', () => {
+    //         const user = unqfy.addUser({name: 'userName'})
+    //     })
+    // })
 })
 
 const makeArtistData = () => ({name: 'pepe', country: 'argentina'})

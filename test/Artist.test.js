@@ -1,7 +1,6 @@
 const expect = require('chai').expect
-const Album  = require('../src/entities/Album.js')
-const Artist = require('../src/entities/Artist.js')
-const User   = require('../src/entities/User.js')
+
+const { Artist, Album, User, Listening } = require('../src/entities/all.js')
 
 const { RepeatedTrackInAlbum } = require('../src/exceptions/all')
 
@@ -85,6 +84,20 @@ describe('Artist', () => {
     ).to.throw(`${artista.name} no tiene registrado el album ${album.name}`)
   })
 
+  it('puede eliminar un track', () => {
+    const track01 = createTrack()
+    const track02 = createTrack()
+    const album01 = createAlbum('album01', [track01])
+    const album02 = createAlbum('album01', [track02])
+    artista.addAlbum(album01)
+    artista.addAlbum(album02)
+    
+    artista.removeTrack(track01)
+
+    expect(artista.allTracks).to.have.lengthOf(1)
+    expect(artista.allTracks).not.to.include(track01)
+  })
+
   describe('Busqueda de album', () => {
     it('puede buscar un album por nombre', () => {
       const album = createAlbum('album name', [])
@@ -154,7 +167,7 @@ describe('Artist', () => {
     })
   })
 
-  describe('Emicion de notificaciones', () =>{
+  describe('Emision de notificaciones', () =>{
     it('Cuando publica un album notifica a sus seguidores', () => {
       const follower = createFollower('followeName')
       const album01  = createAlbum('album01', [])
@@ -182,6 +195,20 @@ describe('Artist', () => {
       expect(follower.notifications[0].artist).to.equal(artista)
       expect(follower.notifications[0].album).to.equal(album01)
       expect(follower.notifications[0].track).to.equal(track01)
+    })
+  })
+
+  describe('Recepcion de notifiaciones', () => {
+    it('puede registrar escuchas realizadas por otros de sus tracks', () => {
+      const listener  = createFollower('followeName')
+      const album     = createAlbum('album01', [])
+      const track     = createTrack('trackName')
+      const listening = new Listening({listener, artist: artista, album, track})
+
+      artista.registerOthersListeningsOfHisArt(listening)
+
+      expect(artista.othersListeningsOfHisArt).to.have.lengthOf(1)
+      expect(artista.othersListeningsOfHisArt[0]).to.equal(listening)
     })
   })
 

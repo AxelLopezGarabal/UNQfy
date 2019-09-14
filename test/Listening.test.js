@@ -1,16 +1,29 @@
 const expect = require('chai').expect
-const { Listening, Track } = require('../src/entities/all')
+const { Listening, Track, User } = require('../src/entities/all')
 
 describe('Listening', () => {
-  const id    = 1
-  const name  = 'Pepe'
-  const track = new Track(1, 'trackName', ['genres'], 1000)
+  const track    = {}
+  const album    = {}
+  const artist   = {}
+  const listener = {}
 
   beforeEach(() =>
-    listening = new Listening(track)
+    listening = new Listening({listener, artist, album, track})
   )
 
-  it('registra el track escuchado', () =>
+  it('conoce al que realizo la escucha', () =>
+    expect(listening.listener).to.equal(listener)
+  )
+
+  it('conoce al artista', () =>
+    expect(listening.artist).to.equal(artist)
+  )
+
+  it('conoce al album', () =>
+    expect(listening.album).to.equal(album)
+  )
+
+  it('conoce el track escuchado', () =>
     expect(listening.track).to.eql(track)
   )
 

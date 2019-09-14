@@ -1,5 +1,5 @@
 const expect = require('chai').expect
-const { User, Track, Playlist, Artist } = require('../src/entities/all')
+const { User, Track, Playlist, Artist, Listening } = require('../src/entities/all')
 
 describe('User', () => {
   const id   = 1
@@ -24,18 +24,20 @@ describe('User', () => {
   it('registra las escuchas realizadas', () => {
     const track01 = makeTrack('track01')
 
-    const listening = user.listen(track01)
+    //const listening = user.listen(track01)
+    const listening = makeListening()
+    user.addToHistory(listening)
     
-    expect(listening.track).to.eql(track01)
+    //expect(listening.track).to.eql(track01)
     expect(user.listenings).to.be.lengthOf(1)
     expect(user.listenings).to.include.members([listening])
-    
   })
 
   it('se le puede preguntas si escucho un track', () => {
     const track01 = makeTrack('track01')
     const track02 = makeTrack('track02')
-    user.listen(track01)
+    //user.listen(track01)
+    user.addToHistory(makeListening(track01))
     
     expect(user.hasListened(track01)).to.be.true
     expect(user.hasListened(track02)).to.be.false
@@ -45,10 +47,14 @@ describe('User', () => {
     const track01 = makeTrack('track01')
     const track02 = makeTrack('track02')
 
-    user.listen(track01)
-    user.listen(track01)
-    user.listen(track02)
-    user.listen(track02)
+    // user.listen(track01)
+    // user.listen(track01)
+    // user.listen(track02)
+    // user.listen(track02)
+    user.addToHistory(makeListening(track01))
+    user.addToHistory(makeListening(track01))
+    user.addToHistory(makeListening(track02))
+    user.addToHistory(makeListening(track02))
   
     expect(user.listenedTracks).to.be.lengthOf(2)
     expect(user.listenedTracks).to.include.members([track01, track02])
@@ -58,8 +64,10 @@ describe('User', () => {
     const track00 = makeTrack('track01')
     const track01 = makeTrack('track02')
 
-    user.listen(track01)
-    user.listen(track01)
+    // user.listen(track01)
+    // user.listen(track01)
+    user.addToHistory(makeListening(track01))
+    user.addToHistory(makeListening(track01))
 
     expect(user.timesListened(track00)).to.equal(0)
     expect(user.timesListened(track01)).to.equal(2)
@@ -72,12 +80,18 @@ describe('User', () => {
     const track03 = makeTrack('track03')
     const track04 = makeTrack('track04')
 
-    user.listen(track01)
-    user.listen(track02)
-    user.listen(track02)
-    user.listen(track03)
-    user.listen(track03)
-    user.listen(track03)
+    // user.listen(track01)
+    // user.listen(track02)
+    // user.listen(track02)
+    // user.listen(track03)
+    // user.listen(track03)
+    // user.listen(track03)
+    user.addToHistory(makeListening(track01))
+    user.addToHistory(makeListening(track02))
+    user.addToHistory(makeListening(track02))
+    user.addToHistory(makeListening(track03))
+    user.addToHistory(makeListening(track03))
+    user.addToHistory(makeListening(track03))
 
     const losDosMasEscuchados = user.mostListenedTracks(2)
     expect(losDosMasEscuchados).to.have.lengthOf(2)
@@ -168,7 +182,8 @@ describe('User', () => {
   })
 })
 
-const makeArtist       = name => new Artist(1, {name})
-const makeTrack        = name => new Track({id: 1, name, genres: ['aGenre'], duration: 100})
-const makePlaylist     = name => new Playlist(1, name, [])
-const makeNotification = name => ({})
+const makeArtist       = name  => new Artist(1, {name})
+const makeTrack        = name  => new Track({id: 1, name, genres: ['aGenre'], duration: 100})
+const makePlaylist     = name  => new Playlist(1, name, [])
+const makeNotification = name  => ({})
+const makeListening    = track => new Listening({track})

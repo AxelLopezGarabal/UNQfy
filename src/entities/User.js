@@ -19,10 +19,9 @@ class User {
   get listenings()     { return this._listenings }
   get listenedTracks() { return [...new Set(this._allListenedTracksInOrder)] }
   get playlists()      { return this._playlists }
+  get followings()     { return this._followings }
 
-  get followings() { return this._followings }
-
-  //
+  /** TESTING **/
   hasListened(aTrack) {
     return this.listenedTracks.includes(aTrack)
   }
@@ -31,7 +30,7 @@ class User {
     return this.followings.includes(anArtist)
   }
 
-  //
+  /** QUERIES **/
   timesListened(aTrack) {
     return this._allListeneningsOf(aTrack).length
   }
@@ -42,10 +41,16 @@ class User {
       .slice(0, amountResults)
   }
 
-  listen(aTrack) {
-    const listening = new Listening(aTrack)
-    this._listenings.push(listening)
-    return listening
+  /** COMMANDS **/
+
+  // listen(aTrack) {
+  //   const listening = new Listening(aTrack)
+  //   this._listenings.push(listening)
+  //   return listening
+  // }
+
+  addToHistory(aListening) {
+    this.listenings.push(aListening)
   }
 
   registerPlaylist(aPlaylist) {
@@ -66,7 +71,7 @@ class User {
     this.notifications.push(aNotification)
   }
 
-  /* PRIVATE */
+  /** PRIVATE **/
   get _allListenedTracksInOrder() {
     return this.listenings.map(aListening => aListening.track)
   }
