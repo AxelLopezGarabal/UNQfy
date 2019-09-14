@@ -19,6 +19,10 @@ class Album {
 
   set name(newName) { this._name = newName }
 
+  hasTrack(aTrack) {
+    return this.tracks.includes(aTrack)
+  }
+
   addTrack(aTrack) {
     this._validateIsNewTrack(aTrack)
     this.tracks.push(aTrack)

@@ -44,6 +44,16 @@ describe('Album', () => {
     expect(album.tracks).to.be.empty
   })
 
+  it('sabe si tiene un track', () => {
+    const track01 = createTrackNamed('track01')
+    const track02 = createTrackNamed('track02')
+
+    album.addTrack(track01)
+
+    expect(album.hasTrack(track01)).to.be.true
+    expect(album.hasTrack(track02)).to.be.false
+  })
+
 })
 
 function createTrackNamed(aName) {

@@ -1,6 +1,7 @@
 const expect = require('chai').expect
-const Album = require('../src/entities/Album.js')
+const Album  = require('../src/entities/Album.js')
 const Artist = require('../src/entities/Artist.js')
+const User   = require('../src/entities/Artist.js')
 
 const { RepeatedTrackInAlbum } = require('../src/exceptions/all')
 
@@ -84,8 +85,78 @@ describe('Artist', () => {
     ).to.throw(`${artista.name} no tiene registrado el album ${album.name}`)
   })
 
+  describe('Busqueda de album', () => {
+    it('puede buscar un album por nombre', () => {
+      const album = createAlbum('album name', [])
+      artista.addAlbum(album)
+      expect(artista.findAlbumByName(album.name)).to.equal(album)
+    })
+
+    it('puede buscar un album por id', () => {
+      const album = createAlbum('album name', [])
+      artista.addAlbum(album)
+      expect(artista.findAlbumById(album.id)).to.equal(album)
+    })
+
+    it('si no tiene un album solicitado arroja un excepcion', () => {      
+      expect(() => artista.findAlbumByName('adasdasdasdasdasd')).to.throw('album not found')
+      expect(() => artista.findAlbumById('adasdasdasdasdasd')).to.throw('album not found')
+    })
+  })
+
+  describe('Add track to album', () => {
+    it('puede agregarle un track a uno de sus albums', () => {
+      const album01 = createAlbum('album01', [])
+      const track01 = createTrack()
+
+      artista.addAlbum(album01)
+      artista.addTrackTo(album01, track01)
+
+      expect(album01.hasTrack(track01))
+    })
+
+    it('no puede agregarle tracks a un album del que no es autor', () => {
+      const album01 = createAlbum('album01', [])
+      const track01 = createTrack()
+
+      expect(() =>
+        artista.addTrackTo(album01, track01))
+      .to.throw(`${artista.name} no tiene registrado el album ${album01.name}`)
+    })
+  })
+
+  describe('Seguidores', () => {
+    it('inicialmente no tiene seguidores', () => {
+      expect(artista.followers).to.be.empty
+    })
+
+    it('puede registrar seguidores', () => {
+      const follower = createFollower('pepe')
+      artista.addFollower(follower)
+      expect(artista.followers).to.have.lengthOf(1)
+      expect(artista.followers).to.include(follower)
+    })
+
+    it('se le puede preguntar si es seguido por alguien', () => {
+      const follower    = createFollower('pepe')
+      const notFollower = createFollower('juan')
+      artista.addFollower(follower)
+      expect(artista.isFollowedBy(follower)).to.be.true
+      expect(artista.isFollowedBy(notFollower)).to.be.false
+    })
+
+    it('los followers se registran una sola vez', () => {
+      const follower = createFollower('pepe')
+      artista.addFollower(follower)
+      expect(() =>
+        artista.addFollower(follower))
+      .to.throw(`${artista.name} ya tiene registrado como follower a ${follower.name}`)
+    })
+  })
+
   
 })
 
-const createAlbum = (name, tracks) => new Album({name, tracks})
+const createAlbum    = (name, tracks) => new Album({name, tracks})
+const createFollower = name => new User({name})
 const createTrack = () => ({})

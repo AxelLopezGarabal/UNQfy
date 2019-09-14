@@ -1,15 +1,17 @@
 require('../auxi/extenciones').extendArray()
 const { RepeatedAlbumInArtist, ArtistaNoTieneRegistradoUnAlbum } = require('../exceptions/all')
+const AlreadyFollowedBySomeone = require('../exceptions/AlreadyFollowedBySomeone')
 
 class Artist {
 
   constructor(dataObject) {
     if (!dataObject) return // Hubo que hacer esto por culpa del framework de persistencia
     const {id, name, country} = dataObject
-    this._id      = id
-    this._name    = name
-    this._country = country
-    this._albums  = []
+    this._id        = id
+    this._name      = name
+    this._country   = country
+    this._albums    = []
+    this._followers = []
   }
 
   // Testing
@@ -21,11 +23,16 @@ class Artist {
     return this.allTracks.includes(aTrack)
   }
 
+  isFollowedBy(aUser) {
+    return this.followers.includes(aUser)
+  }
+
   // Queries
-  get id()      { return this._id }
-  get name()    { return this._name }
-  get country() { return this._country }
-  get albums()  { return this._albums }
+  get id()        { return this._id }
+  get name()      { return this._name }
+  get country()   { return this._country }
+  get albums()    { return this._albums }
+  get followers() { return this._followers }
 
   set name(newName)     { this._name   = newName }
   set albums(newalbums) { this._albums = newalbums }
@@ -35,7 +42,17 @@ class Artist {
   }
 
   findAlbumById(albumId) {
-    return this.albums.find(album => album.id === albumId)
+    return this.findAlbum(album => album.id === albumId)
+  }
+
+  findAlbumByName(albumName) {
+    return this.findAlbum(album => album.name === albumName)
+  }
+
+  findAlbum(aPredicate) {
+    const album = this.albums.find(aPredicate)
+    if (album == undefined) throw 'album not found'
+    return album
   }
 
   // Commands
@@ -49,8 +66,14 @@ class Artist {
     this._albums.remove(anAlbum)
   }
 
-  addTrack(albumId, aTrack) { // TODO: test
-    this.findAlbumById(albumId).addTrack(aTrack)
+  addTrackTo(anAlbum, aTrack) { // TODO: test
+    this._validateisTheAuthorOfAlbum(anAlbum)
+    anAlbum.addTrack(aTrack)
+  }
+
+  addFollower(aUser) {
+    this._validateNewFollower(aUser)
+    this.followers.push(aUser)
   }
 
   /* PRIVATE */
@@ -62,6 +85,11 @@ class Artist {
   _validateisTheAuthorOfAlbum(anAlbum) {
     if (!this.isTheAuthorOfAlbum(anAlbum))
       throw new ArtistaNoTieneRegistradoUnAlbum(this, anAlbum)
+  }
+
+  _validateNewFollower(aUser) {
+    if (this.isFollowedBy(aUser)) 
+      throw new AlreadyFollowedBySomeone(this, aUser)
   }
 
 }
