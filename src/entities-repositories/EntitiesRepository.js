@@ -28,7 +28,7 @@ class EntitiesRepository {
     return this.find(entityName, entity => entity[prop] === value)
   }
 
-  filterBy(entityName, aPredicate) {
+  filter(entityName, aPredicate) {
     return this._entities(entityName).filter(aPredicate)
   }
 

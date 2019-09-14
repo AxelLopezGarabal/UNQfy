@@ -43,13 +43,15 @@ class UNQfy {
     return newPlaylist
   }
 
-  /** CREACION DE CONTENIDO **/
-
-  // artistData -> {name, country}
-  addArtist(artistData) {
-    const newArtist = new ArtistCreation(this, artistData).handle()
+  /* ARTIST */
+  addArtist({name, country}) {
+    const newArtist = new ArtistCreation(this, {name, country}).handle()
     this._entitiesRepository.addArtist(newArtist)
     return newArtist
+  }
+
+  removeArtist(artistId) {
+    this._entitiesRepository.removeArtist(artistId)
   }
 
   existsArtistWithId(id) {
@@ -61,30 +63,54 @@ class UNQfy {
            this._entitiesRepository.someHas('user'  , {prop: 'name', value: aName})
 
   }
-  // albumData {name, year}
-  addAlbum(artistId, albumData) {
-    const newAlbum = new AlbumCreation(this, albumData).handle()
+
+  /* ALBUM */
+  addAlbum(artistId, {name, year}) {
+    const newAlbum = new AlbumCreation(this, {name, year}).handle()
     const artist   = this.getArtistById(artistId)
     artist.addAlbum(newAlbum)
     return newAlbum
   }
 
-  // trackData -> {name, duration, genres}
-  addTrack(albumId, trackData) {
-    const newTrack = new TrackCreation(this, trackData).handle()
-    const album    = this.getAlbumById(albumId)
-    album.addTrack(newTrack)
-    return newTrack
+  removeAlbum(albumId) {
+    const album  = this.getAlbumById(albumId)
+    const artist = this.getAuthorOfAlbum(album)
+    this._removeFromAllPlaylists(album.tracks)
+    artist.removeAlbum(album)
   }
 
+  /* TRACK */
+  addTrack(albumId, {name, duration, genres}) {
+    const newTrack = new TrackCreation(this, {name, duration, genres}).handle()
+    const album    = this.getAlbumById(albumId)
+    const artist   = this.getAuthorOfAlbum(album)
+    artist.addTrackTo(album, newTrack)
+    return newTrack
+  }
+  
+  removeTrack(trackId) {
+    const track  = this.getTrackById(trackId)
+    const artist = this.getAuthorOfTrack(track)
+    this._removeFromAllPlaylists([track])
+    artist.removeTrack(track)
+  }
+
+  /* PLAYLIST */
   createPlaylist(name, genresToInclude, maxDuration) {
     const newPlaylist = new PlaylistGenerator().generate(this._generateUniqueId(), name, genresToInclude, maxDuration, this.tracks)
     this._entitiesRepository.addPlaylist(newPlaylist)
     return newPlaylist
   }
 
+  removePlaylist(playlistId) {
+    this._entitiesRepository.removePlaylist(playlistId)
+  }
+
+  _removeFromAllPlaylists(tracks) {
+    this._entitiesRepository.forEach('playlist', playlist => playlist.removeAll(tracks))
+  }
+
   /** BUSQUEDAS **/
-  //searchByName(aName)               { return this._entitiesRepository.filterAll(entity => entity.name === aName) }
   searchByName(aName)               { return this._entitiesRepository.filterAll(entity => new RegExp(aName).test(entity.name)) }
   searchByNamePartial(aPartialName) { return this._entitiesRepository.filterAll(entity => new RegExp(aPartialName).test(entity.name)) }
 
@@ -97,7 +123,7 @@ class UNQfy {
   getArtistByName(aName) { return this._entitiesRepository.findBy('artist', { prop: 'name', value: aName }) }
 
   getTracksMatchingGenres(genres) {
-    return this._entitiesRepository.filterBy('track', track => track.matchSomeGenreFrom(genres))
+    return this._entitiesRepository.filter('track', track => track.matchSomeGenreFrom(genres))
   }
 
   getTracksMatchingArtist(artistName) {
@@ -108,33 +134,6 @@ class UNQfy {
 
   getAuthorOfAlbum(anAlbum) {
     return this._entitiesRepository.find('artist', artist => artist.isTheAuthorOfAlbum(anAlbum))
-  }
-
-  /** ELIMINACIONES **/
-  removeArtist(artistId) {
-    this._entitiesRepository.removeArtist(artistId)
-  }
-  
-  removeAlbum(albumId) {
-    const album  = this.getAlbumById(albumId)
-    const artist = this.getAuthorOfAlbum(album)
-    this._removeFromAllPlaylists(album.tracks)
-    artist.removeAlbum(album)
-  }
-  
-  removeTrack(trackId) {
-    const track  = this.getTrackById(trackId)
-    const artist = this.getAuthorOfTrack(track)
-    this._removeFromAllPlaylists([track])
-    artist.removeTrack(track)
-  }
-
-  removePlaylist(playlistId) {
-    this._entitiesRepository.removePlaylist(playlistId)
-  }
-
-  _removeFromAllPlaylists(tracks) {
-    this._entitiesRepository.forEach('playlist', playlist => playlist.removeAll(tracks))
   }
 
   /** PERSISTENCIA **/
