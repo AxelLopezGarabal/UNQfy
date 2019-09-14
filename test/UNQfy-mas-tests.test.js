@@ -166,8 +166,7 @@ describe('UNQfy', () => {
 
             it('si no existe se arroja una excepcion', () => {
                 unqfy.addArtist({ name: 'juan', country: 'argentina' })
-                expect(() => unqfy.getAlbumById(0)).to.throw('album not found')
-                //expect(() => unqfy.getAlbumById(0)).to.throw('No se encontro entidad con id 0 en albums')
+                expect(() => unqfy.getAlbumById(0)).to.throw('Error: Could not find "album" with "id" equal to "0"')
             })
         })
 

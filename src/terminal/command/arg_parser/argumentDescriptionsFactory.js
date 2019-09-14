@@ -37,7 +37,7 @@ module.exports = {
 		name: name,
 		typeDescription: 'un arreglo',
 		validationRegex: arrayRegex,
-		parseFunction: eval
+		parseFunction: aString => eval(aString)
 	})
 
 }

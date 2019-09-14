@@ -11,8 +11,7 @@ class AddTrackCommand extends Command {
     
     _excecute(unqfy, [albumId, trackName, duration, genres]) {
       genres = genres.split(',').map(string => string.trim())
-      console.log('addTrack excecute genres---> ', genres)
-		  unqfy.addTrack(albumId, {name: trackName, duration: duration, genres})
+      unqfy.addTrack(albumId, {name: trackName, duration: duration, genres})
     }
     
     get name() {

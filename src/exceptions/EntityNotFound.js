@@ -1,8 +1,8 @@
 module.exports =
 class EntityNotFound extends Error {
 
-  constructor(entityName) {
-    super(`${entityName} not found`)
+  constructor(errorExtraInformation='entity not found') {
+    super(`Error: ${errorExtraInformation}`)
   }
 
 }

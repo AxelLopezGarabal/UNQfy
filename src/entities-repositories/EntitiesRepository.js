@@ -18,14 +18,14 @@ class EntitiesRepository {
 
   _entities(entityName) { return this[`${entityName}s`] }
 
-  find(entityName, aPredicate) {
+  find(entityName, aPredicate, errorMessage='') {
     const entity = this._entities(entityName).find(aPredicate)
-    if (entity == undefined) throw new EntityNotFound(entityName)
+    if (entity == undefined) throw new EntityNotFound(errorMessage)
     return entity
   }
 
   findBy(entityName, {prop, value}) {
-    return this.find(entityName, entity => entity[prop] === value)
+    return this.find(entityName, entity => entity[prop] === value, `Could not find "${entityName}" with "${prop}" equal to "${value}"`)
   }
 
   filter(entityName, aPredicate) {
