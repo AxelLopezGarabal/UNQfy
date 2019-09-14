@@ -59,6 +59,7 @@ class Artist {
   addAlbum(anAlbum) {
     this._validateIsNewAlbum(anAlbum)
     this.albums.push(anAlbum)
+    this._notifyAll({artist: this, album: anAlbum})
   }
 
   removeAlbum(anAlbum) {
@@ -69,6 +70,7 @@ class Artist {
   addTrackTo(anAlbum, aTrack) { // TODO: test
     this._validateisTheAuthorOfAlbum(anAlbum)
     anAlbum.addTrack(aTrack)
+    this._notifyAll({artist: this, album: anAlbum, track: aTrack})
   }
 
   addFollower(aUser) {
@@ -77,6 +79,10 @@ class Artist {
   }
 
   /* PRIVATE */
+  _notifyAll(aNotification) {
+    this.followers.forEach(follower => follower.addNotification(aNotification))
+  }
+
   _validateIsNewAlbum(anAlbum) {
     if (this.isTheAuthorOfAlbum(anAlbum))
       throw new RepeatedAlbumInArtist(this, anAlbum)

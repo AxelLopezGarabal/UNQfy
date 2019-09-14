@@ -1,5 +1,5 @@
 const expect = require('chai').expect
-const { User, Track, Playlist } = require('../src/entities/all')
+const { User, Track, Playlist, Artist } = require('../src/entities/all')
 
 describe('User', () => {
   const id   = 1
@@ -39,15 +39,6 @@ describe('User', () => {
     
     expect(user.hasListened(track01)).to.be.true
     expect(user.hasListened(track02)).to.be.false
-  })
-
-  it('se le puede pedir que escuche varios temas', () => {
-    const track01 = makeTrack('track01')
-    const track02 = makeTrack('track02')
-    user.listenAll([track01, track02])
-    
-    expect(user.hasListened(track01)).to.be.true
-    expect(user.hasListened(track02)).to.be.true
   })
 
   it('se le puede pedir los temas escuchados sin repetidos', () => {
@@ -122,7 +113,62 @@ describe('User', () => {
     expect(user.playlists).to.include(playlist02)
   })
 
+  describe('Following', () => {
+    it('inicialmente no siguie a nadie', () => {
+      expect(user.followings).to.be.empty
+    })
+
+    it('puede seguir a un artista', () => {
+      const artist = makeArtist('pepe')
+
+      user.follow(artist)
+
+      expect(user.followings).to.have.lengthOf(1)
+      expect(user.followings).to.include(artist)
+    })
+
+    it('se le puede preguntar si esta siguiendo a alguien', () => {
+      const artist = makeArtist('pepe')
+      const artistNotFollowed = makeArtist('pepe')
+
+      user.follow(artist)
+
+      expect(user.isFollowing(artist)).to.be.true
+      expect(user.isFollowing(artistNotFollowed)).to.be.false
+    })
+
+    it('si intenta siguir a un artista al que ya sigue, arroja una excepcion', () => {
+      const artist = makeArtist('pepe')
+
+      user.follow(artist)
+
+      expect(() =>
+        user.follow(artist)
+      ).to.throw(`${user.name} ya esta siguiendo a ${artist.name}`)
+    })
+
+    it('cuando sigue a un artista, este lo registra como follower', () => {
+      const artist = makeArtist('pepe')
+
+      user.follow(artist)
+
+      expect(artist.isFollowedBy(user)).to.be.true
+    })
+  })
+
+  describe('Notificaciones', () => {
+    it('inicialmente no tiene ninguna notificacion', () => {
+      expect(user.notifications).to.be.empty
+    })
+    it('puede registrar notificaciones', () =>{
+      const notification = makeNotification()
+      user.addNotification(notification)
+      expect(user.notifications).to.include(notification)
+    })
+  })
 })
 
-const makeTrack    = name => new Track({id: 1, name, genres: ['aGenre'], duration: 100})
-const makePlaylist = name => new Playlist(1, name, [])
+const makeArtist       = name => new Artist(1, {name})
+const makeTrack        = name => new Track({id: 1, name, genres: ['aGenre'], duration: 100})
+const makePlaylist     = name => new Playlist(1, name, [])
+const makeNotification = name => ({})

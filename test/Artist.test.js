@@ -1,7 +1,7 @@
 const expect = require('chai').expect
 const Album  = require('../src/entities/Album.js')
 const Artist = require('../src/entities/Artist.js')
-const User   = require('../src/entities/Artist.js')
+const User   = require('../src/entities/User.js')
 
 const { RepeatedTrackInAlbum } = require('../src/exceptions/all')
 
@@ -154,9 +154,39 @@ describe('Artist', () => {
     })
   })
 
-  
+  describe('Emicion de notificaciones', () =>{
+    it('Cuando publica un album notifica a sus seguidores', () => {
+      const follower = createFollower('followeName')
+      const album01  = createAlbum('album01', [])
+      
+      follower.follow(artista)
+      // artista.addFollower(follower)
+      artista.addAlbum(album01)
+
+      expect(follower.notifications).to.have.lengthOf(1)
+      expect(follower.notifications[0].artist).to.equal(artista)
+      expect(follower.notifications[0].album).to.equal(album01)
+    })
+
+    it('Cuando publica un track notifica a sus seguidores', () => {
+      const follower = createFollower('followeName')
+      const album01  = createAlbum('album01', [])
+      const track01  = createTrack('trackName')
+      artista.addAlbum(album01)
+      follower.follow(artista)
+      
+      // artista.addFollower(follower)
+      artista.addTrackTo(album01, track01)      
+
+      expect(follower.notifications).to.have.lengthOf(1)
+      expect(follower.notifications[0].artist).to.equal(artista)
+      expect(follower.notifications[0].album).to.equal(album01)
+      expect(follower.notifications[0].track).to.equal(track01)
+    })
+  })
+
 })
 
-const createAlbum    = (name, tracks) => new Album({name, tracks})
-const createFollower = name => new User({name})
-const createTrack = () => ({})
+const createAlbum    = (name, tracks) => new Album({id: 0, name, tracks})
+const createFollower = name => new User({id: 0, name})
+const createTrack    = () => ({})
