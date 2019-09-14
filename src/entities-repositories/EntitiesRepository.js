@@ -1,4 +1,5 @@
 require('../auxi/extenciones').extendArray()
+const EntityNotFound = require('../exceptions/EntityNotFound')
 
 module.exports = 
 class EntitiesRepository {
@@ -9,133 +10,32 @@ class EntitiesRepository {
     this._playlists = playlists
   }
 
-  addUser(aUser) {
-    this._users.push(aUser)
+  get artists()   { return this._artists }
+  get albums()    { return this.artists.flatMap(artist => artist.albums) }
+  get tracks()    { return this.artists.flatMap(artist => artist.allTracks) }
+  get users()     { return this._users }
+  get playlists() { return this._playlists }
+
+  _entities(entityName) { return this[`${entityName}s`] }
+
+  find(entityName, aPredicate) {
+    const entity = this._entities(entityName).find(aPredicate)
+    if (entity == undefined) throw new EntityNotFound(entityName)
+    return entity
   }
 
-  findUserById(id) {
-    return this._users.find(user => user.id === id)
+  findBy(entityName, {prop, value}) {
+    return this.find(entityName, entity => entity[prop] === value)
   }
 
-  /******* PLAYLIST **************/
-  get playlists() {
-    return this._playlists
+  filterBy(entityName, aPredicate) {
+    return this._entities(entityName).filter(aPredicate)
   }
 
-  addPlaylist(newPlaylist) {
-    this.playlists.push(newPlaylist)
+  someHas(entityName, {prop, value}) {
+    return this._entities(entityName).some(entiry => entiry[prop] === value)
   }
 
-  removePlaylist(playlistId){
-    this.playlists.remove(this.findPlaylistById(playlistId))
-  }
-
-  removeFromAllPlaylist(tracks){
-    this.playlists.forEach(playlist => playlist.removeAll(tracks))
-  }
-
-  findPlaylistById(id) {
-    return this.playlists.find(playlist => playlist.id === id)
-  }
-
-  /******* ARTIST **************/
-  get artists() {
-    return this._artists
-  }
-  
-  addArtist(newArtist) {
-    this.artists.push(newArtist)
-  }
-
-  removeArtist(artistId) {
-    const artist = this.findArtistById(artistId)
-    this.removeFromAllPlaylist(artist.allTracks)
-    this.artists.remove(artist)
-  }
-
-  someArtist(aPredicate) {
-    return this.artists.some(aPredicate)
-  }
-
-  findArtistBy(aPredicate) {
-    const artist = this.artists.find(aPredicate)
-    if (artist == undefined) throw 'artist not found'
-    return artist
-  }
-
-  findArtistById(id) {
-    return this.findArtistBy(artist => artist.id === id)
-  }
-
-  filterArtists(aPredicate) {
-    return this.artists.filter(aPredicate)
-  }
-
-  findAuthorOfAlbum(anAlbum) {
-    return this.findArtistBy(artist => artist.isTheAutorOfAlbum(anAlbum))
-  }
-
-  someArtist(aPredicate) {
-    return this.artists.some(aPredicate)
-  }
-
-  /******* ALBUMS **************/
-  get albums() {
-    return this.artists.flatMap(artist => artist.albums)
-
-  }
-
-  addAlbum(artistId, newAlbum) {
-    this.findArtistById(artistId).addAlbum(newAlbum)
-  }
-
-  removeAlbum(albumId) {
-    const album = this.findAlbumById(albumId)
-    this.removeFromAllPlaylist(album.tracks)
-    this.findAuthorOfAlbum(album).removeAlbum(album)
-  }
-
-  findAlbumById(id) {
-    return this.findAlbumBy(album => album.id === id)
-  }
-
-  findAlbumBy(aPredicate) {
-    const album = this.albums.find(aPredicate)
-    if (album == undefined) throw 'album not found'
-    return album
-  }
-
-  /******* TRACKS **************/
-  get tracks() {
-    return this.artists.flatMap(artist => artist.allTracks)
-  }
-
-  addTrack(albumId, newTrack) {
-    const album = this.findAlbumById(albumId)
-    this.findAuthorOfAlbum(album).addTrack(albumId, newTrack)
-  }
-
-  // removeTrack(trackId) { // TODO: test
-  //   const track = this.findTracks(trackId)
-  //   this.removeFromAllPlaylist([track])
-  //   this.getAuthorOfTrack(track).removeTrack(track)
-  // }
-
-  findTrackById(id) {
-    return this.findTrackBy(track => track.id === id)
-  }
-
-  findTrackBy(aPredicate) {
-    const track = this.tracks.find(aPredicate)
-    if (track == undefined) throw 'track not found'
-    return track
-  }
-
-  filterTracks(aPredicate) {
-    return this.tracks.filter(aPredicate)
-  }
-
-  //
   filterAll(aPredicate) {
     return {
       artists  : this.artists.filter(aPredicate),
@@ -143,6 +43,35 @@ class EntitiesRepository {
       tracks   : this.tracks.filter(aPredicate),
       playlists: this.playlists.filter(aPredicate),
     }
+  }
+
+  /******* USER **************/
+  addUser(aUser) {
+    this._users.push(aUser)
+  }
+
+  /******* PLAYLIST **************/
+  addPlaylist(newPlaylist) {
+    this.playlists.push(newPlaylist)
+  }
+
+  removePlaylist(playlistId){
+    this.playlists.remove(this.findBy('playlist', {prop: 'id', value: playlistId}))
+  }
+
+  removeFromAllPlaylist(tracks){
+    this.playlists.forEach(playlist => playlist.removeAll(tracks))
+  }
+
+  /******* ARTIST **************/
+  addArtist(newArtist) {
+    this.artists.push(newArtist)
+  }
+
+  removeArtist(artistId) {
+    const artist = this.findBy('artist', {prop: 'id', value: artistId})
+    this.removeFromAllPlaylist(artist.allTracks)
+    this.artists.remove(artist)
   }
   
 }

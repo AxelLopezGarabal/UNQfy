@@ -1,14 +1,14 @@
 const EntityCreation = require('./EntityCreation')
-const Artist = require('../entities/Artist')
+const User           = require('../entities/User')
 const SomeoneAlreadyRegisterUnderName = require('../exceptions/SomeoneAlreadyRegisterUnderName')
 
 module.exports =
-class ArtistCreation extends EntityCreation {
+class UserCreation extends EntityCreation {
 
-  get _entityClass()          { return Artist    }
-  get _targetCollectionName() { return 'artists' }
+  get _entityClass()          { return User    }
+  get _targetCollectionName() { return 'users' }
 
-  _validateDataObject() {
+ _validateDataObject() {
     if (this._isArtistNameAlreadyRegister) {
       throw new SomeoneAlreadyRegisterUnderName(this._dataObject.name)
     }

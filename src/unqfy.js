@@ -1,15 +1,13 @@
 const picklify = require('picklify') // para cargar/guarfar unqfy
 const fs = require('fs') // para cargar/guarfar unqfy
 
-const { Artist, Album, Track, User, Playlist } = require('./entities/all')
-
-const EntitiesRepository = require('./entities-repositories/EntitiesRepository')
+const { Artist, Album, Track, User, Playlist } = require('./entities/all') // esto hace falta para el framework de persistencia
+const {ArtistCreation, AlbumCreation, TrackCreation, UserCreation} = require('./entities-creation/all') // Method objects
 
 const PlaylistGenerator = require('./PlaylistGenerator.js')
 
-const ArtistCreation = require('./entities-creation/ArtistCreation')
-const AlbumCreation = require('./entities-creation/AlbumCreation')
-const TrackCreation = require('./entities-creation/TrackCreation')
+const EntitiesRepository = require('./entities-repositories/EntitiesRepository')
+
 
 class UNQfy {
 
@@ -25,30 +23,24 @@ class UNQfy {
   get albums()    { return this._entitiesRepository.albums }
   get tracks()    { return this._entitiesRepository.tracks }
 
-    /////////////////////
-    addUser(userData) {
-      //const newUser = new UserCreation(this, userData).handle()
-      const newUser = new User(this._generateUniqueId(), userData.name)
-      this._entitiesRepository.addUser(newUser)
-      return newUser
-    }
-  
-    getUserById(id) {
-      return this._entitiesRepository.findUserById(id)
-    }
+  /////////////////////
+  addUser(userData) {
+    const newUser = new UserCreation(this, userData).handle()
+    this._entitiesRepository.addUser(newUser)
+    return newUser
+  }
 
-    registerListening(userId, trackId) {
-      const user  = this.getUserById(userId)
-      const track = this.getTrackById(trackId)
-      user.listen(track)
-    }
-  
-    createPlaylistFor(userId, playlistName, genresToInclude, maxDuration) {
-      const newPlaylist = this.createPlaylist(playlistName, genresToInclude, maxDuration)
-      this.getUserById(userId).registerPlaylist(newPlaylist)
-      return newPlaylist
-    }
+  registerListening(userId, trackId) {
+    const user  = this.getUserById(userId)
+    const track = this.getTrackById(trackId)
+    user.listen(track)
+  }
 
+  createPlaylistFor(userId, playlistName, genresToInclude, maxDuration) {
+    const newPlaylist = this.createPlaylist(playlistName, genresToInclude, maxDuration)
+    this.getUserById(userId).registerPlaylist(newPlaylist)
+    return newPlaylist
+  }
 
   /** CREACION DE CONTENIDO **/
   // artistData: objeto JS con los datos necesarios para crear un artista
@@ -66,12 +58,13 @@ class UNQfy {
     return newArtist
   }
 
-  existsArtistWithId(artistId) {
-    return this._entitiesRepository.someArtist(artist => artist.id === artistId)
+  existsArtistWithId(id) {
+    return this._entitiesRepository.someHas('artist', {prop: 'id', value: id})
   }
 
-  existArtistCalled(aName) {
-    return this._entitiesRepository.someArtist(artist => artist.name === aName)
+  existSomeoneCalled(aName) {
+    return this._entitiesRepository.someHas('artist', {prop: 'name', value: aName}) ||
+           this._entitiesRepository.someHas('user'  , {prop: 'name', value: aName})
 
   }
 
@@ -86,7 +79,8 @@ class UNQfy {
      - una propiedad year (number)
   */
     const newAlbum = new AlbumCreation(this, albumData).handle()
-    this._entitiesRepository.addAlbum(artistId, newAlbum)
+    const artist   = this.getArtistById(artistId)
+    artist.addAlbum(newAlbum)
     return newAlbum
   }
 
@@ -103,7 +97,8 @@ class UNQfy {
       - una propiedad genres (lista de strings)
   */
     const newTrack = new TrackCreation(this, trackData).handle()
-    this._entitiesRepository.addTrack(albumId, newTrack)
+    const album    = this.getAlbumById(albumId)
+    album.addTrack(newTrack)
     return newTrack
   }
 
@@ -132,15 +127,16 @@ class UNQfy {
 
   /********************/
 
-  getArtistById(id)      { return this._entitiesRepository.findArtistById(id) }
-  getAlbumById(id)       { return this._entitiesRepository.findAlbumById(id) }
-  getTrackById(id)       { return this._entitiesRepository.findTrackById(id) }
-  getPlaylistById(id)    { return this._entitiesRepository.findPlaylistById(id) }
+  getArtistById(id)      { return this._entitiesRepository.findBy('artist'  , {prop: 'id', value: id}) }
+  getAlbumById(id)       { return this._entitiesRepository.findBy('album'   , {prop: 'id', value: id}) }
+  getTrackById(id)       { return this._entitiesRepository.findBy('track'   , {prop: 'id', value: id}) }
+  getPlaylistById(id)    { return this._entitiesRepository.findBy('playlist', {prop: 'id', value: id}) }
+  getUserById(id)        { return this._entitiesRepository.findBy('user'    , {prop: 'id', value: id}) }
 
-  getArtistByName(aName) { return this._entitiesRepository.findArtistBy(artist => artist.name === aName) }
+  getArtistByName(aName) { return this._entitiesRepository.findBy('artist', { prop: 'name', value: aName }) }
 
   getTracksMatchingGenres(genres) {
-    const tracks = this._entitiesRepository.filterTracks(track => track.matchSomeGenreFrom(genres))
+    const tracks = this._entitiesRepository.filterBy('track', track => track.matchSomeGenreFrom(genres))
     return tracks
   }
 
@@ -152,11 +148,35 @@ class UNQfy {
     return artistName.allTracks
   }
 
+  getAuthorOfAlbum(anAlbum) {
+    return this.artists.find(artist => artist.isTheAuthorOfAlbum(anAlbum))
+  }
+
   /** ELIMINACIONES **/
-  removeArtist(artistId)     { this._entitiesRepository.removeArtist(artistId)}
-  removeAlbum(albumId)       { this._entitiesRepository.removeAlbum(albumId) }
-  removeTrack(trackId)       { this._entitiesRepository.removeTrack(trackId) }
-  removePlaylist(playlistId) { this._entitiesRepository.removePlaylist(playlistId) }
+  removeArtist(artistId) {
+    this._entitiesRepository.removeArtist(artistId)
+  }
+  
+  removeAlbum(albumId) {
+    const album = this.getAlbumById(albumId)
+    this._removeFromAllPlaylist(album.tracks)
+    this.getAuthorOfAlbum(album).removeAlbum(album)
+  }
+  
+  //removeTrack(trackId)       { this._entitiesRepository.removeTrack(trackId) } // TODO: probar
+  removeTrack(trackId) {
+    const track = this._entitiesRepository.findBy('track', {prop: 'id', value: trackId})
+    this._removeFromAllPlaylist([track])
+    this.getAuthorOfTrack(track).removeTrack(track)
+  }
+
+  removePlaylist(playlistId) {
+    this._entitiesRepository.removePlaylist(playlistId)
+  }
+
+  _removeFromAllPlaylist(tracks) {
+    this.playlists.forEach(playlist => playlist.removeAll(tracks))
+  }
 
   /** PERSISTENCIA **/
   save(filename) {

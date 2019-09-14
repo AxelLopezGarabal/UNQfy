@@ -44,8 +44,8 @@ describe('Artist', () => {
     const album01 = createAlbum('album1')
     const album02 = createAlbum('album2')
     artista.addAlbum(album01)
-    expect(artista.isTheAutorOfAlbum(album01)).to.be.true
-    expect(artista.isTheAutorOfAlbum(album02)).to.be.false
+    expect(artista.isTheAuthorOfAlbum(album01)).to.be.true
+    expect(artista.isTheAuthorOfAlbum(album02)).to.be.false
 
   });
 

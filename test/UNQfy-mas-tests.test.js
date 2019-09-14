@@ -76,7 +76,7 @@ describe('UNQfy', () => {
             
             expect(() =>
                 unqfy.addArtist({ name: nombre, country: 'uruguay' })
-            ).to.throw(`Ya esta registrado un artista llamado ${nombre}`)
+            ).to.throw(`Alguien ya esta registrado con el nombre ${nombre}`)
         })
     })
 
@@ -161,23 +161,33 @@ describe('UNQfy', () => {
 
     it('puede decir si un artista existe en base a un nombre', () => {
         const artist = unqfy.addArtist('juan', 'argentina')
-        expect(unqfy.existArtistCalled(artist.name)).to.be.true
-        expect(unqfy.existArtistCalled('aasdasdasdas')).to.be.false
+        expect(unqfy.existSomeoneCalled(artist.name)).to.be.true
+        expect(unqfy.existSomeoneCalled('aasdasdasdas')).to.be.false
     })
     
     describe('Cuando se crea un usuario', () => {
         let user
         
         beforeEach(() => {
-            user = unqfy.addUser('juan')
+            user = unqfy.addUser({name: 'juan'})
         })
 
         it('lo puede buscar por id', () => {
             expect(unqfy.getUserById(user.id)).to.equal(user)
         })
 
+        it('tiene un nombre', () => {
+            expect(user.name).to.equal('juan')
+        })
+
         it('aun no tiene ninguna playlist', () => {
             expect(user.playlists).to.be.empty
+        })
+
+        it('no puede existir otro usuario con el mismo nombre', () => {
+            expect(() => 
+                unqfy.addUser({name: user.name})
+            ).to.throw(`Alguien ya esta registrado con el nombre ${user.name}`)
         })
 
         it('se le puede generar una playlist generada automaticamente en base a una lista de generos y una duracion maxima', () => {

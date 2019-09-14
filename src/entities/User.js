@@ -3,9 +3,10 @@ const Listening = require('./Listening')
 module.exports =
 class User {
 
-  constructor(id, name) {
-    this._id         = id
-    this._name       = name
+  constructor(dataObject) {
+    if (!dataObject) return // Hubo que hacer esto por culpa del framework de persistencia
+    this._id         = dataObject.id
+    this._name       = dataObject.name
     this._listenings = []
     this._playlists  = []
   }

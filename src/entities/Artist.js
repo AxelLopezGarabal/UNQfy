@@ -13,11 +13,11 @@ class Artist {
   }
 
   // Testing
-  isTheAutorOfAlbum(anAlbum) {
+  isTheAuthorOfAlbum(anAlbum) {
     return this.albums.includes(anAlbum)
   }
 
-  isTheAutorOfTrack(aTrack) {
+  isTheAuthorOfTrack(aTrack) {
     return this.allTracks.includes(aTrack)
   }
 
@@ -45,7 +45,7 @@ class Artist {
   }
 
   removeAlbum(anAlbum) {
-    this._validateisTheAutorOfAlbum(anAlbum)
+    this._validateisTheAuthorOfAlbum(anAlbum)
     this._albums.remove(anAlbum)
   }
 
@@ -55,12 +55,12 @@ class Artist {
 
   /* PRIVATE */
   _validateIsNewAlbum(anAlbum) {
-    if (this.isTheAutorOfAlbum(anAlbum))
+    if (this.isTheAuthorOfAlbum(anAlbum))
       throw new RepeatedAlbumInArtist(this, anAlbum)
   }
 
-  _validateisTheAutorOfAlbum(anAlbum) {
-    if (!this.isTheAutorOfAlbum(anAlbum))
+  _validateisTheAuthorOfAlbum(anAlbum) {
+    if (!this.isTheAuthorOfAlbum(anAlbum))
       throw new ArtistaNoTieneRegistradoUnAlbum(this, anAlbum)
   }
 

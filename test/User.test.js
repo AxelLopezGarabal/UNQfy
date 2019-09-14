@@ -6,7 +6,7 @@ describe('User', () => {
   const name = 'Pepe'
 
   beforeEach(() =>
-    user = new User(id, name)
+    user = new User({id, name})
   )
 
   it('tiene un id', () => {
