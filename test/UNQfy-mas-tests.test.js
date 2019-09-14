@@ -187,10 +187,10 @@ describe('UNQfy', () => {
 
             const artistA = unqfy.addArtist('artistA', 'argentina')
             const albumA  = unqfy.addAlbum(artistA.id, 'albumA', 2019)
-            const track1 = unqfy.addTrack(albumA.id, { name: 'track1', duration: 1, genres: [] })
+            const track1 = unqfy.addTrack(albumA.id, { name: 'track1', duration: 1, genres: ['genre1'] })
 
             const userPlaylist = unqfy.createPlaylistFor(user.id, playlistName, genresToInclude, maxDuration)
-            console.log('user playlist --->', userPlaylist)
+
             expect(user.playlists).to.have.lengthOf(1)
             expect(user.playlists[0].hasTrack(track1)).to.be.true
         })

@@ -15,7 +15,7 @@ describe('AddTrackCommand', () => {
     command = new AddTrackCommand()
   })
 
-  it('correct arguments', () => {
+  xit('correct arguments', () => {
     const anArtist = unqfy.addArtist({ name: 'pepe', country: 'argentina' })
     const anAlbum  = unqfy.addAlbum(anArtist.id, { name: 'albumName', year: 2019 })
 
