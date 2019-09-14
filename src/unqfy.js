@@ -95,19 +95,20 @@ class UNQfy {
   // genres: array de generos(strings)
   // retorna: los tracks que contenga alguno de los generos en el parametro genres
   searchByName(aName)               { return this._entitiesRepository.searchByName(aName) }
+  //searchByName(aName)               { return this._entitiesRepository.findAll(entity => entity.name === aName) }
   searchByNamePartial(aPartialName) { return this._entitiesRepository.searchByNamePartial(aPartialName) }
 
   /********************/
 
-  getArtistById(id)      { return this._entitiesRepository.getArtistByProperty('id', id) }
-  getAlbumById(id)       { return this._entitiesRepository.getAlbumByProperty('id', id) }
-  getTrackById(id)       { return this._entitiesRepository.getTrackByProperty('id', id) }
-  getPlaylistById(id)    { return this._entitiesRepository.getPlaylistByProperty('id', id) }
+  getArtistById(id)      { return this._entitiesRepository.findArtistById(id) }
+  getAlbumById(id)       { return this._entitiesRepository.findAlbumById(id) }
+  getTrackById(id)       { return this._entitiesRepository.findTrackById(id) }
+  getPlaylistById(id)    { return this._entitiesRepository.findPlaylistById(id) }
 
-  getArtistByName(aName) { return this._entitiesRepository.getArtistBy(artist => artist.name === aName) }
+  getArtistByName(aName) { return this._entitiesRepository.findArtistBy(artist => artist.name === aName) }
 
   getTracksMatchingGenres(genres) {
-    const tracks = this._entitiesRepository.getAllTracksBy(track => track.matchSomeGenreFrom(genres))
+    const tracks = this._entitiesRepository.filterTracks(track => track.matchSomeGenreFrom(genres))
     return tracks
   }
 
@@ -125,7 +126,6 @@ class UNQfy {
   removeTrack(trackId)       { this._entitiesRepository.removeTrack(trackId) }
   removePlaylist(playlistId) { this._entitiesRepository.removePlaylist(playlistId) }
 
-  
   /** PERSISTENCIA **/
   save(filename) {
     const listenersBkp = this.listeners

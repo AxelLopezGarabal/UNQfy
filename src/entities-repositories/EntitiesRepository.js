@@ -10,131 +10,126 @@ class EntitiesRepository {
     this._playlists   = playlists
   }
 
-  /** QUERIES ALL **/
-  get playlists() { return this._playlists              }
-  get artists()   { return this._artistsRepo.allArtists }
-  get albums()    { return this._artistsRepo.allAlbums  }
-  get tracks()    { return this._artistsRepo.allTracks  }
-
   /******* PLAYLIST **************/
+  get playlists() {
+    return this._playlists
+  }
+
   addPlaylist(newPlaylist) {
     this.playlists.push(newPlaylist)
   }
 
   removePlaylist(playlistId){
-    this.playlists.remove(this.getPlaylistById(playlistId))
+    this.playlists.remove(this.findPlaylistById(playlistId))
   }
 
-  _removeFromAllPlaylist(tracks){
-    console.log('_removeFromAllPlaylist ----->', tracks)
+  removeFromAllPlaylist(tracks){
     this.playlists.forEach(playlist => playlist.removeAll(tracks))
   }
-  /******************************/
 
-  /** TESTING **/
-  someArtist(aPredicate) {
-    return this._artistsRepo.some(aPredicate)
+  findPlaylistById(id) {
+    return this.playlists.find(playlist => playlist.id === id)
   }
 
-  /** ADDITIONS  **/
+  /******* ARTIST **************/
+  get artists() {
+    return this._artistsRepo.allArtists
+  }
+  
   addArtist(newArtist) {
     this._artistsRepo.add(newArtist)
   }
 
-  addAlbum(artistId, newAlbum) {
-    this._artistsRepo.getById(artistId).addAlbum(newAlbum)
-  }
-
-  addTrack(albumId, newTrack) {
-    const album = this._artistsRepo.getAlbumById(albumId)
-    this._artistsRepo.getAuthorOfAlbum(album).addTrack(albumId, newTrack)
-  }
-
-  /** REMOVES **/
   removeArtist(artistId) {
-    const artist = this._artistsRepo.getById(artistId)
-    this._removeFromAllPlaylist(artist.allTracks)
+    const artist = this._artistsRepo.findById(artistId)
+    this.removeFromAllPlaylist(artist.allTracks)
     this._artistsRepo.remove(artist)
   }
 
+  someArtist(aPredicate) {
+    return this._artistsRepo.some(aPredicate)
+  }
+
+  findArtistBy(aPredicate) {
+    return this._artistsRepo.findBy(aPredicate)
+  }
+
+  findArtistById(id) {
+    return this._artistsRepo.findById(id)
+  }
+
+  filterArtists(aPredicate) {
+    return this._artistsRepo.filterArtists(aPredicate)
+  }
+
+  /******* ALBUMS **************/
+  get albums() {
+    return this._artistsRepo.allAlbums
+  }
+
+  addAlbum(artistId, newAlbum) {
+    this._artistsRepo.findById(artistId).addAlbum(newAlbum)
+  }
+
   removeAlbum(albumId) {
-    const album = this.getAlbumById(albumId)
-    this._removeFromAllPlaylist(album.tracks)
-    this._artistsRepo.getAuthorOfAlbum(album).removeAlbum(album)
+    const album = this._artistsRepo.findAlbumById(albumId)
+    this.removeFromAllPlaylist(album.tracks)
+    this._artistsRepo.findAuthorOfAlbum(album).removeAlbum(album)
   }
 
-  removeTrack(trackId) { // TODO: test
-    const track = this.getTrackById(trackId)
-    this._removeFromAllPlaylist([track])
-    this.getAuthorOfTrack(track).removeTrack(track)
-  }
-
-  /** QUERY ONE**/
-  getArtistById(id)   { return this.artists.find(artist => artist.id === id) }
-  getAlbumById(id)    { return this._artistsRepo.getAlbumById(id) }
-  getTrackById(id)    { return this._artistsRepo.getTrackById(id) }
-  getPlaylistById(id) { return this.playlists.find(playlist => playlist.id === id) }
-
-  getArtistByProperty(propertyName,expectedValue)   { return this.getArtistBy(artist => artist[propertyName] === expectedValue) }
-  getAlbumByProperty(propertyName,expectedValue)    { return this.getAlbumBy(album => album[propertyName] === expectedValue) }
-  getTrackByProperty(propertyName,expectedValue)    { return this.getTrackBy(track => track[propertyName] === expectedValue) }
-  getPlaylistByProperty(propertyName,expectedValue) { return this.getPlaylistBy(playlist => playlist[propertyName] === expectedValue) }
-
-  getArtistBy(aPredicate) {
-    return this._artistsRepo.getBy(aPredicate)
-  }
-
-  getAlbumBy(aPredicate) {
+  findAlbumBy(aPredicate) {
     const album = this.albums.find(aPredicate)
     if (album === undefined) throw 'album not found'
     return album
   }
 
-  getAllTracksBy(aPredicate) {
-    return this._artistsRepo.findAllTracksBy(aPredicate)
+  findAlbumById(id) {
+    return this._artistsRepo.findAlbumById(id)
+  }
+
+  /******* TRACKS **************/
+  get tracks() { return this._artistsRepo.allTracks }
+
+  addTrack(albumId, newTrack) {
+    const album = this._artistsRepo.findAlbumById(albumId)
+    this._artistsRepo.findAuthorOfAlbum(album).addTrack(albumId, newTrack)
+  }
+
+  removeTrack(trackId) { // TODO: test
+    const track = this.findTracks(trackId)
+    this.removeFromAllPlaylist([track])
+    this.getAuthorOfTrack(track).removeTrack(track)
+  }
+
+  findTrackBy(aPredicate) {
+    return this.find(aPredicate)
+  }
+
+  findTrackById(id) {
+    return this.findTrackBy(track => track.id === id)
+  }
+
+  filterTracks(aPredicate) {
+    return this._artistsRepo.filterTracks(aPredicate)
   }
 
   /** QUERY MANY **/
-  getTracksMatchingGenres(genres) {
-    return this._artistsRepo.findAllTracksBy(track => track.matchSomeGenreFrom(genres))
-      }
-
   searchByNamePartial(aPartialName) {
-    return {
-      artists  : this._searchByNamePartialIn(this.artists  , aPartialName),
-      albums   : this._searchByNamePartialIn(this.albums   , aPartialName),
-      tracks   : this._searchByNamePartialIn(this.tracks   , aPartialName),
-      playlists: this._searchByNamePartialIn(this.playlists, aPartialName)
-    }
-  }
-
-  _searchByNamePartialIn(aCollection, aPartialName) {
-    return aCollection.filter(anEntity => RegExp(aPartialName).test(anEntity.name))
+    return this.filterAll(anEntity => RegExp(aPartialName).test(anEntity.name))
   }
 
   searchByName(aName) {
+    //return this.filterAll(entity => entity.name === aName)
+    return this.filterAll(entity => new RegExp(aName).test(entity.name))
+  }
+
+  filterAll(aPredicate) {
     return {
-      artists  : this._searchByNameIn(this.artists  , aName),
-      albums   : this._searchByNameIn(this.albums   , aName),
-      tracks   : this._searchByNameIn(this.tracks   , aName),
-      playlists: this._searchByNameIn(this.playlists, aName),
+      artists  : this._artistsRepo.filterArtists(aPredicate),
+      albums   : this._artistsRepo.filterAlbums(aPredicate),
+      tracks   : this._artistsRepo.filterTracks(aPredicate),
+      playlists: this.playlists.filter(aPredicate),
     }
   }
   
-  _searchByNameIn(aCollection, aName) {
-    //return aCollection.filter(anElement => anElement.name === aName)
-    return this._searchByNamePartialIn(aCollection, aName)
-  }
-  
-  // _getByIdIn(aCollectionName, id, errorMessage) {
-  //   return this._getByPredicateIn(aCollectionName, obj => obj.id === id, `No se encontro entidad con id ${id} en ${aCollectionName}`)
-  // }
-
-  // _getByPredicateIn(aCollectionName, predicate, errorMessage='Elemento no encontrado') {
-  //   const element = this[aCollectionName].find(predicate) 
-  //   if (element == undefined)
-  //     throw errorMessage
-  //   return element
-  // }
-
 }
