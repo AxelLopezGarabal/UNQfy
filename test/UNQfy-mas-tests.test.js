@@ -76,7 +76,7 @@ describe('UNQfy', () => {
             expect(playlist.tracks).to.be.empty
         })
 
-        xit('sus followers ya no lo siguen', () => {
+        xit('sus followers ya no lo siguen', () => { // TODO: completar
 
         })
     })

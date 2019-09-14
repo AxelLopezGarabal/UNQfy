@@ -7,8 +7,18 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha --recursive"
+            "name": "Mocha Tests",
+            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+            "args": [
+                "-u",
+                "tdd",
+                "--timeout",
+                "999999",
+                "--colors",
+                "${workspaceFolder}/test",
+                "--recursive"
+            ],
+            "internalConsoleOptions": "openOnSessionStart"
         }
     ]
 }

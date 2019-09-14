@@ -14,14 +14,14 @@ describe('AddTrackCommand', () => {
 
   const trackName = 'trackName'
   const duration  = "100"
-  const genres    = "['Genre1', 'Genre2']"//['Genre1', 'Genre2']
+  const genres    = "Genre1, Genre2"//['Genre1', 'Genre2']
   
   beforeEach(() => {
     unqfy   = new UNQfy()
     command = new AddTrackCommand()
   })
 
-  xit('correct arguments', () => {
+  it('correct arguments', () => {
     const anArtist  = unqfy.addArtist({ name: artistName, country: countryName })
     const anAlbum   = unqfy.addAlbum(anArtist.id, { name: albumName, year, genres })
 

@@ -8,14 +8,14 @@ describe('AddTrackCommand', () => {
 
   const trackName = 'trackName'
   const duration  = "100"
-  const genres    = "punk, folk"
+  const genres    = "punk, folk, qwerty"
 
   beforeEach(() => {
     unqfy = new UNQfy()
     command = new AddTrackCommand()
   })
 
-  xit('correct arguments', () => {
+  it('correct arguments', () => {
     const anArtist = unqfy.addArtist({ name: 'pepe', country: 'argentina' })
     const anAlbum  = unqfy.addAlbum(anArtist.id, { name: 'albumName', year: 2019 })
 
@@ -24,7 +24,7 @@ describe('AddTrackCommand', () => {
     expect(anAlbum.tracks).to.have.lengthOf(1)
     expect(anAlbum.tracks[0].name).to.equal(trackName)
     expect(anAlbum.tracks[0].duration).to.equal(duration)
-    expect(anAlbum.tracks[0].genres).to.include.members(['punk', 'folk'])
+    expect(anAlbum.tracks[0].genres).to.include.members(['punk', 'folk', 'qwerty'])
   })
 
   it('sobran argumentos', () => {
