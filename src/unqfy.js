@@ -38,7 +38,8 @@ class UNQfy {
 
   createPlaylistFor(userId, playlistName, genresToInclude, maxDuration) {
     const newPlaylist = this.createPlaylist(playlistName, genresToInclude, maxDuration)
-    this.getUserById(userId).registerPlaylist(newPlaylist)
+    const user        = this.getUserById(userId)
+    user.registerPlaylist(newPlaylist)
     return newPlaylist
   }
 
@@ -115,15 +116,17 @@ class UNQfy {
   }
   
   removeAlbum(albumId) {
-    const album = this.getAlbumById(albumId)
+    const album  = this.getAlbumById(albumId)
+    const artist = this.getAuthorOfAlbum(album)
     this._removeFromAllPlaylists(album.tracks)
-    this.getAuthorOfAlbum(album).removeAlbum(album)
+    artist.removeAlbum(album)
   }
   
   removeTrack(trackId) {
-    const track = this.getTrackById(trackId)
+    const track  = this.getTrackById(trackId)
+    const artist = this.getAuthorOfTrack(track)
     this._removeFromAllPlaylists([track])
-    this.getAuthorOfTrack(track).removeTrack(track)
+    artist.removeTrack(track)
   }
 
   removePlaylist(playlistId) {
