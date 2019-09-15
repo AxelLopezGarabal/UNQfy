@@ -61,7 +61,9 @@ class UNQfy {
   }
 
   removeArtist(artistId) {
-    this._entitiesRepository.removeArtist(artistId)
+    const artist = this.getArtistById(artistId)
+    this._removeFromAllPlaylists(artist.allTracks)
+    this._entitiesRepository.removeBy('artist'  , {prop: 'id', value: artistId})
   }
 
   existsArtistWithId(id) {
@@ -112,7 +114,7 @@ class UNQfy {
   }
 
   removePlaylist(playlistId) {
-    this._entitiesRepository.removePlaylist(playlistId)
+    this._entitiesRepository.removeBy('playlist', {prop: 'id', value: playlistId})
   }
 
   _removeFromAllPlaylists(tracks) {

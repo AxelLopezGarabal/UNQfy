@@ -22,6 +22,11 @@ class EntitiesRepository {
     this._entities(entityName).push(anEntity)
   }
 
+  removeBy(entityName, {prop, value}) {
+    const entity = this.findBy(entityName, {prop, value})
+    this._entities(entityName).remove(entity)
+  }
+
   find(entityName, aPredicate, errorMessage='') {
     const entity = this._entities(entityName).find(aPredicate)
     if (entity == undefined) throw new EntityNotFound(errorMessage)
@@ -53,17 +58,7 @@ class EntitiesRepository {
     }
   }
 
-  /***********************************/
-  removeArtist(artistId) {
-    const artist = this.findBy('artist', {prop: 'id', value: artistId})
-    this.removeFromAllPlaylist(artist.allTracks)
-    this.artists.remove(artist)
-  }
-
-  removePlaylist(playlistId){
-    this.playlists.remove(this.findBy('playlist', {prop: 'id', value: playlistId}))
-  }
-
+  ////////////////  
   removeFromAllPlaylist(tracks){
     this.playlists.forEach(playlist => playlist.removeAll(tracks))
   }
