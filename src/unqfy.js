@@ -120,7 +120,7 @@ class UNQfy {
   }
 
   /** BUSQUEDAS **/
-  searchByName(aName)               { return this._entitiesRepository.filterAll(entity => new RegExp(aName).test(entity.name)) }
+  searchByName(aName)               {return this._entitiesRepository.filterAll(entity => new RegExp(`\\b${aName}\\b`).test(entity.name))}
   searchByNamePartial(aPartialName) { return this._entitiesRepository.filterAll(entity => new RegExp(aPartialName).test(entity.name)) }
 
   getArtistById(id)      { return this._entitiesRepository.findBy('artist'  , {prop: 'id', value: id}) }
@@ -136,7 +136,7 @@ class UNQfy {
   }
 
   getTracksMatchingArtist(artistName) {
-    // TODO: en el test pasa "un artista" pero el parametro se llama "artistName"
+    // TODO: en los tests que nos pasaron se le pasa "un artista" pero el parametro se llama "artistName"
     //return this.getArtistByName(artistName).allTracks
     return artistName.allTracks
   }

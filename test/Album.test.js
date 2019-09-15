@@ -54,6 +54,17 @@ describe('Album', () => {
     expect(album.hasTrack(track02)).to.be.false
   })
 
+  it('no puede tener 2 tracks distintos que se llamen igual', () => {
+    const track01     = createTrackNamed('track01')
+    const otroTrack01 = createTrackNamed('track01')
+
+    album.addTrack(track01)
+
+    expect(() => {
+      album.addTrack(otroTrack01)
+    }).to.throw(`Ya existe un track llamado "${track01.name}" en el album "${album.name}"`)
+  })
+
 })
 
 function createTrackNamed(aName) {

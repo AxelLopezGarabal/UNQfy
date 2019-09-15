@@ -12,10 +12,8 @@ class EntityCreation {
     return this._newObject
   }
 
-  get _entityClass()          { throw 'Subclass responsability' }
-  get _targetCollectionName() { throw 'Subclass responsability' }
-
-  _validateDataObject()       { throw 'Subclass responsability' }
+  get _entityClass()    { throw 'Subclass responsability' }
+  _validateDataObject() { throw 'Subclass responsability' }
 
   _createObject() {
     this._newObject = new this._entityClass({ id: this._uniqueId, ...this._dataObject })

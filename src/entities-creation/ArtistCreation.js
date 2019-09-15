@@ -5,8 +5,9 @@ const SomeoneAlreadyRegisterUnderName = require('../exceptions/SomeoneAlreadyReg
 module.exports =
 class ArtistCreation extends EntityCreation {
 
-  get _entityClass()          { return Artist    }
-  get _targetCollectionName() { return 'artists' }
+  get _entityClass() {
+    return Artist
+  }
 
   _validateDataObject() {
     if (this._isArtistNameAlreadyRegister) {

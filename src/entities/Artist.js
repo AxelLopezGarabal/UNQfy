@@ -1,5 +1,5 @@
 require('../auxi/extenciones').extendArray()
-const { RepeatedAlbumInArtist, ArtistaNoTieneRegistradoUnAlbum } = require('../exceptions/all')
+const { RepeatedAlbumInArtist, ArtistaNoTieneRegistradoUnAlbum, RepeatedAlbumNameInArtist } = require('../exceptions/all')
 const AlreadyFollowedBySomeone = require('../exceptions/AlreadyFollowedBySomeone')
 
 class Artist {
@@ -41,7 +41,7 @@ class Artist {
 
   /* ALBUMS */
   addAlbum(anAlbum) {
-    this._validateIsNewAlbum(anAlbum)
+    this._validateNewAlbum(anAlbum)
     this.albums.push(anAlbum)
     this._notifyAll({artist: this, album: anAlbum})
   }
@@ -93,10 +93,15 @@ class Artist {
       throw new ArtistaNoTieneRegistradoUnAlbum(this, anAlbum)
   }
 
-  /* TRACK */
-  _validateIsNewAlbum(anAlbum) {
+  _validateNewAlbum(anAlbum) {
     if (this.isTheAuthorOfAlbum(anAlbum))
       throw new RepeatedAlbumInArtist(this, anAlbum)
+    if (this._hasAlbumCalled(anAlbum.name))
+      throw new RepeatedAlbumNameInArtist(this, anAlbum)
+  }
+
+  _hasAlbumCalled(aName) {
+    return this.albums.some(album => album.name === aName)
   }
 
   /* FOLLOWERS */

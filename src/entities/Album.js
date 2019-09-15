@@ -1,5 +1,5 @@
 require('../auxi/extenciones').extendArray()
-const { RepeatedTrackInAlbum } = require('../exceptions/all')
+const { RepeatedTrackInAlbum, RepeatedTrackNameInAlbum } = require('../exceptions/all')
 
 class Album {
 
@@ -34,10 +34,19 @@ class Album {
 
   // private
   _validateIsNewTrack(aTrack) {
-    if (this.tracks.includes(aTrack))
+    if (this._hasTrack(aTrack))
       throw new RepeatedTrackInAlbum(aTrack, this)
+    if (this._hasTrackNamed(aTrack.name))
+      throw new RepeatedTrackNameInAlbum(aTrack, this)
   }
 
+  _hasTrack(aTrack) {
+    return this.tracks.includes(aTrack)
+  }
+
+  _hasTrackNamed(aName) {
+    return this.tracks.some(track => track.name === aName)
+  }
 }
 
 module.exports = Album

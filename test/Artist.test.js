@@ -24,7 +24,7 @@ describe('Artist', () => {
 
   it('puede registrar albumes', () => {
     const album1 = createAlbum('album1')
-    const album2 = createAlbum('album1')
+    const album2 = createAlbum('album2')
 
     artista.addAlbum(album1)
     artista.addAlbum(album2)
@@ -53,7 +53,7 @@ describe('Artist', () => {
     const track01 = createTrack()
     const track02 = createTrack()
     const album01 = createAlbum('album01', [track01])
-    const album02 = createAlbum('album01', [track02])
+    const album02 = createAlbum('album02', [track02])
     artista.addAlbum(album01)
     artista.addAlbum(album02)
 
@@ -65,7 +65,7 @@ describe('Artist', () => {
     const track01 = createTrack()
     const track02 = createTrack()
     const album01 = createAlbum('album01', [track01])
-    const album02 = createAlbum('album01', [track02])
+    const album02 = createAlbum('album02', [track02])
     artista.addAlbum(album01)
     artista.addAlbum(album02)
     
@@ -88,7 +88,7 @@ describe('Artist', () => {
     const track01 = createTrack()
     const track02 = createTrack()
     const album01 = createAlbum('album01', [track01])
-    const album02 = createAlbum('album01', [track02])
+    const album02 = createAlbum('album02', [track02])
     artista.addAlbum(album01)
     artista.addAlbum(album02)
     

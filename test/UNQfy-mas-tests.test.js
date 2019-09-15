@@ -13,10 +13,10 @@ describe('UNQfy', () => {
     beforeEach(() => {
         unqfy = new UNQfy()
         artist       = unqfy.addArtist(makeArtistData())
-        album01      = unqfy.addAlbum(artist.id, makeAlbumData())
+        album01      = unqfy.addAlbum(artist.id, makeAlbumData('album01'))
         trackAlbum01 = unqfy.addTrack(album01.id, {name: 't1', duration: 100, genres: ['punk']})
         
-        album02      = unqfy.addAlbum(artist.id, makeAlbumData())
+        album02      = unqfy.addAlbum(artist.id, makeAlbumData('album02'))
         trackAlbum02 = unqfy.addTrack(album02.id, {name: 't2', duration: 100, genres: ['punk']})
 
         playlist     = unqfy.createPlaylist('name', ['punk'], 1000000)
@@ -256,7 +256,7 @@ describe('UNQfy', () => {
 })
 
 const makeArtistData = () => ({name: 'pepe', country: 'argentina'})
-const makeAlbumData  = () => ({ })
+const makeAlbumData  = name => ({ name })
 const makeTrackData  = () => ({ })
 
 function createAndAddArtist(unqfy, artistName, country) {

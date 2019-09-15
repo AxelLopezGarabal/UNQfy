@@ -10,5 +10,6 @@ module.exports = {
     ArtistsCommand:       require('./ArtistsCommand'),
     AlbumsCommand:        require('./AlbumsCommand'),
     TracksCommand:        require('./TracksCommand'),
-    RemoveTrackCommand:   require('./RemoveTrackCommand')
+    RemoveTrackCommand:   require('./RemoveTrackCommand'),
+    CreatePlaylistCommand:require('./CreatePlaylistCommand')
 }

@@ -5,20 +5,12 @@ const ArtistNotFound = require('../exceptions/ArtistNotFound')
 module.exports =
 class AlbumCreation extends EntityCreation {
 
-  get _entityClass()          { return Album    }
-  get _targetCollectionName() { return 'albums' }
+  get _entityClass() {
+    return Album
+  }
 
   _validateDataObject() {
-    // if (this._artistNotFound) {
-    //   throw new ArtistNotFound(this._artistId)
-    // }
+    
   }
 
-  get _artistNotFound() {
-    return !this._unqfy.existsArtistWithId(this._artistId)
-  }
-
-  get _artistId() {
-    return this._dataObject.artistId
-  }
 }
