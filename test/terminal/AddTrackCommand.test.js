@@ -23,7 +23,7 @@ describe('AddTrackCommand', () => {
 
     expect(anAlbum.tracks).to.have.lengthOf(1)
     expect(anAlbum.tracks[0].name).to.equal(trackName)
-    expect(anAlbum.tracks[0].duration).to.equal(duration)
+    expect(anAlbum.tracks[0].duration).to.equal(parseInt(duration))
     expect(anAlbum.tracks[0].genres).to.include.members(['punk', 'folk', 'qwerty'])
   })
 

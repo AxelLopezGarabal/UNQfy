@@ -4,7 +4,8 @@ const nameRegex          = /^[a-z]+$/i
 const countryNameRegex   = /^[a-z\s]+$/i
 const naturalNumberRegex = /^\d+$/
 const alphanumericRegex  = /.+/
-const arrayRegex         = /^\[(.+)*\]$/ // Esto es re pedorro, esperemos que el profe no lea esto
+//const arrayRegex         = /^\[(.+)*\]$/ // Esto es re pedorro, esperemos que el profe no lea esto
+const arrayRegex         = /^(.+)*$/ // Esto es re pedorro, esperemos que el profe no lea esto
 
 module.exports = {
 
@@ -37,7 +38,7 @@ module.exports = {
 		name: name,
 		typeDescription: 'un arreglo',
 		validationRegex: arrayRegex,
-		parseFunction: aString => eval(aString)
+		parseFunction: aString => aString.split(',').map(string => string.trim())
 	})
 
 }

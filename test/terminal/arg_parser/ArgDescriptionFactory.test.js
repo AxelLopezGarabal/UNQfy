@@ -34,24 +34,18 @@ describe('Factory', () => {
     const parser = factory.arrayArgumentDescription('xs')
 
     it('ok empty array', () =>{
-      expect(parser.parse('[]')).to.eql([])
+      expect(parser.parse('')).to.eql([''])
     })
 
     it('ok array con un elemento', () =>{
-      expect(parser.parse('[1]')).to.eql([1])
+      expect(parser.parse('a')).to.eql(['a'])
     })
 
     it('ok array con varios elementos', () =>{
-      expect(parser.parse('[1,2]')).to.eql([1,2])
-      expect(parser.parse('[1, 2]')).to.eql([1,2])
-      expect(parser.parse('[1, 2, 3]')).to.eql([1,2,3])
+      expect(parser.parse('1,2')).to.eql(['1','2'])
+      expect(parser.parse('1, 2')).to.eql(['1','2'])
+      expect(parser.parse('1, 2, 3')).to.eql(['1','2','3'])
     })
-
-
-    it('caca', () =>{
-      expect(() => {
-        parser.parse('a')
-      }).to.throw('Argumento invalido para "xs", se esperaba un arreglo. Valor provisto: "a"')
-    })
+    
   })
 })

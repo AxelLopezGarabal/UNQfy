@@ -18,8 +18,6 @@ class ArgDescription {
 
   get name() { return this._name }
 
-  get parser() {return parseFunction}
-
   parse(stringToParse) {
     this._validate(stringToParse)
     return this._parseFunction(stringToParse)

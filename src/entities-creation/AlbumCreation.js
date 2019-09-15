@@ -10,7 +10,6 @@ class AlbumCreation extends EntityCreation {
 
   _validateDataObject() {
     // if (this._artistNotFound) {
-    //   console.log("----------_>>>",this._unqfy.getArtistById(this._artistId))
     //   throw new ArtistNotFound(this._artistId)
     // }
   }

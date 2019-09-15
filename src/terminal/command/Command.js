@@ -20,8 +20,7 @@ class Command {
     }
     
     _parse(argsToParse) {
-        return this._argsDescription.map((argDescription, index) =>
-            argDescription.parse(argsToParse[index]))
+        return this._argsDescription.map((argDescription, index) => argDescription.parse(argsToParse[index]))
     }
 
     _arrange(args) { // Hook method
