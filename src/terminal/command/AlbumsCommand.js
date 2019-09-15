@@ -7,8 +7,4 @@ class AlbumsCommand extends Command { // TODO: testear
         return 'albums'
     }
 
-    get _argsDescription() {
-        return []
-    }
-
 }

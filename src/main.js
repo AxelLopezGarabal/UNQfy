@@ -47,30 +47,15 @@ function saveUNQfy(unqfy, filename = 'data.json') {
   unqfy.save(filename)
 }
 
-//> >  DONE < <
-//node main addArtist "Deadmau5" "Canada"
-//node main addAlbum "Deadmau5" "2x4" "2012"
-//node main addTrack "2x4" "Animal Rigths" "200s" ["electro"] << TODO le cambia el nombre al artista por el del album
-//node main createPlaylist Playlist_name, genres, MAX_duration
-//node main removeArtista "Deadmau5" 
-//node main removeAlbum "Deadmau5" "2x4"
-//node main removePlaylist Playlist_name
-
-//> >  TODO < <
-
-
-//node main removeTrack "2x4" "Animal Rigths"
-
-
 function main() {
   const unqfy    = getUNQfy('backUp.json')
-  const terminal = new Terminal(unqfy)
+
+  const terminal = new Terminal({unqfy})
+  // const terminal = new Terminal({unqfy, resultHandler: result => console.log(JSON.stringify(result, null, '    '))})
 
   const [,,commandName, ...args] = process.argv
-
+  
   terminal.run(commandName, args)
-
-  //console.log(unqfy)
 
   saveUNQfy(unqfy, 'backUp.json')
 }

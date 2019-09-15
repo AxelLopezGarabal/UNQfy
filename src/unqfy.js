@@ -141,6 +141,10 @@ class UNQfy {
     return artistName.allTracks
   }
 
+  getTracksMatchingArtistName(artistName) {
+    return this.getArtistByName(artistName).allTracks
+  }
+
   _getAuthorOfAlbum(anAlbum) {
     return this._entitiesRepository.find('artist', artist => artist.isTheAuthorOfAlbum(anAlbum))
   }

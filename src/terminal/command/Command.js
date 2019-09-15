@@ -23,12 +23,15 @@ class Command {
         return this._argsDescription.map((argDescription, index) => argDescription.parse(argsToParse[index]))
     }
 
+    get name()             { throw 'Subclass responsability' }
+
     _arrange(args) { // Hook method
         return [...args]
     }
 
-    get name()             { throw 'Subclass responsability' }
-    get _argsDescription() { throw 'Subclass responsability' }
+    get _argsDescription() { // Hook method
+        return []
+    }
 
     get _expectedNumberOfArgs() {
         return this._argsDescription.length

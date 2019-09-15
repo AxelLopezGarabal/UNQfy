@@ -7,8 +7,4 @@ class TracksCommand extends Command { // TODO: testear
         return 'tracks'
     }
 
-    get _argsDescription() {
-        return []
-    }
-
 }

@@ -8,13 +8,9 @@ const defaultErrorHandler  = error  => console.log(error.message)
 module.exports =
 class Terminal {
 
-    constructor(
-        anUNQfy,
-        commands= defaultCommands,
-        resultHandler=defaultResultHandler,
-        errorHandler=defaultErrorHandler)
+    constructor({unqfy, commands=defaultCommands, resultHandler=defaultResultHandler, errorHandler=defaultErrorHandler})
     {
-        this._unqfy         = anUNQfy
+        this._unqfy         = unqfy
         this._commands      = commands
         this._resultHandler = resultHandler
         this._errorHandler  = errorHandler
