@@ -1,0 +1,814 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>4</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>360</x>
+      <y>160</y>
+      <w>204</w>
+      <h>388</h>
+    </coordinates>
+    <panel_attributes>UNQfy
+--
+_entitiesRepository
+_nextId
+--
+constructor(entitiesRepository)
+-------------------------------------------
+
+_generateUniqueId()
+
+/* ENTIDADES */
+playlists()
+artists()
+albums()
+tracks(
+
+/* USER */
+addUser({name})
+registerListening(userId, trackId)
+
+/* ARTIST */
+addArtist({name, country})
+removeArtist(artistId)
+existsArtistWithId(id)
+existSomeoneCalled(aName)
+_getAuthorOfAlbum(anAlbum)
+getAuthorOfTrack(aTrack)
+
+/* ALBUM */
+addAlbum(artistId, {name, year})
+removeAlbum(albumId)
+_getAlbumContaining(aTrack)
+
+/* TRACK */
+addTrack(albumId, {name, duration, genres})
+removeTrack(trackId)
+
+/* PLAYLIST */
+createPlaylistFor(userId, playlistName, genresToInclude, maxDuration)
+createPlaylist(name, genresToInclude, maxDuration)
+removePlaylist(playlistId)
+_removeFromAllPlaylists(tracks)
+
+/** BUSQUEDAS **/
+searchByName(aName)
+searchByNamePartial(aPartialName)
+
+getArtistById(id)
+getAlbumById(id)
+getTrackById(id)
+getPlaylistById(id)
+getUserById(id)
+
+getArtistByName(aName)
+
+getTracksMatchingGenres(genres)
+getTracksMatchingArtist(artistName)
+getTracksMatchingArtistName(artistName)
+
+findBy(entityName, {prop, value})
+filterAllBy({prop, value})</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>588</x>
+      <y>160</y>
+      <w>140</w>
+      <h>204</h>
+    </coordinates>
+    <panel_attributes>EntitiesRepository 
+--
+_artists
+_users
+_playlists
+--
+constructor(artists, users, playlists)
+-------------------------------------------------
+
+artists()
+albums()
+tracks()
+users()
+playlists()
+
+_entities(entityName)
+
+add(entityName, anEntity)
+removeBy(entityName, {prop, value})
+removeFromAllPlaylist(tracks)
+
+find(entityName, aPredicate, errorMessage)
+findBy(entityName, {prop, value})
+
+filterAllBy({prop, value})
+filter(entityName, aPredicate)
+filterBy(entityName, {prop, value})
+filterAll(aPredicate)
+
+someHas(entityName, {prop, value})
+
+forEach(entityName, aFunction)
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>560</x>
+      <y>172</y>
+      <w>36</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1</panel_attributes>
+    <additional_attributes>70.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>924</x>
+      <y>160</y>
+      <w>112</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>Album
+--
+_id
+_name
+_year
+_tracks
+--
+constructor({id, name, year, tracks})
+--------------------------------------------------
+
+id()
+name()
+year()
+tracks()
+
+set name(newName)
+
+hasTrack(aTrack)
+hasTrackNamed(aName)
+
+addTrack(aTrack)
+removeTrack(aTrack)
+
+_validateIsNewTrack(aTrack)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>756</x>
+      <y>160</y>
+      <w>132</w>
+      <h>384</h>
+    </coordinates>
+    <panel_attributes>Artist
+--
+_id
+_name
+_country
+_albums
+_followers
+_othersListeningsOfHisArt
+--
+constructor({id, name, country})
+----------------------------------------------
+
+isTheAuthorOfAlbum(anAlbum)
+
+isTheAuthorOfTrack(aTrack)
+
+isFollowedBy(aUser)
+
+id()
+name()
+country()
+albums()
+followers()
+allTracks()
+othersListeningsOfHisArt()
+
+set name(newName)
+set albums(newalbums)
+
+/* ALBUMS */
+addAlbum(anAlbum)
+
+removeAlbum(anAlbum)
+
+findAlbum(aPredicate)
+findAlbumById(albumId)
+findAlbumByName(albumName)
+
+/* TRACKS */
+addTrackTo(anAlbum, aTrack)
+
+removeTrack(aTrack)
+
+/* FOLLOWERS */
+addFollower(aUser)
+registerOthersListeningsOfHisArt(aListening)
+
+/* PRIVATE */
+/* ALBUM */
+_validateisTheAuthorOfAlbum(anAlbum)
+
+_validateNewAlbum(anAlbum)
+
+_hasAlbumCalled(aName)
+
+/* FOLLOWERS */
+_notifyAll(aNotification)
+
+_validateNewFollower(aUser)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>884</x>
+      <y>176</y>
+      <w>48</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..n</panel_attributes>
+    <additional_attributes>100.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>724</x>
+      <y>172</y>
+      <w>40</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..n</panel_attributes>
+    <additional_attributes>80.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1056</x>
+      <y>160</y>
+      <w>148</w>
+      <h>124</h>
+    </coordinates>
+    <panel_attributes>Track
+--
+_id
+_name
+_duration
+_genres
+--
+constructor({ id, name, duration, genres })
+----------------------------------------------------------
+
+id()
+name()
+duration()
+genres()
+
+set name(newName)
+
+matchGenre(aGenre)
+matchSomeGenreFrom(genres)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1032</x>
+      <y>172</y>
+      <w>32</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..n</panel_attributes>
+    <additional_attributes>60.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>756</x>
+      <y>552</y>
+      <w>132</w>
+      <h>244</h>
+    </coordinates>
+    <panel_attributes>User
+--
+_id
+_name
+_notifications
+_followings
+_listenings
+_playlists
+--
+constructor({ id, name })
+----------------------------------- 
+
+id()
+name()
+notifications()
+listenings()
+listenedTracks()
+playlists()
+followings()
+
+hasListened(aTrack)
+isFollowing(anArtist)
+
+timesListened(aTrack)
+mostListenedTracks(amountResults)
+
+addToHistory(aListening)
+
+registerPlaylist(aPlaylist)
+removePlaylist(aPlaylist)
+
+follow(anArtist)
+addNotification(aNotification)
+
+get _allListenedTracksInOrder()
+_allListeneningsOf(aTrack)
+
+_validateCanFollow(anArtist)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>724</x>
+      <y>188</y>
+      <w>40</w>
+      <h>400</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..n</panel_attributes>
+    <additional_attributes>80.0;970.0;40.0;970.0;40.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>936</x>
+      <y>600</y>
+      <w>132</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>Playlist
+--
+_id
+_name
+_tracks
+--
+constructor({ id, name, tracks })
+----------------------------------------------
+
+id()
+name()
+tracks()
+duration()
+
+set name(newName)
+
+addTrack(aTrack)
+addAllTracks(tracks)
+
+hasTrack(aTrack)
+
+removeTrack(aTrack)
+removeAll(tracks)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>884</x>
+      <y>576</y>
+      <w>60</w>
+      <h>52</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..n</panel_attributes>
+    <additional_attributes>130.0;100.0;80.0;100.0;80.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>936</x>
+      <y>492</y>
+      <w>132</w>
+      <h>92</h>
+    </coordinates>
+    <panel_attributes>Listening
+--
+_listener
+_artist
+_album
+_track
+--
+constructor({listener, artist, album, track})
+----------------------------------------------------------
+
+listener()
+artist()
+album()
+track()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>884</x>
+      <y>512</y>
+      <w>60</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..n</panel_attributes>
+    <additional_attributes>130.0;10.0;80.0;10.0;80.0;140.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>884</x>
+      <y>192</y>
+      <w>60</w>
+      <h>328</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..n</panel_attributes>
+    <additional_attributes>130.0;790.0;80.0;790.0;80.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>148</x>
+      <y>124</y>
+      <w>184</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>Terminal
+--
+_unqfy
+_commands
+_resultHandler
+_errorHandler
+--
+constructor({unqfy, commands, resultHandler, errorHandler})
+-----------------------------------------------------------------------------------------------------------------------------------
+
+run(commandName, args)
+findCommand(commandName)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>328</x>
+      <y>156</y>
+      <w>40</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1</panel_attributes>
+    <additional_attributes>80.0;50.0;30.0;50.0;30.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>360</x>
+      <y>36</y>
+      <w>112</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>Command
+&lt;&lt; abstract &gt;&gt;
+--
+handle(unqfy, args)
+
+_validate(args)
+_excecute(unqfy, args)
+_parse(argsToParse)
+
+/name()/                Abstract method
+_arrange(args)       Hook method
+_argsDescription()  Hook method
+
+_argsNames()
+_expectedNumberOfArgs()
+
+_hasCorrectNumberOfArgs(args)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>328</x>
+      <y>48</y>
+      <w>40</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..n </panel_attributes>
+    <additional_attributes>80.0;10.0;30.0;10.0;30.0;230.0;10.0;230.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>492</x>
+      <y>36</y>
+      <w>96</w>
+      <h>116</h>
+    </coordinates>
+    <panel_attributes>ArgDescription
+--
+_name
+_typeDescription
+_validationRegex
+_parseFunction
+--
+constructor({
+  name,
+  typeDescription,
+  validationRegex,
+  parseFunction = (x =&gt; x)
+})
+---------------------------
+name()
+parse(stringToParse)
+
+_validate(stringToParse)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>468</x>
+      <y>52</y>
+      <w>32</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..n</panel_attributes>
+    <additional_attributes>60.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>588</x>
+      <y>368</y>
+      <w>140</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>PlaylistGenerator
+--
+generate(
+    id,
+    playlistName,
+    genresToInclude,
+    maxDuration,
+    tracksToChooseFrom)
+
+_createEmptyPlaylist(id, name)
+
+_doesNotExcedeMaxDurationAfterAddingTo(
+    aPlaylist,
+    aTrack,
+    aDuration)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>560</x>
+      <y>176</y>
+      <w>36</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1</panel_attributes>
+    <additional_attributes>70.0;520.0;40.0;520.0;40.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>588</x>
+      <y>472</y>
+      <w>140</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>EntityCreation
+&lt;&lt;abstract&gt;&gt;
+--
+_unqfy
+_dataObject
+--
+constructor(anUNQfy, dataObject)
+-------------------------------------
+
+handle()
+
+_validateDataObject()   abstract method
+_createObject()
+
+_entityClass()                abstract method
+_uniqueId()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>952</x>
+      <y>88</y>
+      <w>60</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>Entity
+&lt;&lt; iterface &gt;&gt;
+--
+id()
+name()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>468</x>
+      <y>604</y>
+      <w>100</w>
+      <h>52</h>
+    </coordinates>
+    <panel_attributes>ArtistCreation
+--
+get _entityClass()
+_validateDataObject()
+
+_isArtistNameAlreadyRegister()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>512</x>
+      <y>572</y>
+      <w>152</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>360.0;10.0;360.0;50.0;10.0;50.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>572</x>
+      <y>604</y>
+      <w>72</w>
+      <h>52</h>
+    </coordinates>
+    <panel_attributes>AlbumCreation
+--
+_entityClass()
+_validateDataObject()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>604</x>
+      <y>572</y>
+      <w>60</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>130.0;10.0;130.0;50.0;10.0;50.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>648</x>
+      <y>604</y>
+      <w>72</w>
+      <h>52</h>
+    </coordinates>
+    <panel_attributes>TrackCreation
+--
+_entityClass()
+_validateDataObject()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>368</x>
+      <y>604</y>
+      <w>96</w>
+      <h>52</h>
+    </coordinates>
+    <panel_attributes>UserCreation
+--
+_entityClass()
+_validateDataObject()
+_isArtistNameAlreadyRegister()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>408</x>
+      <y>572</y>
+      <w>256</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>620.0;10.0;620.0;50.0;10.0;50.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>652</x>
+      <y>572</y>
+      <w>44</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0;90.0;50.0;90.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>976</x>
+      <y>120</y>
+      <w>12</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>480</x>
+      <y>44</y>
+      <w>36</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1</panel_attributes>
+    <additional_attributes>70.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>820</x>
+      <y>120</y>
+      <w>168</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>400.0;10.0;400.0;50.0;10.0;50.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>976</x>
+      <y>120</y>
+      <w>160</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0;380.0;50.0;380.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>884</x>
+      <y>120</y>
+      <w>340</w>
+      <h>656</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>240.0;10.0;240.0;50.0;830.0;50.0;830.0;1620.0;10.0;1620.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>976</x>
+      <y>120</y>
+      <w>248</w>
+      <h>500</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0;600.0;50.0;600.0;1230.0;230.0;1230.0</additional_attributes>
+  </element>
+</diagram>
