@@ -29,18 +29,14 @@
 */
 
 const fs       = require('fs') // necesitado para guardar/cargar unqfy
-const unqmod   = require('./unqfy') // importamos el modulo unqfy
+const {UNQfy}  = require('./unqfy') // importamos el modulo unqfy
 const Terminal = require('./terminal/Terminal')
-const Command  = require('./terminal/command/Command')
-
 
 // Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
 function getUNQfy(filename = 'data.json') {
-  let unqfy = new unqmod.UNQfy()
-  if (fs.existsSync(filename)) {
-    unqfy = unqmod.UNQfy.load(filename)
-  }
-  return unqfy
+  return fs.existsSync(filename)
+      ? UNQfy.load(filename)
+      : new UNQfy()
 }
 
 function saveUNQfy(unqfy, filename = 'data.json') {
@@ -50,8 +46,9 @@ function saveUNQfy(unqfy, filename = 'data.json') {
 function main() {
   const unqfy    = getUNQfy('backUp.json')
 
-  const terminal = new Terminal({unqfy})
-  // const terminal = new Terminal({unqfy, resultHandler: result => console.log(JSON.stringify(result, null, '    '))})
+  //const terminal = new Terminal({unqfy})
+  const terminal = new Terminal({unqfy, resultHandler: result => console.log(JSON.stringify(result, null, '    '))})
+  // const terminal = new Terminal({unqfy, resultHandler: result => console.log(JSON.stringify(result))})
 
   const [,,commandName, ...args] = process.argv
   

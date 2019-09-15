@@ -3,7 +3,7 @@ const NullCommand    = require('./command/NullCommand')
 
 const defaultCommands = Object.values(commandsModule).map(aClass => new aClass())
 const defaultResultHandler = result => console.log(result)
-const defaultErrorHandler  = error  => console.log(error.message)
+const defaultErrorHandler  = error  => console.error(error.message)
 
 module.exports =
 class Terminal {

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>UNQfy desktop terminal</title>
+  <style>
+    body { font-family: 'sans-serif' }
+    label { font-weight: bold }
+    .error-message { color: red }
+    .result      { float: left }
+    .system-info { float: right }
+  </style>
+</head>
+<body>
+  <div>
+    <h1>UNQfy desktop terminal</h1>
+    <div id="app">
+      <form action="" onsubmit="event => event.preventDefault()">
+        <label>Command:</label>
+        <input v-model="commandText" placeholder="Enter command">
+        <input @click="runCurrentCommand" id="run-button"   type="button" value="Run">
+      </form>
+      <div id="output">
+        <div class="result">
+            <ul>
+              <li v-for="(value, prop) in commandOutput.returned">
+                  <b>{{ prop }}:</b> {{ value }}
+              </li>
+            </ul>
+            <div class="error-message">{{ errorMessage }}</div>
+        </div>
+
+        <div class="system-info">
+            <div>
+                <h3>ARTISTS</h3>
+                <ul>
+                  <li v-for="artist in artists">
+                      <p v-for="(value, prop) in artist">
+                          <b>{{ prop }}:</b> {{ value }}
+                      </p>
+                  </li>
+                </ul>
+              </div>
+              
+              <div>
+                <h3>ALBUMS</h3>
+                <ul>
+                  <li v-for="album in albums">
+                      <p v-for="(value, prop) in album">
+                          <b>{{ prop }}:</b> {{ value }}
+                      </p>
+                  </li>
+                </ul>
+              </div>
+      
+              <div>
+                <h3>TRACKS</h3>
+                <ul>
+                  <li v-for="track in tracks">
+                      <p v-for="(value, prop) in track">
+                          <b>{{ prop }}:</b> {{ value }}
+                      </p>
+                  </li>
+                </ul>
+              </div>
+        </div>
+
+      </div>
+
+    </div>
+    
+    <script>
+      require('./desktop-index-renderer')
+    </script>
+  </div>
+</body>
+</html>
