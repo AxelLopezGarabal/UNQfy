@@ -37,16 +37,21 @@ class EntitiesRepository {
     return this.find(entityName, entity => entity[prop] === value, `Could not find "${entityName}" with "${prop}" equal to "${value}"`)
   }
 
+  filterAllBy({prop, value}) {
+    return {
+      artists  : this.filterBy('artist', {prop, value}),
+      albums   : this.filterBy('album', {prop, value}),
+      tracks   : this.filterBy('track', {prop, value}),
+      playlists: this.filterBy('playlist', {prop, value}),
+    } 
+  }
+
   filter(entityName, aPredicate) {
     return this._entities(entityName).filter(aPredicate)
   }
 
-  someHas(entityName, {prop, value}) {
-    return this._entities(entityName).some(entiry => entiry[prop] === value)
-  }
-
-  forEach(entityName, aFunction) {
-    this._entities(entityName).forEach(aFunction)
+  filterBy(entityName, {prop, value}) {
+    return this.filter(entityName, entityName => entityName[prop] === value)
   }
 
   filterAll(aPredicate) {
@@ -56,6 +61,14 @@ class EntitiesRepository {
       tracks   : this.tracks.filter(aPredicate),
       playlists: this.playlists.filter(aPredicate),
     }
+  }
+
+  someHas(entityName, {prop, value}) {
+    return this._entities(entityName).some(entiry => entiry[prop] === value)
+  }
+
+  forEach(entityName, aFunction) {
+    this._entities(entityName).forEach(aFunction)
   }
 
   ////////////////  

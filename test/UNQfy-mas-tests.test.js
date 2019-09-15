@@ -248,6 +248,42 @@ describe('UNQfy', () => {
         })
     })
 
+    describe('busqueda general', () => {
+        let artistPedro
+        let artistMartin
+        let albumNoLloresPorMiArgentina
+        let albumGelatina
+        let tinaTinaTinaTrack
+        let baileLocoTrack
+        beforeEach(() => {
+            artistPedro                 = unqfy.addArtist({name: 'pedro', country: 'argentina'})
+            artistMartin                = unqfy.addArtist({name: 'martin', country: 'argentina'})
+            albumNoLloresPorMiArgentina = unqfy.addAlbum(artistPedro.id, {name: 'no llores por mi argentina', year: 2019})
+            albumGelatina               = unqfy.addAlbum(artistMartin.id, {name: 'gelatina', year: 2020})
+            tinaTinaTinaTrack           = unqfy.addTrack(albumNoLloresPorMiArgentina.id, {name: 'tina tina tina', duration: 22, genres: []})
+            baileLocoTrack              = unqfy.addTrack(albumGelatina.id, {name: 'baile loco', duration: 11, genres: ['latino']})
+        })
+        it('busqueda por property en entity especifica', () => {            
+            const artistResult   = unqfy.findBy('artist', { prop: 'name', value: 'martin' })
+            const albumResult    = unqfy.findBy('album', { prop: 'year', value: 2020 })
+            const trackResult    = unqfy.findBy('track', { prop: 'duration', value: 22 })
+
+            expect(artistResult).to.equal(artistMartin)
+            expect(albumResult).to.equal(albumGelatina)
+            expect(trackResult).to.equal(tinaTinaTinaTrack)
+        })
+
+        it('busqueda por property entre todas las entities', () => {            
+            const allResult01 = unqfy.filterAllBy({ prop: 'name', value: 'martin' })
+            const allResult02 = unqfy.filterAllBy({ prop: 'year', value: 2020 })
+            const allResult03 = unqfy.filterAllBy({ prop: 'duration', value: 22 })
+            
+            expect(allResult01).to.eql({artists: [artistMartin], albums: [], tracks: [], playlists: []})
+            expect(allResult02).to.eql({artists: [], albums: [albumGelatina], tracks: [], playlists: []})
+            expect(allResult03).to.eql({artists: [], albums: [],tracks: [tinaTinaTinaTrack], playlists: []})
+        })
+    })
+
     // describe('following', () => {
     //     it('registra el seguimiento de un artista por un usuario', () => {
     //         const user = unqfy.addUser({name: 'userName'})

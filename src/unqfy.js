@@ -155,6 +155,14 @@ class UNQfy {
     return this._entitiesRepository.find('artist', artist => artist.isTheAuthorOfTrack(aTrack))
   }
 
+  findBy(entityName, {prop, value}) {
+    return this._entitiesRepository.findBy(entityName, {prop, value})
+  }
+
+  filterAllBy({prop, value}) {
+    return this._entitiesRepository.filterAllBy({prop, value})
+  }
+
   /** PERSISTENCIA **/
   save(filename) {
     const listenersBkp = this.listeners

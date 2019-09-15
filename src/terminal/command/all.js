@@ -16,5 +16,7 @@ module.exports = {
     SearchByNamePartial  :       require('./SearchByNamePartial'),
     GetTracksMatchingArtistName: require('./GetTracksMatchingArtistName'),
     GetTracksMatchingGenres:     require('./GetTracksMatchingGenres'),
-    RemovePlaylistCommand:       require('./RemovePlaylistCommand')
+    RemovePlaylistCommand:       require('./RemovePlaylistCommand'),
+    FindByCommand:               require('./FindByCommand'),
+    FilterAllByCommand:          require('./FilterAllByCommand')
  }
