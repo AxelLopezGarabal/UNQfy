@@ -18,6 +18,10 @@ class EntitiesRepository {
 
   _entities(entityName) { return this[`${entityName}s`] }
 
+  add(entityName, anEntity) {
+    this._entities(entityName).push(anEntity)
+  }
+
   find(entityName, aPredicate, errorMessage='') {
     const entity = this._entities(entityName).find(aPredicate)
     if (entity == undefined) throw new EntityNotFound(errorMessage)
@@ -49,14 +53,11 @@ class EntitiesRepository {
     }
   }
 
-  /******* USER **************/
-  addUser(aUser) {
-    this._users.push(aUser)
-  }
-
-  /******* PLAYLIST **************/
-  addPlaylist(newPlaylist) {
-    this.playlists.push(newPlaylist)
+  /***********************************/
+  removeArtist(artistId) {
+    const artist = this.findBy('artist', {prop: 'id', value: artistId})
+    this.removeFromAllPlaylist(artist.allTracks)
+    this.artists.remove(artist)
   }
 
   removePlaylist(playlistId){
@@ -65,17 +66,6 @@ class EntitiesRepository {
 
   removeFromAllPlaylist(tracks){
     this.playlists.forEach(playlist => playlist.removeAll(tracks))
-  }
-
-  /******* ARTIST **************/
-  addArtist(newArtist) {
-    this.artists.push(newArtist)
-  }
-
-  removeArtist(artistId) {
-    const artist = this.findBy('artist', {prop: 'id', value: artistId})
-    this.removeFromAllPlaylist(artist.allTracks)
-    this.artists.remove(artist)
   }
   
 }

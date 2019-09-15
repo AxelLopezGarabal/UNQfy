@@ -23,6 +23,10 @@ class Album {
     return this.tracks.includes(aTrack)
   }
 
+  hasTrackNamed(aName) {
+    return this.tracks.some(track => track.name === aName)
+  }
+
   addTrack(aTrack) {
     this._validateIsNewTrack(aTrack)
     this.tracks.push(aTrack)
@@ -34,19 +38,12 @@ class Album {
 
   // private
   _validateIsNewTrack(aTrack) {
-    if (this._hasTrack(aTrack))
+    if (this.hasTrack(aTrack))
       throw new RepeatedTrackInAlbum(aTrack, this)
-    if (this._hasTrackNamed(aTrack.name))
+    if (this.hasTrackNamed(aTrack.name))
       throw new RepeatedTrackNameInAlbum(aTrack, this)
   }
 
-  _hasTrack(aTrack) {
-    return this.tracks.includes(aTrack)
-  }
-
-  _hasTrackNamed(aName) {
-    return this.tracks.some(track => track.name === aName)
-  }
 }
 
 module.exports = Album

@@ -26,7 +26,7 @@ class UNQfy {
   /////////////////////
   addUser({name}) {
     const newUser = new UserCreation(this, {name}).handle()
-    this._entitiesRepository.addUser(newUser)
+    this._entitiesRepository.add('user', newUser)
     return newUser
   }
 
@@ -56,7 +56,7 @@ class UNQfy {
   /* ARTIST */
   addArtist({name, country}) {
     const newArtist = new ArtistCreation(this, {name, country}).handle()
-    this._entitiesRepository.addArtist(newArtist)
+    this._entitiesRepository.add('artist', newArtist)
     return newArtist
   }
 
@@ -107,7 +107,7 @@ class UNQfy {
   /* PLAYLIST */
   createPlaylist(name, genresToInclude, maxDuration) {
     const newPlaylist = new PlaylistGenerator().generate(this._generateUniqueId(), name, genresToInclude, maxDuration, this.tracks)
-    this._entitiesRepository.addPlaylist(newPlaylist)
+    this._entitiesRepository.add('playlist', newPlaylist)
     return newPlaylist
   }
 
