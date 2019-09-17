@@ -19,12 +19,12 @@ new Vue({
         result => this.commandOutput = result,
         error  => this.errorMessage  = error.message
       )
-      
+      this.errorMessage = ''
       this._runCommand('artists', result => this.artists =
         Array.isArray(result.returned)
           ? result.returned
           : [result.returned])
-
+      
       this._runCommand('albums',  result => this.albums  = result.returned)
       this._runCommand('tracks',  result => this.tracks  = result.returned)
     },

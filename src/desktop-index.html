@@ -17,11 +17,11 @@
   <div>
     <h1>UNQfy desktop terminal</h1>
     <div id="app">
-      <form action="" onsubmit="event => event.preventDefault()">
+      <div>
         <label>Command:</label>
         <input v-model="commandText" placeholder="Enter command">
         <input @click="runCurrentCommand" id="run-button"   type="button" value="Run">
-      </form>
+      </div>
       <div id="output">
         <div class="result">
             <ul>

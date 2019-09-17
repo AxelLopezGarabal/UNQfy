@@ -18,10 +18,19 @@ describe('Playlist', ()=> {
 
   it('inicialmente no tiene ningun track', () => expect(playlist.tracks).to.be.empty)
 
-  it('se le pueden agregar tracks', () => {
+  it('se le puede agregar de a un track', () => {
     const track01 = createTrack('track01')
     playlist.addTrack(track01)
     expect(playlist.tracks).to.include(track01)
+  })
+
+  it('se le puede agregar de a varios tracks', () => {
+    const track01 = createTrack('track01')
+    const track02 = createTrack('track02')
+    playlist.addAllTracks([track01, track02])
+    
+    expect(playlist.tracks).to.have.lengthOf(2)
+    expect(playlist.tracks).to.have.members([track01, track02])
   })
 
   it('puede tener tracks repetidos', () => {

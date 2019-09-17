@@ -172,6 +172,30 @@ describe('UNQfy', () => {
 
     })
 
+    it('puede buscar una playlist por id', () => {
+        const artistA  = unqfy.addArtist({name: 'artistA', country:'argentina'})
+        const albumA   = unqfy.addAlbum(artistA.id, {name: 'albumA', year: 2019})
+        const track1   = unqfy.addTrack(albumA.id, { name: 'track1', duration: 1, genres: ['genre1'] })
+        const playlist = unqfy.createPlaylist('playlistName', track1.genres, 10000)
+        
+        const foundedPlaylist = unqfy.getPlaylistById(playlist.id)
+
+        expect(foundedPlaylist).to.equal(playlist)
+    })
+
+    it('dado un nombre de artista, puede buscar todos los tracks del mismo', () => {
+        const artistA  = unqfy.addArtist({name: 'artistA', country:'argentina'})
+        const albumA   = unqfy.addAlbum(artistA.id, {name: 'albumA', year: 2019})
+        const track1   = unqfy.addTrack(albumA.id, { name: 'track1', duration: 1, genres: ['genre1'] })
+        const albumB   = unqfy.addAlbum(artistA.id, 'albumB', 2019)
+        const track2   = unqfy.addTrack(albumA.id, { name: 'track2', duration: 1, genres: ['genre1'] })
+
+        const foundedTracks = unqfy.getTracksMatchingArtistName(artistA.name)
+
+        expect(foundedTracks).to.have.lengthOf(2)
+        expect(foundedTracks).to.have.members([track1, track2])
+    })
+
     it('puede decir si un artista existe en base a un id', () => {
         const artist = unqfy.addArtist('juan', 'argentina')
         expect(unqfy.existsArtistWithId(artist.id)).to.be.true
