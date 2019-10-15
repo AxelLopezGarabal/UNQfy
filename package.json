@@ -2,13 +2,17 @@
   "name": "unqfy",
   "version": "1.0.0",
   "description": "",
-  "main": "./src/desktop-main.js",
+  "main": "backUp.json",
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "electron": "^6.0.12",
+    "express": "^4.17.1",
+    "morgan": "^1.9.1",
     "picklify": "github:lwoites/picklify"
   },
   "devDependencies": {
+    "nodemon": "^1.19.3",
     "chai": "^4.1.2",
-    "electron": "^6.0.9",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.10.0",
@@ -16,11 +20,8 @@
     "nyc": "^14.1.1"
   },
   "scripts": {
-    "test": "mocha --recursive",
-    "electron": "electron .",
-    "watch": "mocha --recursive --watch",
-    "coverage": "nyc --reporter=html --reporter=text mocha --recursive",
-    "eslint": "node_modules/.bin/eslint *.js"
+    "start": "nodemon server.js",
+    "test": "mocha --recursive"
   },
   "author": "",
   "license": "ISC"
