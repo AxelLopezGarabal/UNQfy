@@ -59,7 +59,7 @@ describe('UNQfy', () => {
 
 function makeUNQfyWithArtist(artistData, albumsData) {
     const unqfy  = makeUNQfy()
-    const artist = unqfy.addArtist(makeArtistData())    
+    const artist = unqfy.addArtist(artistData)    
     albumsData.forEach(albumData => unqfy.addAlbum(artist.id, albumData))
     
     return {
