@@ -181,6 +181,10 @@ class UNQfy {
     return picklify.unpicklify(JSON.parse(serializedData), classes)
   }
 
+  /*  VISADO 2 */
+  getAlbumsForArtist(artistName) {
+    return this.getArtistByName(artistName).albums
+  }
 }
 
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
