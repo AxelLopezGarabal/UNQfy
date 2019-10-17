@@ -38,27 +38,36 @@ describe('UNQfy', () => {
 
     describe('Se le pueden pedir los albumes de un artista en base a su nombre', () => {
         describe('... si el artista no existe arroja una excepcion', () =>{
-            const unqfy      = makeUNQfy()
-            const artistName = 'pepe'
+            const unqfy = makeUNQfy()
+            const invalidArtistName = 'pepe'
             
             expect(() =>
-                unqfy.getAlbumsForArtist(artistName)
-            ).to.throw(`Error: Could not find "artist" with "name" equal to "${artistName}"`)
+                unqfy.getAlbumsForArtist(invalidArtistName)
+            ).to.throw(`Error: Could not find "artist" with "name" equal to "${invalidArtistName}"`)
         })
 
         describe('... si el artista existe retorna todos sus albumes', () =>{
-            const unqfy  = makeUNQfy()
-            const artist = unqfy.addArtist(makeArtistData())
-            const album  = unqfy.addAlbum(artist.id, makeAlbumData())
-            
+            const {unqfy, artist, albums} = makeUNQfyWithArtist(makeArtistData(), [makeAlbumData()])
+
             expectHasOnly(
-                [album],
+                albums,
                 unqfy.getAlbumsForArtist(artist.name))
         })
     })
         
 })
 
+function makeUNQfyWithArtist(artistData, albumsData) {
+    const unqfy  = makeUNQfy()
+    const artist = unqfy.addArtist(makeArtistData())    
+    albumsData.forEach(albumData => unqfy.addAlbum(artist.id, albumData))
+    
+    return {
+        unqfy,
+        artist,
+        albums: artist.albums
+    }
+}
 
 function expectHasOnly(expectedElements, aCollection) {
     expect(aCollection).to.have.lengthOf(expectedElements.length)
