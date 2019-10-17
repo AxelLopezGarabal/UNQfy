@@ -9,7 +9,7 @@ function createWindow () {
     }
   })
 
-  win.loadFile('./src/desktop-index.html')
+  win.loadFile('./model/desktop-index.html')
 }
 
 app.on('ready', createWindow)

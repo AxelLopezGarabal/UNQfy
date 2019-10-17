@@ -1,5 +1,5 @@
 const { expect } = require('chai')
-const { UNQfy }  = require('../src/unqfy')
+const { UNQfy }  = require('../model/unqfy')
 
 describe('UNQfy', () => {
     let unqfy

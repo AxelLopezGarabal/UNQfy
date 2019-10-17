@@ -1,5 +1,5 @@
 const expect = require('chai').expect
-const { User, Track, Playlist, Artist, Listening } = require('../src/entities/all')
+const { User, Track, Playlist, Artist, Listening } = require('../model/entities/all')
 
 describe('User', () => {
   const id   = 1

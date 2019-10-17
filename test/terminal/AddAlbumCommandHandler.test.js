@@ -1,6 +1,6 @@
 const expect = require('chai').expect
-const { UNQfy } = require('../../src/unqfy')
-const { AddAlbumCommand } = require('../../src/terminal/command/all')
+const { UNQfy } = require('../../model/unqfy')
+const { AddAlbumCommand } = require('../../model/terminal/command/all')
 describe('AddAlbumCommand', () => {
   let command
   let unqfy

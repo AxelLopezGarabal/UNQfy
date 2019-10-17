@@ -21,7 +21,9 @@
   },
   "scripts": {
     "start": "nodemon server.js",
-    "test": "mocha --recursive"
+    "test": "mocha --recursive",
+    "watch": "mocha --recursive --watch",
+    "coverage": "nyc --reporter=html --reporter=text mocha --recursive"
   },
   "author": "",
   "license": "ISC"

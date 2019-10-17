@@ -1,7 +1,7 @@
 const expect   = require('chai').expect
-const Track    = require('../src/entities/Track.js')
+const Track    = require('../model/entities/Track.js')
 
-const PlaylistGenerator = require('../src/PlaylistGenerator.js')
+const PlaylistGenerator = require('../model/PlaylistGenerator.js')
  
 describe('PlaylistGenerator', () => {
   let playlistGenerator = new PlaylistGenerator()

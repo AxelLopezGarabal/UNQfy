@@ -1,6 +1,6 @@
 const expect = require('chai').expect
-const { UNQfy } = require('../../src/unqfy')
-const { GetTrackByIdCommand } = require('../../src/terminal/command/all')
+const { UNQfy } = require('../../model/unqfy')
+const { GetTrackByIdCommand } = require('../../model/terminal/command/all')
 
 describe('GetTrackByIdCommand', () => {
   let command

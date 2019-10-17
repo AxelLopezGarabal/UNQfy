@@ -1,5 +1,5 @@
 const expect = require('chai').expect
-const ArgDescription = require('../../../src/terminal/command/arg_parser/ArgDescription')
+const ArgDescription = require('../../../model/terminal/command/arg_parser/ArgDescription')
 
 describe('ArgDescription', () => {
   const aNaturalNumberParser = new ArgDescription({

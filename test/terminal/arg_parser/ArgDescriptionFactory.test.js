@@ -1,5 +1,5 @@
 const expect = require('chai').expect
-const factory = require('../../../src/terminal/command/arg_parser/argumentDescriptionsFactory')
+const factory = require('../../../model/terminal/command/arg_parser/argumentDescriptionsFactory')
 
 describe('Factory', () => {
 

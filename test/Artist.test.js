@@ -1,8 +1,8 @@
 const expect = require('chai').expect
 
-const { Artist, Album, User, Listening } = require('../src/entities/all.js')
+const { Artist, Album, User, Listening } = require('../model/entities/all.js')
 
-const { RepeatedTrackInAlbum } = require('../src/exceptions/all')
+const { RepeatedTrackInAlbum } = require('../model/exceptions/all')
 
 describe('Artist', () => {
   let id      = 123
