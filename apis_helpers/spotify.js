@@ -33,13 +33,25 @@ const allAlbums = artistPartialName =>
 const getAlbumById = albumId =>
 	get(`/albums/${albumId}`)()
 
-allAlbums('beatles')
-	.then(albums => albums.map(album => ({
-		name: album.name,
-		year: parseInt(album.release_date.slice(0,4)),
-		tracks: album.tracks.items
-	})))
 
+const parseAlbumYear = date => parseInt(date.slice(0,4))
+
+const extractAlbumData = spotifyAlbum =>({
+	name: spotifyAlbum.name,
+	year: parseAlbumYear(spotifyAlbum.release_date),
+	tracks: spotifyAlbum.tracks.items.map(extractTrackData)
+})
+
+const extractTrackData = spotifyTrack =>({
+	name: spotifyTrack.name,
+	duration: spotifyTrack.duration_ms
+})
+
+
+allAlbums('beatles')
+	.then(albums => albums.map(extractAlbumData))
+
+	.then(albums => JSON.stringify(albums, null, 2))
 	.then(console.log)
 
 module.exports = {
