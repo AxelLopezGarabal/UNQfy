@@ -1,10 +1,17 @@
-const { OK, CREATED } = require('../../status-codes')
+const postArtistSchema = require('./post-artist-schema')
+const { OK, CREATED, BAD_REQUEST } = require('../../status-codes')
+
 
 const getArtistsHandler = unqfy => (req, res, next) => {
 	res.status(OK).json(unqfy.artists)
 }
 
 const postArtistsHandler = unqfy => (req, res, next) => {
+  const validationResult = postArtistSchema.validate(req.body)
+
+  if (validationResult.error)
+    return res.status(BAD_REQUEST).json(validationResult.error)
+
   const artist = unqfy.addArtist(req.body)
   
   const artistData = {
