@@ -197,7 +197,11 @@ class UNQfy {
     this._albumsDataProvider.findFor(artistName)
       .then(albumsData =>
         albumsData.forEach(({name, year, tracks}) => {
-          this.addAlbum(artist.id, { name, year })
+          const addedAlbum = this.addAlbum(artist.id, { name, year })
+          
+          tracks.forEach((trackData) =>
+            this.addTrack(addedAlbum.id, trackData)
+          ) 
         })
       )   
     

@@ -48,7 +48,22 @@ describe('UNQfy', () => {
             
             await unqfy.populateAlbumsForArtist(artist.name)
 
-            expect(artist._hasAlbumCalled(albumData01.name)).to.be.true
+            const addedAlbum = artist.albums[0]
+            
+            /* TODO: refactorizar. Esto esta como para pegarse un tiro */
+            expect(artist.albums).to.have.lengthOf(1)
+            
+            expect(addedAlbum.name).to.eq(albumData01.name)
+            expect(addedAlbum.year).to.eq(albumData01.year)
+            expect(addedAlbum.tracks).to.have.lengthOf(1)
+
+            const addedTrack = addedAlbum.tracks[0]
+            
+            expect(addedTrack.name).to.eq(trackData01.name)
+            expect(addedTrack.duration).to.eq(trackData01.duration)
+            expect(addedTrack.genres).to.have.members(trackData01.genres)
+
+            
         })
     })
 })
