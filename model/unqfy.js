@@ -11,9 +11,10 @@ const EntitiesRepository = require('./entities-repositories/EntitiesRepository')
 
 class UNQfy {
 
-  constructor(entitiesRepository = new EntitiesRepository()) {
+  constructor({entitiesRepository = new EntitiesRepository(), albumsDataProvider} = {}) {
     this._entitiesRepository = entitiesRepository
     this._nextId             = 0
+    this._albumsDataProvider = albumsDataProvider
   }
 
   _generateUniqueId() { return this._nextId++ }
@@ -185,6 +186,19 @@ class UNQfy {
   getAlbumsForArtist(artistName) {
     return this.getArtistByName(artistName).albums
   }
+
+  populateAlbumsForArtist(artistName) {
+    const artist = this.getArtistByName(artistName)
+    
+    // console.log('aasdasdasd', this._albumsDataProvider)
+
+    this._albumsDataProvider.findFor(artistName)
+      .then(albumsData => albumsData.forEach(({name, year, tracks}) => {
+        const album = this.addAlbum(artist.id, { name, year })
+      }))
+    
+  }
+
 }
 
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente

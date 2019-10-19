@@ -44,7 +44,8 @@ const extractAlbumData = spotifyAlbum =>({
 
 const extractTrackData = spotifyTrack =>({
 	name: spotifyTrack.name,
-	duration: spotifyTrack.duration_ms
+	duration: spotifyTrack.duration_ms,
+	genres: []
 })
 
 const populatedAlbumsDataFor = artistName =>
