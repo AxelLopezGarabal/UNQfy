@@ -1,6 +1,7 @@
 const { UNQfy }  = require('../../model/unqfy')
 
-const makeUNQfy = albumsDataProvider => new UNQfy({albumsDataProvider})
+const makeUNQfy = albumsDataProvider => new UNQfy(albumsDataProvider)
+// const makeUNQfy = () => new UNQfy()
 
 const makeArtistData = ()   => ({name: 'pepe', country: 'argentina'})
 const makeAlbumData  = name => ({ name })

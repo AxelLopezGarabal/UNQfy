@@ -40,15 +40,13 @@ describe('UNQfy', () => {
                 findFor: artistName => Promise.resolve([ albumData01 ])
             }
 
-            albumsDataProvider.findFor('asdasd').then(console.log)
-
-            unqfy = makeUNQfy({albumsDataProvider})
+            unqfy = makeUNQfy(albumsDataProvider)
         })
-        it('...si el artista existe busca y le agrega sus albumes', () => {
+        it('...si el artista existe busca y le agrega sus albumes', async () => {
             const artistName = 'artist name'
             const artist     = unqfy.addArtist({name: artistName, country: 'argentina'})
             
-            unqfy.populateAlbumsForArtist(artist.name)
+            await unqfy.populateAlbumsForArtist(artist.name)
 
             expect(artist._hasAlbumCalled(albumData01.name)).to.be.true
         })

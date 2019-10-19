@@ -11,7 +11,11 @@ const EntitiesRepository = require('./entities-repositories/EntitiesRepository')
 
 class UNQfy {
 
-  constructor({entitiesRepository = new EntitiesRepository(), albumsDataProvider} = {}) {
+  constructor(
+    albumsDataProvider = {findFor: artistName => []},
+    entitiesRepository = new EntitiesRepository()
+  )
+  {
     this._entitiesRepository = entitiesRepository
     this._nextId             = 0
     this._albumsDataProvider = albumsDataProvider
@@ -187,15 +191,15 @@ class UNQfy {
     return this.getArtistByName(artistName).albums
   }
 
-  populateAlbumsForArtist(artistName) {
+  async populateAlbumsForArtist(artistName) {
     const artist = this.getArtistByName(artistName)
     
-    // console.log('aasdasdasd', this._albumsDataProvider)
-
     this._albumsDataProvider.findFor(artistName)
-      .then(albumsData => albumsData.forEach(({name, year, tracks}) => {
-        const album = this.addAlbum(artist.id, { name, year })
-      }))
+      .then(albumsData =>
+        albumsData.forEach(({name, year, tracks}) => {
+          this.addAlbum(artist.id, { name, year })
+        })
+      )   
     
   }
 
