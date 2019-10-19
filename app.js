@@ -4,11 +4,15 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
 const { UNQfy } = require('./model/unqfy')
+const albumsDataProvider = require('./apis_helpers/SpotifyAlbumsDataProvider')
 
-const unqfy = new UNQfy()
+const unqfy = new UNQfy(albumsDataProvider)
 
 unqfy.addArtist({name: 'pepe', country: 'argentina'})
 unqfy.addArtist({name: 'juan', country: 'argentina'})
+unqfy.addArtist({name: 'the beatles', country: 'argentina'})
+
+unqfy.populateAlbumsForArtist('the beatles')
 
 const router = express.Router()
 

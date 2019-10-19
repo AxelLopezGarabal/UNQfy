@@ -1,6 +1,6 @@
 const rp = require('request-promise');
 
-const accessToken = 'BQBNPBeMttO7wiWzn1n70qQLNUPwMyQE3haHmhlpbg5WE2ck8umlrbXyl2dOC3DbymVNJzUt7xr9md5Nz3N4c5CkXWI67dIIaSxceiJOSbVSvbnf-rNVX_KCHmbtwj-oGlgnv9958b8h5NsWeVTqzQEaa8qN3pj7lkvKqEYQf-O-_1OtKQqC'
+const accessToken = 'BQCVHMxT66DYA52vaJ49o_rYJNO3Aw2gOVjKA7n62cxYCJnYWaQ9nT89hKWt_RfZHzutLjM6OKsWFxkK8zQUlL4_oBxxd6J2fZJKJr0Z0xj169XThrAojfKNhsjpnYVDTrgtygwNzZAMrxVwyxEjXyvU23GmF4pT4mNxAW7ZjUjC7N_S5Nh0'
 
 const baseURL = 'https://api.spotify.com/v1'
 
@@ -50,12 +50,13 @@ const extractTrackData = spotifyTrack =>({
 
 const populatedAlbumsDataFor = artistName =>
 	allAlbums(artistName)
+		// .then(albums => new Set(albums))
 		.then(albums => albums.map(extractAlbumData))
 
 // Prueba
-populatedAlbumsDataFor('beatles')
-	.then(albums => JSON.stringify(albums, null, 2))
-	.then(console.log)
+// populatedAlbumsDataFor('beatles')
+// 	.then(albums => JSON.stringify(albums, null, 2))
+// 	.then(console.log)
 
 module.exports = {
 	populatedAlbumsDataFor,
