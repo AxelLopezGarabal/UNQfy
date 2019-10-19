@@ -6,4 +6,4 @@ const port = 9000;
 
 server = http.createServer(app);
 
-server.listen(port)
+server.listen(port, () => console.log(`Listening to port ${port}`))
