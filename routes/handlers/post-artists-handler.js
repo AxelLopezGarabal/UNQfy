@@ -8,7 +8,8 @@ module.exports = unqfy => (req, res, next) => {
     if (validationResult.error)
       return res.status(BAD_REQUEST).json(validationResult.error)
   
-    const artist = unqfy.addArtist(req.body)
+    const artist       = unqfy.addArtist(req.body)
+    const responseBody = makeArtistFullRepresentation(artist)
      
-    res.status(CREATED).json(makeArtistFullRepresentation(artist))
+    res.status(CREATED).json(responseBody)
 }
