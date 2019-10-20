@@ -3,10 +3,6 @@ const makeAlbumFullRepresentation = require('./make-album-full-representation')
 
 class GetAllController extends RequestController {
     
-    _validateRequest(req, res) {
-        
-    }
-    
     _doTask(req, res) {
         const albumPartialName = req.query.name
         

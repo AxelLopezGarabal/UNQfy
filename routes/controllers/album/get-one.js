@@ -3,10 +3,6 @@ const makeAlbumFullRepresentation = require('./make-album-full-representation')
 
 class GetOneController extends RequestController {
 
-    _validateRequest(req, res) {
-        
-    }
-
     _doTask(req, res) {
         const albumId      = parseInt(req.params.id)
         const album        = this._unqfy.getAlbumById(albumId)

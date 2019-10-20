@@ -1,9 +1,13 @@
-const postArtistSchema             = require('./post-artist-schema')
+const postScheme = require('./post-artist-schema')
 
 const RequestController = require('../RequestController')
 const makeArtistFullRepresentation = require('./make-artist-full-representation')
 
 class PostController extends RequestController {
+
+    _validate(req) {
+        return postScheme.validate(req.body)
+    }
 
     _validateRequest(req, res) {
         const validationResult = postArtistSchema.validate(req.body)

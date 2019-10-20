@@ -5,11 +5,8 @@ const makeAlbumFullRepresentation = require('./make-album-full-representation')
 
 class PostController extends RequestController {
 
-    _validateRequest(req, res) {
-        const validationResult = postSchema.validate(req.body)
-
-        if (validationResult.error)
-            this.respondBadRequest(res, validationResult.error)
+    _validate(req) {
+        return postSchema.validate(req.body)
     }
 
     _doTask(req, res) {

@@ -3,10 +3,6 @@ const makeArtistFullRepresentation = require('./make-artist-full-representation'
 
 class GetAllController extends RequestController {
     
-    _validateRequest(req, res) {
-        
-    }
-    
     _doTask(req, res) {
         const artistPartialName = req.query.name
         

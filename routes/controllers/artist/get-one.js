@@ -3,10 +3,6 @@ const makeArtistFullRepresentation = require('./make-artist-full-representation'
 
 class GetOneController extends RequestController {
 
-    _validateRequest(req, res) {
-        
-    }
-
     _doTask(req, res) {
         const artistId     = parseInt(req.params.id)
         const artist       = this._unqfy.getArtistById(artistId)

@@ -2,10 +2,6 @@ const RequestController = require('../RequestController')
 
 class DeleteController extends RequestController {
 
-    _validateRequest(req, res) {
-        
-    }
-
     _doTask(req, res) {
       const albumId = parseInt(req.params.id)
       this._unqfy.removeAlbum(albumId)  
