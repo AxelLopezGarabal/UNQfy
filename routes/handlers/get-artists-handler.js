@@ -1,5 +1,5 @@
-const { OK, BAD_REQUEST } = require('../../status-codes')
+const { respondOk } = require('./responses')
 
 module.exports = unqfy => (req, res, next) => {
-	res.status(OK).json(unqfy.artists)
+	respondOk(res, unqfy.artists)
 }

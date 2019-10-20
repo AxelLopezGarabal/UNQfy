@@ -1,15 +1,25 @@
 const postArtistSchema             = require('./post-artist-schema')
 const makeArtistFullRepresentation = require('./make-artist-full-representation')
-const { CREATED, BAD_REQUEST }     = require('../../status-codes')
 
+const { respondResourceAlreadyExist, respondCreated } = require('./responses')
+
+// TODO: esta mierda esta quedando muy imperativa
 module.exports = unqfy => (req, res, next) => {
-    const validationResult = postArtistSchema.validate(req.body)
+  const validationResult = postArtistSchema.validate(req.body)
+
+  if (validationResult.error)
+    respondeBadRequest(res, validationResult.error)
+
+  let artist
   
-    if (validationResult.error)
-      return res.status(BAD_REQUEST).json(validationResult.error)
-  
-    const artist       = unqfy.addArtist(req.body)
-    const responseBody = makeArtistFullRepresentation(artist)
-     
-    res.status(CREATED).json(responseBody)
+  try {
+    artist = unqfy.addArtist(req.body)
+  }
+  catch(error) {
+    respondResourceAlreadyExist(res)
+  }
+
+  const responseBody = makeArtistFullRepresentation(artist)
+   
+  respondCreated(res, responseBody)
 }
