@@ -1,7 +1,10 @@
-const { OK, CREATED, BAD_REQUEST, CONFLICT } = require('../../status-codes')
+const { OK, CREATED, BAD_REQUEST, CONFLICT, NO_CONTENT } = require('./status-codes')
 
 const respondOk = (res, responseBody) =>
   res.status(OK).json(responseBody)
+
+const respondDeleted = res =>
+  res.status(NO_CONTENT).json()
 
 const respondCreated = (res, responseBody) =>
   res.status(CREATED).json(responseBody)
@@ -15,6 +18,7 @@ const respondResourceAlreadyExist = res =>
 module.exports = {
     respondOk,
     respondCreated,
+    respondDeleted,
     respondBadRequest,
     respondResourceAlreadyExist
 }

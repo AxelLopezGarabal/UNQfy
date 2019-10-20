@@ -1,7 +1,7 @@
 const postArtistSchema             = require('./post-artist-schema')
 const makeArtistFullRepresentation = require('./make-artist-full-representation')
 
-const { respondCreated, respondResourceAlreadyExist, respondBadRequest } = require('./responses')
+const { respondCreated, respondResourceAlreadyExist, respondBadRequest } = require('../responses')
 
 // TODO: esta mierda esta quedando muy imperativa
 module.exports = unqfy => (req, res, next) => {

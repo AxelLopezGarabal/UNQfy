@@ -1,6 +1,6 @@
 const makeArtistFullRepresentation = require('./make-artist-full-representation')
 
-const { respondOk } = require('./responses')
+const { respondOk } = require('../responses')
 
 module.exports = unqfy => (req, res, next) => {
     const artistId     = parseInt(req.params.id)

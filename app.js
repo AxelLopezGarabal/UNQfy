@@ -3,7 +3,7 @@ const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
-const { getArtistsHandler, postArtistsHandler, getOneArtistHandler } = require('./routes/controllers/artistsControllers')
+const artistsControllers = require('./routes/controllers/artist/artistsControllers')
 
 const { UNQfy } = require('./model/unqfy')
 const albumsDataProvider = require('./apis_helpers/SpotifyAlbumsDataProvider')
@@ -20,10 +20,10 @@ unqfy.addArtist({name: 'the beatles', country: 'argentina'})
 const router = express.Router()
 
 router
-	.get('/', getArtistsHandler(unqfy))
-	.post('/', postArtistsHandler(unqfy))
-	.get('/:id', getOneArtistHandler(unqfy))
-
+	.get('/'      , artistsControllers.getAll(unqfy))
+	.get('/:id'   , artistsControllers.getOne(unqfy))
+	.post('/'     , artistsControllers.post(unqfy))
+	.delete('/:id', artistsControllers.delete(unqfy))
 
 app
 	.use(morgan('dev'))
