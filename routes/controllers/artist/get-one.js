@@ -1,10 +1,23 @@
+const RequestController = require('../RequestController')
 const makeArtistFullRepresentation = require('./make-artist-full-representation')
 
-const { respondOk } = require('../responses')
+class GetOneController extends RequestController {
 
-module.exports = unqfy => (req, res, next) => {
-    const artistId     = parseInt(req.params.id)
-    const artist       = unqfy.getArtistById(artistId)
-    const responseBody = makeArtistFullRepresentation(artist)
-    respondOk(res, responseBody)
+    _validateRequest(req, res) {
+        
+    }
+
+    _doTask(req, res) {
+        const artistId     = parseInt(req.params.id)
+        const artist       = this._unqfy.getArtistById(artistId)
+        const responseBody = makeArtistFullRepresentation(artist)
+        this.respondOk(res, responseBody)
+    }
+
+    _handleError(error, req, res) {
+
+    }
 }
+
+module.exports = unqfy => (req, res) =>
+    new GetOneController(unqfy).handle(req, res)

@@ -1,11 +1,26 @@
-const { respondOk } = require('../responses')
+const RequestController = require('../RequestController')
 const makeArtistFullRepresentation = require('./make-artist-full-representation')
 
-module.exports = unqfy => (req, res, next) => {
-	const artistPartialName = req.query.name
+class GetAllController extends RequestController {
 
-	const artists      = unqfy.searchByNamePartial(artistPartialName).artists
-	const responseBody = artists.map(makeArtistFullRepresentation)
-	
-	respondOk(res, responseBody)
+    _validateRequest(req, res) {
+        
+    }
+
+    _doTask(req, res) {
+        const artistPartialName = req.query.name
+
+				const artists      = this._unqfy.searchByNamePartial(artistPartialName).artists
+				const responseBody = artists.map(makeArtistFullRepresentation)
+				
+				this.respondOk(res, responseBody)
+    }
+
+    _handleError(error, req, res) {
+
+    }
+}
+
+module.exports = unqfy => (req, res) => {
+    new GetAllController(unqfy).handle(req, res)
 }
