@@ -48,7 +48,7 @@ describe(artistsEndPoint, () => {
         })
     })
 
-    it('no puede haber mas de un artista con el mismo nombre', done => {
+    it('no puede crear un artista si ya existe otro con el mismo nombre', done => {
       chai.request(app)
         .post(artistsEndPoint)
         .send(artistData)
@@ -77,7 +77,7 @@ describe(artistsEndPoint, () => {
         })
     })
 
-    it('exito dasdasdas', done => {
+    it('OK dasdasdas', done => {
       chai.request(app)
         .post(artistsEndPoint)
         .send(artistData)

@@ -9,6 +9,15 @@ class Track {
     this._genres   = genres
   }
 
+  toJSON() { // TODO: no tiene test
+    return {
+      id: this.id,
+      name: this.name,
+      duration: this.duration,
+      genres: this.genres
+    }
+  }
+
   // Queries
   get id()       { return this._id }
   get name()     { return this._name }

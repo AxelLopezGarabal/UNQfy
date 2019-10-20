@@ -12,6 +12,15 @@ class Album {
     this._tracks = tracks
   }
 
+  toJSON() { // TODO: no tiene test
+    return {
+      id: this.id,
+      name: this.name,
+      year: this.year,
+      tracks: this.tracks.map(track => track.toJSON())
+    }
+  }
+
   get id()     { return this._id }
   get name()   { return this._name }
   get year()   { return this._year }

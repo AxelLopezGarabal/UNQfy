@@ -1,6 +1,6 @@
 module.exports = {
-  getAll: require('./get-all'),
-  getOne: require('./get-one'),
+  getAll: require('../generics/get-all')('artist'),
+  getOne: require('../generics/get-one')('artist'),
   post:   require('./post'),
-  delete: require('./delete')
+  delete: require('../generics/delete')('artist')
 }

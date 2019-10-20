@@ -15,6 +15,15 @@ class Artist {
     this._othersListeningsOfHisArt = []
   }
 
+  toJSON() { // TODO: no tiene test
+    return {
+      id: this.id,
+      name: this.name,
+      country: this.country,
+      albums: this.albums.map(album => album.toJSON())
+    }
+  }
+
   isTheAuthorOfAlbum(anAlbum) {
     return this.albums.includes(anAlbum)
   }
