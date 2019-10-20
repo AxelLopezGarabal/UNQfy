@@ -15,7 +15,12 @@ class GetOneController extends RequestController {
     }
 
     _handleError(error, req, res) {
-
+        switch (error.name) {
+            case 'EntityNotFound':
+                this.resourceNotFound(res)
+            default:
+                throw error
+        }
     }
 }
 

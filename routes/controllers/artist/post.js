@@ -13,6 +13,8 @@ class PostController extends RequestController {
     }
 
     _doTask(req, res) {
+        const artistData   = { name: req.body.name, country: req.body.country }
+        console.log('post artsits', artistData)
         const artist       = this._unqfy.addArtist(artistData)
         const responseBody = makeArtistFullRepresentation(artist)
         this.respondCreated(res, responseBody)

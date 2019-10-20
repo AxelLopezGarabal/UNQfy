@@ -3,6 +3,7 @@ class EntityNotFound extends Error {
 
   constructor(errorExtraInformation='entity not found') {
     super(`Error: ${errorExtraInformation}`)
+    this.name = 'EntityNotFound'
   }
 
 }

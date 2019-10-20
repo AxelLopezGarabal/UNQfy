@@ -3,6 +3,7 @@ const {
   CREATED,
   NO_CONTENT,
   BAD_REQUEST,
+  NOT_FOUND,
   CONFLICT
 } = require('./status-codes')
 
@@ -24,9 +25,9 @@ class RequestController {
       }
   }
 
-  _validateRequest(req, res)   { throw "Subclass responsibility" }
-  _doTask(req, res)            { throw "Subclass responsibility" }
-  _handleError(error,req, res) { throw "Subclass responsibility" }
+  _validateRequest(req, res) { throw "Subclass responsibility" }
+  _doTask(req, res)          { throw "Subclass responsibility" }
+  _handleError()             { throw "Subclass responsibility" }
 
   respondOk(res, responseBody) {
     res.status(OK).json(responseBody)
@@ -42,6 +43,10 @@ class RequestController {
 
   respondBadRequest(res, responseBody) {
     res.status(BAD_REQUEST).json(responseBody)
+  }
+
+  resourceNotFound(res) {
+    res.status(NOT_FOUND).json({ errorCode: "RESOURCE_NOT_FOUND" })
   }
   
   respondResourceAlreadyExist(res) {

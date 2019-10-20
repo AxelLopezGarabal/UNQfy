@@ -14,7 +14,7 @@ class DeleteController extends RequestController {
     }
 
     _handleError(error, req, res) {
-
+        res.status(666).send(error)
     }
 }
 
