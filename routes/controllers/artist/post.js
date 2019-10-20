@@ -9,16 +9,8 @@ class PostController extends RequestController {
         return postScheme.validate(req.body)
     }
 
-    _validateRequest(req, res) {
-        const validationResult = postArtistSchema.validate(req.body)
-
-        if (validationResult.error)
-          this.respondBadRequest(res, validationResult.error)
-    }
-
     _doTask(req, res) {
         const artistData   = { name: req.body.name, country: req.body.country }
-        console.log('post artsits', artistData)
         const artist       = this._unqfy.addArtist(artistData)
         const responseBody = makeArtistFullRepresentation(artist)
         this.respondCreated(res, responseBody)
