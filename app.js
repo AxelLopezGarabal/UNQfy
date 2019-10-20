@@ -30,7 +30,7 @@ artistsRout
 const albumsRout = express.Router()
 
 albumsRout
-	// .get('/'      , albumController.getAll(unqfy))
+	.get('/'      , albumController.getAll(unqfy))
 	.get('/:id'   , albumController.getOne(unqfy))
 	.post('/'     , albumController.post(unqfy))
 	.delete('/:id', albumController.delete(unqfy))

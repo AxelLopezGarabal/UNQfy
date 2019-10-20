@@ -27,7 +27,13 @@ class RequestController {
 
   _validateRequest(req, res) { throw "Subclass responsibility" }
   _doTask(req, res)          { throw "Subclass responsibility" }
-  _handleError()             { throw "Subclass responsibility" }
+  _errorHandlers()           { return {} }
+
+  _handleError(error, req, res) {
+    const missingErrorHandler = (error, req, res) => { throw error }
+    const currentErrorHandler = this._errorHandlers()[error.name] || missingErrorHandler
+    currentErrorHandler(error, req, res)
+  }
 
   respondOk(res, responseBody) {
     res.status(OK).json(responseBody)

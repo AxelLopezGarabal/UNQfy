@@ -1,5 +1,4 @@
 const RequestController = require('../RequestController')
-const makeArtistFullRepresentation = require('./make-artist-full-representation')
 
 class DeleteController extends RequestController {
 
@@ -13,9 +12,12 @@ class DeleteController extends RequestController {
         this.respondDeleted(res)
     }
 
-    _handleError(error, req, res) {
-        res.status(666).send(error)
+    _errorHandlers() {
+        return {
+            EntityNotFound: (error, req, res) => this.resourceNotFound(res)
+        }
     }
+
 }
 
 module.exports = unqfy => (req, res) => {

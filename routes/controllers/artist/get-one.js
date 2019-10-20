@@ -14,12 +14,9 @@ class GetOneController extends RequestController {
         this.respondOk(res, responseBody)
     }
 
-    _handleError(error, req, res) {
-        switch (error.name) {
-            case 'EntityNotFound':
-                this.resourceNotFound(res)
-            default:
-                throw error
+    _errorHandlers() {
+        return {
+            EntityNotFound: (error, req, res) => this.resourceNotFound(res)
         }
     }
 }

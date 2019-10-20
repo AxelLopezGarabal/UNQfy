@@ -1,9 +1,25 @@
-const { respondDeleted } = require('../responses')
+const RequestController = require('../RequestController')
 
-module.exports = unqfy => (req, res, next) => {
-  const albumId = parseInt(req.params.id)
-  
-  unqfy.removeAlbum(albumId)
+class DeleteController extends RequestController {
 
-	respondDeleted(res)
+    _validateRequest(req, res) {
+        
+    }
+
+    _doTask(req, res) {
+      const albumId = parseInt(req.params.id)
+      this._unqfy.removeAlbum(albumId)  
+      this.respondDeleted(res)
+    }
+
+    _errorHandlers() {
+        return {
+            EntityNotFound: (error, req, res) => this.resourceNotFound(res)
+        }
+    }
+
+}
+
+module.exports = unqfy => (req, res) => {
+    new DeleteController(unqfy).handle(req, res)
 }

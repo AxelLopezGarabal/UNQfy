@@ -1,5 +1,5 @@
 const RequestController = require('../RequestController')
-const makeArtistFullRepresentation = require('./make-artist-full-representation')
+const makeAlbumFullRepresentation = require('./make-album-full-representation')
 
 class GetAllController extends RequestController {
     
@@ -8,17 +8,14 @@ class GetAllController extends RequestController {
     }
     
     _doTask(req, res) {
-        const artistPartialName = req.query.name
+        const albumPartialName = req.query.name
         
-        const artists      = this._unqfy.searchByNamePartial(artistPartialName).artists
-        const responseBody = artists.map(makeArtistFullRepresentation)
+        const albums       = this._unqfy.searchByNamePartial(albumPartialName).albums
+        const responseBody = albums.map(makeAlbumFullRepresentation)
         
         this.respondOk(res, responseBody)
     }
-    
-    _errorHandlers() {
-        return { }
-    }
+
 }
 
 module.exports = unqfy => (req, res) => {

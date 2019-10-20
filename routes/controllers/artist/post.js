@@ -20,10 +20,12 @@ class PostController extends RequestController {
         this.respondCreated(res, responseBody)
     }
 
-    _handleError(error, req, res) {
-      res.send(error)
-      //this.respondResourceAlreadyExist(res)
+    _errorHandlers() {
+        return {
+          SomeoneAlreadyRegisterUnderName: (error, req, res) => this.respondResourceAlreadyExist(res)
+        }
     }
+
 }
 
 module.exports = unqfy => (req, res) =>
