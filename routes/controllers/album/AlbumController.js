@@ -1,5 +1,5 @@
 module.exports = {
-  getAll: require('./get-all'),
+  getAll: null,
   getOne: require('./get-one'),
   post:   require('./post'),
   delete: require('./delete')
