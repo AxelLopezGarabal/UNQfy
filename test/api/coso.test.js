@@ -42,7 +42,7 @@ describe(artistsEndPoint, () => {
       chai.request(app)
         .post(artistsEndPoint)
         .send(artistData)
-        .end((error, res) => {
+        .then(res => {
           expectResponse(res, 201, responseBody)
           done()
         })
@@ -52,12 +52,12 @@ describe(artistsEndPoint, () => {
       chai.request(app)
         .post(artistsEndPoint)
         .send(artistData)
-        .end(() => {
+        .then(() => {
 
           chai.request(app)
             .post(artistsEndPoint)
             .send(artistData)
-            .end((error, res) => {
+            .then(res => {
               expectResponse(res, 409, resourceAlreayExistResponseBody)
               done()
             })
@@ -71,7 +71,7 @@ describe(artistsEndPoint, () => {
     it('error cuando no existe el artista', done => {
       chai.request(app)
         .get(artistsEndPoint + '/0')
-        .end((error, res) => {
+        .then(res => {
           expectResponse(res, 404, resourceNotFoundResponseBody)
           done()
         })
@@ -81,18 +81,90 @@ describe(artistsEndPoint, () => {
       chai.request(app)
         .post(artistsEndPoint)
         .send(artistData)
-        .end(() => {
+        .then(() => {
 
           chai.request(app)
             .get(artistsEndPoint + '/0')
-            .end((error, res) => {
+            .then(res => {
               expectResponse(res, 200, { id: 0, albums: [],  ...artistData})
               done()
             })
 
-
         })
 
+    })
+  })
+
+  describe('GET ALL', () => {
+    it('si no hay artistas retorna una lista vacia', done => {
+      chai.request(app)
+        .get(artistsEndPoint)
+        .then(res => {
+          expectResponse(res, 200, [])
+          done()
+        })
+    })
+
+    it('si hay artistas y no se especifica un nombre retorna todos los artistas', done => {
+      chai.request(app)
+        .post(artistsEndPoint)
+        .send(artistData)
+        .then(res => {
+          
+          chai.request(app)
+          .get(artistsEndPoint)
+          .then(res => {
+            expectResponse(res, 200, [{ id: 0, albums: [], ...artistData }])
+            done()
+          })
+
+        })
+      
+    })
+
+    it('se puede buscar los artistas que matcheen parcialmente con un nombre', done => {
+      const pepeArtistData = { name: 'pepe', ...artistData }
+
+      chai.request(app)
+        .post(artistsEndPoint)
+        .send(pepeArtistData)
+        .then(res => {
+          const { id } = res.body
+
+          chai.request(app)
+          .get(artistsEndPoint + '?name=pe')
+          .then(res => {
+            expectResponse(res, 200, [{ id, albums: [], ...pepeArtistData }])
+          })
+
+          chai.request(app)
+          .get(artistsEndPoint + '?name=zzzzzzzzzzzzzzzz')
+          .then(res => {
+            expectResponse(res, 200, [])
+            done()
+          })
+
+        })
+      
+    })
+  })
+
+  describe('DELETE', () => {
+    it('borra un artista', done => {
+      chai.request(app)
+        .post(artistsEndPoint)
+        .send(artistData)
+        .then(res => {
+          const artistId = res.body.id
+          
+          chai.request(app)
+            .delete(artistsEndPoint + '/' + artistId)
+            .then(res => {
+              //expectResponse(res, 200, {})
+              expect(res).to.have.status(204)
+              done()
+            })
+        })
     })
   })
 

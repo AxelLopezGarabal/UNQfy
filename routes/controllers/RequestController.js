@@ -31,7 +31,7 @@ class RequestController {
     if (validationResult.error)
       this.respondBadRequest(res, validationResult.error)
   }
-  
+
   _validate(req)             { return {} }
   _doTask(req, res)          { throw "Subclass responsibility" }
   _errorHandlers()           { return {} }
