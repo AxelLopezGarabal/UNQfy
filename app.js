@@ -17,9 +17,9 @@ unqfy.addArtist({name: 'the beatles', country: 'argentina'})
 
 // unqfy.populateAlbumsForArtist('the beatles')
 
-const router = express.Router()
+const artistsRout = express.Router()
 
-router
+artistsRout
 	.get('/'      , artistsControllers.getAll(unqfy))
 	.get('/:id'   , artistsControllers.getOne(unqfy))
 	.post('/'     , artistsControllers.post(unqfy))
@@ -30,7 +30,7 @@ app
 	.use(bodyParser.urlencoded({extended: true}))
 	.use(bodyParser.json())
 
-	.use('/api/artists', router)
+	.use('/api/artists', artistsRout)
 
 	.use((req, res, next) => {
 		const error = new Error('Not found')
