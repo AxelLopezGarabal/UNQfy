@@ -3,20 +3,21 @@ const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
+const { getArtistsHandler, postArtistsHandler, getOneArtistHandler } = require('./routes/handlers/artistsHandlers')
+
 const { UNQfy } = require('./model/unqfy')
 const albumsDataProvider = require('./apis_helpers/SpotifyAlbumsDataProvider')
 
-const unqfy = new UNQfy(albumsDataProvider)
+// const unqfy = new UNQfy(albumsDataProvider)
+const unqfy = new UNQfy()
 
 unqfy.addArtist({name: 'pepe', country: 'argentina'})
 unqfy.addArtist({name: 'juan', country: 'argentina'})
 unqfy.addArtist({name: 'the beatles', country: 'argentina'})
 
-unqfy.populateAlbumsForArtist('the beatles')
+// unqfy.populateAlbumsForArtist('the beatles')
 
 const router = express.Router()
-
-const { getArtistsHandler, postArtistsHandler, getOneArtistHandler } = require('./routes/handlers/artistsHandlers')
 
 router
 	.get('/', getArtistsHandler(unqfy))
