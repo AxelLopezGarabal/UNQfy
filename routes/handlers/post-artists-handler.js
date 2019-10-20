@@ -1,12 +1,6 @@
-const postArtistSchema         = require('./post-artist-schema')
-const { CREATED, BAD_REQUEST } = require('../../status-codes')
-
-const makeResponseData = artist => ({
-    id: parseInt(artist.id),
-    name: artist.name,
-    country: artist.country,
-    albums: artist.albums
-})
+const postArtistSchema             = require('./post-artist-schema')
+const makeArtistFullRepresentation = require('./make-artist-full-representation')
+const { CREATED, BAD_REQUEST }     = require('../../status-codes')
 
 module.exports = unqfy => (req, res, next) => {
     const validationResult = postArtistSchema.validate(req.body)
@@ -16,5 +10,5 @@ module.exports = unqfy => (req, res, next) => {
   
     const artist = unqfy.addArtist(req.body)
      
-    res.status(CREATED).json(makeResponseData(artist))
+    res.status(CREATED).json(makeArtistFullRepresentation(artist))
 }
