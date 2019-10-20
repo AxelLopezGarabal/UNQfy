@@ -3,7 +3,7 @@ const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
-const { getArtistsHandler, postArtistsHandler, getOneArtistHandler } = require('./routes/handlers/artistsHandlers')
+const { getArtistsHandler, postArtistsHandler, getOneArtistHandler } = require('./routes/controllers/artistsControllers')
 
 const { UNQfy } = require('./model/unqfy')
 const albumsDataProvider = require('./apis_helpers/SpotifyAlbumsDataProvider')
