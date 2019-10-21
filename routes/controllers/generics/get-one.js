@@ -9,7 +9,7 @@ class GetOneController extends RequestController {
 
     _doTask(req, res) {
         const entityId = parseInt(req.params.id)
-        const entity   = this._unqfy.findBy(this._entityName, { id: entityId })
+        const entity   = this._unqfy.findBy(this._entityName, { prop: 'id', value: entityId })
         this.respondOk(res, entity.toJSON())
     }
 
