@@ -16,6 +16,7 @@ class RequestController {
   }
 
   handle(req, res) {
+      console.log('handle')
       this._validateRequest(req, res)
       
       try {
@@ -37,7 +38,7 @@ class RequestController {
     const validationResult = this._validate(req)
 
     if (validationResult.error)
-      this.respondBadRequest(res, validationResult.error)
+      this.respondBadRequest(res)
   }
 
   _validate(req)             { return {} }
@@ -62,11 +63,8 @@ class RequestController {
     res.status(CREATED).json(responseBody)
   }
 
-  // respondBadRequest(res, responseBody) {
-  //   res.status(BAD_REQUEST).json(responseBody)
-  // }
 
-  respondBadRequest(res, responseBody) {
+  respondBadRequest(res) {
     res.status(BAD_REQUEST).json({ status: BAD_REQUEST, errorCode: "BAD_REQUEST" })
   }
 

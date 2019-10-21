@@ -21,12 +21,16 @@ const artistsControllers = require('./controllers/artist/artistsControllers')
 const albumController    = require('./controllers/album/AlbumController')
 
 const artistsRout = express.Router()
+
+artistsRout
 	.get('/'      , artistsControllers.getAll(unqfy))
 	.get('/:id'   , artistsControllers.getOne(unqfy))
 	.post('/'     , artistsControllers.post(unqfy))
 	.delete('/:id', artistsControllers.delete(unqfy))
 
 const albumsRout = express.Router()
+
+albumsRout
 	.get('/'      , albumController.getAll(unqfy))
 	.get('/:id'   , albumController.getOne(unqfy))
 	.post('/'     , albumController.post(unqfy))
@@ -47,11 +51,20 @@ app
 	})
 
 	.use((error, req, res, next) => {
-		res.status(error.status || 500);
-		res.json({
-			status: 404,
-			errorCode: 'RESOURCE_NOT_FOUND'
-		})
+		if (/Unexpected token/.test(error.message))
+			res
+				.status(400)
+				.json({
+					status: 400,
+					errorCode: 'BAD_RESPONSE'
+				})
+		else
+			res
+				.status(error.status)
+				.json({
+					status: error.status,
+					errorCode: 'adasdasdasdasd!!!!!!'
+				})
 })
 
 module.exports = app; 
