@@ -180,6 +180,34 @@ describe(artistsEndPoint, () => {
     })
   })
 
+  describe('PATCH', () => {
+    it('actualiza los datos de un artista', done => {
+      const newName = 'new name'
+
+      chai.request(app)
+        .post(artistsEndPoint)
+        .send(artistData)
+        .then(res => {
+          const artistId = res.body.id
+          
+          chai.request(app)
+            .patch(artistsEndPoint + '/' + artistId)
+            .send({ name: newName })
+            .then(res => {
+              expectResponse(res, 200, {
+                id: artistId,
+                name: newName,
+                country: artistData.country,
+                albums: []
+              })
+              done()
+            })
+        })
+    })
+  })
+
+
+
 })
 
 function expectResponse(res, statusCode, responseBody) {
