@@ -1,4 +1,4 @@
-const postSchema                  = require('./post-schema')
+const postSchema        = require('./post-schema')
 const RequestController = require('../RequestController')
 
 class PostController extends RequestController {
