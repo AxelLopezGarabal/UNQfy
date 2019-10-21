@@ -17,20 +17,12 @@ const unqfy = new UNQfy()
 
 // unqfy.populateAlbumsForArtist('the beatles')
 
+const makeCrudRoute      = require('./routes/make-crud-route')
 const artistsControllers = require('./controllers/artist/artistsControllers')
 const albumController    = require('./controllers/album/AlbumController')
 
-const artistsRout = express.Router()
-	.get('/'      , artistsControllers.getAll(unqfy))
-	.get('/:id'   , artistsControllers.getOne(unqfy))
-	.post('/'     , artistsControllers.post(unqfy))
-	.delete('/:id', artistsControllers.delete(unqfy))
-
-const albumsRout = express.Router()
-	.get('/'      , albumController.getAll(unqfy))
-	.get('/:id'   , albumController.getOne(unqfy))
-	.post('/'     , albumController.post(unqfy))
-	.delete('/:id', albumController.delete(unqfy))
+const artistsRout = makeCrudRoute(artistsControllers, unqfy)
+const albumsRout  = makeCrudRoute(albumController   , unqfy)
 
 app
 	.use(morgan('dev'))
