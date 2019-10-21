@@ -25,6 +25,7 @@ const artistsRout = makeCrudRoute(artistsControllers, unqfy)
 const albumsRout  = makeCrudRoute(albumController   , unqfy)
 
 artistsRout.put('/:id', require('./controllers/artist/put')(unqfy))
+albumsRout.patch('/:id', require('./controllers/album/patch')(unqfy))
 
 app
 	.use(morgan('dev'))
