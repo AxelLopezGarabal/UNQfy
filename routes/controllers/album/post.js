@@ -1,7 +1,5 @@
 const postSchema                  = require('./post-schema')
-
 const RequestController = require('../RequestController')
-const makeAlbumFullRepresentation = require('./make-album-full-representation')
 
 class PostController extends RequestController {
 
@@ -11,11 +9,8 @@ class PostController extends RequestController {
 
     _doTask(req, res) {
         const { artistId, name, year } = req.body
-
-        const album        = this._unqfy.addAlbum(artistId, { name, year })
-        const responseBody = makeAlbumFullRepresentation(album)
-    
-        this.respondCreated(res, responseBody)
+        const album = this._unqfy.addAlbum(artistId, { name, year })
+        this.respondCreated(res, album.toJSON())
     }
 
     _errorHandlers() {

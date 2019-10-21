@@ -1,7 +1,5 @@
-const postScheme = require('./post-artist-schema')
-
+const postScheme        = require('./post-artist-schema')
 const RequestController = require('../RequestController')
-const makeArtistFullRepresentation = require('./make-artist-full-representation')
 
 class PostController extends RequestController {
 
@@ -10,10 +8,9 @@ class PostController extends RequestController {
     }
 
     _doTask(req, res) {
-        const artistData   = { name: req.body.name, country: req.body.country }
-        const artist       = this._unqfy.addArtist(artistData)
-        const responseBody = makeArtistFullRepresentation(artist)
-        this.respondCreated(res, responseBody)
+        const artistData = req.body
+        const artist     = this._unqfy.addArtist(artistData)
+        this.respondCreated(res, artist.toJSON())
     }
 
     _errorHandlers() {
