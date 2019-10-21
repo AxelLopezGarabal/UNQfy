@@ -56,14 +56,14 @@ app
 				.status(400)
 				.json({
 					status: 400,
-					errorCode: 'BAD_RESPONSE'
+					errorCode: 'BAD_REQUEST'
 				})
 		else
 			res
 				.status(error.status)
 				.json({
-					status: error.status,
-					errorCode: 'adasdasdasdasd!!!!!!'
+					status: 404,
+					errorCode: 'RESOURCE_NOT_FOUND'
 				})
 })
 
