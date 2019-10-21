@@ -65,6 +65,17 @@ describe('Album', () => {
     }).to.throw(`Ya existe un track llamado "${track01.name}" en el album "${album.name}"`)
   })
 
+  describe('Actualizacion', () => {
+    it('se le puede actualizar el año', () => {
+      const oldYear = album.year
+      const newYear = oldYear + 1
+
+      album.update({year: newYear })
+
+      expect(album.year).to.eq(newYear)
+    })
+  })
+
 })
 
 function createTrackNamed(aName) {

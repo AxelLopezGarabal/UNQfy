@@ -90,6 +90,29 @@ describe('UNQfy', () => {
             expect(artist.name).to.eq(newName)
         })
     })
+
+    describe('Actualizacion de datos de album', () => {
+        it('si no existe el album arroja una excepcion', () => {
+            const unqfy          = makeUNQfy()
+            const invalidAlbumId = 123123
+            
+            expect(() =>
+                unqfy.updateAlbum(invalidAlbumId, { year: 2000 })
+            ).to.throw(`Error: Could not find "album" with "id" equal to "${invalidAlbumId}"`)
+        })
+
+        it('actualiza los datos de un album', () => {
+            const unqfy  = makeUNQfy()
+            const artist = unqfy.addArtist({ name: 'pepe', country: 'argentina' })
+            const album  = unqfy.addAlbum(artist.id, { name: 'albumName', year: 2019 })
+            
+            const newYear = album.year + 1
+
+            unqfy.updateAlbum(album.id, { year: newYear })
+
+            expect(album.year).to.eq(newYear)
+        })
+    })
 })
 
 function expectHasOnly(expectedElements, aCollection) {

@@ -28,6 +28,11 @@ class Album {
 
   set name(newName) { this._name = newName }
 
+  /*  */
+  update({ year }) {
+    this._year = year
+  }
+
   hasTrack(aTrack) {
     return this.tracks.includes(aTrack)
   }
