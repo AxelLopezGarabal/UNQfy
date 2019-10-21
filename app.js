@@ -56,6 +56,6 @@ app
 					status: 404,
 					errorCode: 'RESOURCE_NOT_FOUND'
 				})
-})
+	})
 
 module.exports = app; 

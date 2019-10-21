@@ -26,13 +26,6 @@ class RequestController {
       }
   }
 
-  // _validateRequest(req, res) {
-  //   const validationResult = this._validate(req)
-
-  //   if (validationResult.error)
-  //     this.respondBadRequest(res, validationResult.error)
-  // }
-
   _validateRequest(req, res) {
     const validationResult = this._validate(req)
 

@@ -1,10 +1,10 @@
-const postScheme        = require('./post-artist-schema')
+const postSchema        = require('./post-artist-schema')
 const RequestController = require('../RequestController')
 
 class PostController extends RequestController {
 
     _validate(req) {
-        return postScheme.validate(req.body)
+        return postSchema.validate(req.body)
     }
 
     _doTask(req, res) {

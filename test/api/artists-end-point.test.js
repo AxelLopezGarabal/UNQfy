@@ -78,6 +78,43 @@ describe(artistsEndPoint, () => {
         })
       
     })
+
+    it('crea mas de un artista', done => {
+      
+      const firstArtistData  = { name: 'pepe', country: 'arentina' }
+      const secondArtistData = { name: 'juan', country: 'uruguay' }      
+
+      chai.request(app)
+        .post(artistsEndPoint)
+        .send(firstArtistData)
+        .then(res => {
+          
+          chai.request(app)
+            .post(artistsEndPoint)
+            .send(secondArtistData)
+            .then(res => {
+              
+              const firstArtistExpected  = { id: 0, albums: [], ...firstArtistData  }
+              const secondArtistExpected = { id: 1, albums: [], ...secondArtistData }
+
+              chai.request(app)
+                .get(artistsEndPoint)
+                .then(res => {
+
+                  expectResponse(res, 200, [
+                    firstArtistExpected,
+                    secondArtistExpected
+                  ])
+
+                  done()
+
+                })
+
+            })
+
+        })
+    })
+
   })
 
   describe('GET ONE', () => {

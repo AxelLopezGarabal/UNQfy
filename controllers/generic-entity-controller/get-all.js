@@ -9,16 +9,10 @@ class GetAllController extends RequestController {
     
     _doTask(req, res) {
         const entityPartialName = req.query.name
-
-        // TODO: el enunciado dice que si no se pasa un nombre
-        // retorna todo... pero hay tests de postman que esperan lista vacia.
-        // Haciendo esto pasan mas tests de postman
-        // if (!entityPartialName)
-        //     return this.respondOk(res, [])
         
         const entitys      = this._unqfy.searchByNamePartial(entityPartialName)[this._entityName + 's']
         const responseBody = entitys.map(entity => entity.toJSON())
-        
+
         this.respondOk(res, responseBody)
     }
     
