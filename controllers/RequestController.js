@@ -16,7 +16,6 @@ class RequestController {
   }
 
   handle(req, res) {
-      console.log('handle')
       this._validateRequest(req, res)
       
       try {

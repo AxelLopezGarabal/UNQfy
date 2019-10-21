@@ -1,6 +1,5 @@
 var chai     = require('chai')
 var chaiHttp = require('chai-http')
-var app      = require('../../app')
 
 var expect = chai.expect
 
@@ -8,9 +7,9 @@ chai.use(chaiHttp)
 
 // OJO: si la app arranca con cosas cargadas puede fallar algun test
 
-const resourceAlreadyExistResponseBody = { status: 409, errorCode: 'RESOURCE_ALREADY_EXISTS' }
+const badRequestRespondBody            = { status: 400, errorCode: 'BAD_REQUEST' }
 const resourceNotFoundResponseBody     = { status: 404, errorCode: "RESOURCE_NOT_FOUND" }
-
+const resourceAlreadyExistResponseBody = { status: 409, errorCode: 'RESOURCE_ALREADY_EXISTS' }
 
 const artistsEndPoint = '/api/artists'
 
@@ -33,17 +32,18 @@ describe(artistsEndPoint, () => {
 
   describe('POST', () => {
     
-    // it('bad request si el body esta mal formado', done => {
-    //   const jsonMalFormado = "{ 'nam"
+    xit('bad request si el body esta mal formado', done => {
+      const jsonMalFormado = "{ 'nam"
 
-    //   chai.request(app)
-    //     .post(artistsEndPoint)
-    //     .send(jsonMalFormado)
-    //     .end((error, res) => {
-    //       expectResponse(res, 400, { status: 400, errorCode: 'BAD_REQUEST' })
-    //       done()
-    //     })
-    // })
+      chai.request(app)
+        .post(artistsEndPoint)
+        .send(jsonMalFormado)
+        .end((error, res) => {
+          
+          expectResponse(res, 400, badRequestRespondBody)
+          done()
+        })
+    })
 
     it('crea un nuevo artista', done => {
       const responseBody = {
@@ -173,7 +173,6 @@ describe(artistsEndPoint, () => {
           chai.request(app)
             .delete(artistsEndPoint + '/' + artistId)
             .then(res => {
-              //expectResponse(res, 200, {})
               expect(res).to.have.status(204)
               done()
             })

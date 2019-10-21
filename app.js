@@ -21,16 +21,12 @@ const artistsControllers = require('./controllers/artist/artistsControllers')
 const albumController    = require('./controllers/album/AlbumController')
 
 const artistsRout = express.Router()
-
-artistsRout
 	.get('/'      , artistsControllers.getAll(unqfy))
 	.get('/:id'   , artistsControllers.getOne(unqfy))
 	.post('/'     , artistsControllers.post(unqfy))
 	.delete('/:id', artistsControllers.delete(unqfy))
 
 const albumsRout = express.Router()
-
-albumsRout
 	.get('/'      , albumController.getAll(unqfy))
 	.get('/:id'   , albumController.getOne(unqfy))
 	.post('/'     , albumController.post(unqfy))
