@@ -8,8 +8,8 @@ chai.use(chaiHttp)
 
 // OJO: si la app arranca con cosas cargadas puede fallar algun test
 
-const resourceAlreayExistResponseBody = { errorCode: 'RESOURCE_ALREADY_EXIST' }
-const resourceNotFoundResponseBody    = { errorCode: "RESOURCE_NOT_FOUND" }
+const resourceAlreadyExistResponseBody = { status: 409, errorCode: 'RESOURCE_ALREADY_EXISTS' }
+const resourceNotFoundResponseBody     = { status: 404, errorCode: "RESOURCE_NOT_FOUND" }
 
 
 const artistsEndPoint = '/api/artists'
@@ -32,6 +32,19 @@ describe(artistsEndPoint, () => {
   })
 
   describe('POST', () => {
+    
+    // it('bad request si el body esta mal formado', done => {
+    //   const jsonMalFormado = "{ 'nam"
+
+    //   chai.request(app)
+    //     .post(artistsEndPoint)
+    //     .send(jsonMalFormado)
+    //     .end((error, res) => {
+    //       expectResponse(res, 400, { status: 400, errorCode: 'BAD_REQUEST' })
+    //       done()
+    //     })
+    // })
+
     it('crea un nuevo artista', done => {
       const responseBody = {
         id: 0,
@@ -57,8 +70,8 @@ describe(artistsEndPoint, () => {
           chai.request(app)
             .post(artistsEndPoint)
             .send(artistData)
-            .then(res => {
-              expectResponse(res, 409, resourceAlreayExistResponseBody)
+            .end((error, res) => {
+              expectResponse(res, 409, resourceAlreadyExistResponseBody)
               done()
             })
 

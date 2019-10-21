@@ -130,7 +130,7 @@ class UNQfy {
 
   /** BUSQUEDAS **/
   searchByName(aName)               {return this._entitiesRepository.filterAll(entity => new RegExp(`\\b${aName}\\b`).test(entity.name))}
-  searchByNamePartial(aPartialName) { return this._entitiesRepository.filterAll(entity => new RegExp(aPartialName).test(entity.name)) }
+  searchByNamePartial(aPartialName) { return this._entitiesRepository.filterAll(entity => new RegExp(aPartialName, 'i').test(entity.name)) }
 
   getArtistById(id)      { return this._entitiesRepository.findBy('artist'  , {prop: 'id', value: id}) }
   getAlbumById(id)       { return this._entitiesRepository.findBy('album'   , {prop: 'id', value: id}) }

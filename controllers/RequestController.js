@@ -26,6 +26,13 @@ class RequestController {
       }
   }
 
+  // _validateRequest(req, res) {
+  //   const validationResult = this._validate(req)
+
+  //   if (validationResult.error)
+  //     this.respondBadRequest(res, validationResult.error)
+  // }
+
   _validateRequest(req, res) {
     const validationResult = this._validate(req)
 
@@ -55,8 +62,12 @@ class RequestController {
     res.status(CREATED).json(responseBody)
   }
 
+  // respondBadRequest(res, responseBody) {
+  //   res.status(BAD_REQUEST).json(responseBody)
+  // }
+
   respondBadRequest(res, responseBody) {
-    res.status(BAD_REQUEST).json(responseBody)
+    res.status(BAD_REQUEST).json({ status: BAD_REQUEST, errorCode: "BAD_REQUEST" })
   }
 
   resourceNotFound(res) {
@@ -68,7 +79,7 @@ class RequestController {
   }
   
   respondResourceAlreadyExist(res) {
-    res.status(CONFLICT).json({ status: CONFLICT, errorCode: 'RESOURCE_ALREADY_EXIST' })
+    res.status(CONFLICT).json({ status: CONFLICT, errorCode: 'RESOURCE_ALREADY_EXISTS' })
   }
 
 }
