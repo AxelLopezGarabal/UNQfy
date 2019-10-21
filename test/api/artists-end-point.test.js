@@ -180,7 +180,7 @@ describe(artistsEndPoint, () => {
     })
   })
 
-  describe('PATCH', () => {
+  describe('PUT', () => {
     it('actualiza los datos de un artista', done => {
       const newName = 'new name'
 
@@ -191,7 +191,7 @@ describe(artistsEndPoint, () => {
           const artistId = res.body.id
           
           chai.request(app)
-            .patch(artistsEndPoint + '/' + artistId)
+            .put(artistsEndPoint + '/' + artistId)
             .send({ name: newName })
             .then(res => {
               expectResponse(res, 200, {

@@ -1,6 +1,6 @@
 const RequestController = require('../RequestController')
 
-class PatchController extends RequestController {
+class PutController extends RequestController {
 
     // _validate(req) {
     //     return patchSchema.validate(req.body)
@@ -23,7 +23,7 @@ class PatchController extends RequestController {
 }
 
 module.exports = unqfy => (req, res) =>
-    new PatchController(unqfy).handle(req, res)
+    new PutController(unqfy).handle(req, res)
 
 
 
