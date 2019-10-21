@@ -48,6 +48,12 @@ class Artist {
   set name(newName)     { this._name   = newName }
   set albums(newalbums) { this._albums = newalbums }
 
+  /*  */
+  update({name, country = this._country}) {
+    this._name    = name
+    this._country = country
+  }
+
   /* ALBUMS */
   addAlbum(anAlbum) {
     this._validateNewAlbum(anAlbum)

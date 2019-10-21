@@ -212,6 +212,42 @@ describe('Artist', () => {
     })
   })
 
+  // Visado 2
+  describe('Actualizaciones', () => {
+    it('Se le puede actualizar su nombre', () => {
+      const newName    = 'nuevoNombre'
+      const oldCountry = artista.country
+      
+      artista.update({ name: newName })
+      
+      expect(artista.name).to.eq(newName)
+      expect(artista.country).to.eq(oldCountry)
+    })
+
+    it('Se le puede actualizar su pais', () => {
+      const oldName    = artista.oldName
+      const newCountry = 'newCountry'
+      
+      artista.update({ country: newCountry })
+      
+      expect(artista.name).to.eq(oldName)
+      expect(artista.country).to.eq(newCountry)
+    })
+
+    it('Se le puede actualizar su nombre junto con su pais', () => {
+      const oldName    = artista.oldName
+      const oldCountry = artista.country
+
+      const newName    = 'newName'
+      const newCountry = 'newCountry'
+      
+      artista.update({ name: newName, country: newCountry })
+      
+      expect(artista.name).to.eq(newName)
+      expect(artista.country).to.eq(newCountry)
+    })
+  })
+
 })
 
 const createAlbum    = (name, tracks) => new Album({id: 0, name, tracks})

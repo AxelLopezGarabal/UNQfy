@@ -193,6 +193,10 @@ class UNQfy {
     return this.getArtistByName(artistName).albums
   }
 
+  updateArtist(artistId, artistData) {
+    this.getArtistById(artistId).update(artistData)
+  }
+
   async populateAlbumsForArtist(artistName) {
     const artist = this.getArtistByName(artistName)
     

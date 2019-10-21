@@ -602,9 +602,9 @@
 									"",
 									"    pm.expect(jsonData).to.be.deep.equal({",
 									"        \"id\": artistId,",
-									"        \"name\": \"Guns n' Roses\",",
+									"        \"name\": \"Guns and Roses\",",
 									"        \"albums\": [],",
-									"        \"country\": \"USA\",",
+									"        \"country\": \"United States\",",
 									"    });",
 									"    pm.environment.set(\"testArtistId\", artistId);",
 									"});"
@@ -633,7 +633,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Guns n' Roses\",\n  \"country\": \"USA\"\n}"
+							"raw": "{\n  \"name\": \"Guns and Roses\",\n  \"country\": \"United States\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:{{port}}/api/artists",
@@ -696,7 +696,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Guns n' Roses\",\n  \"country\": \"USA\"\n}"
+							"raw": "{\n  \"name\": \"Guns and Roses\",\n  \"country\": \"United States\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:{{port}}/api/artists",
@@ -733,9 +733,9 @@
 									"",
 									"    pm.expect(jsonData).to.be.deep.equal({",
 									"        \"id\": pm.environment.get(\"testArtistId\"),",
-									"        \"name\": \"Guns n' Roses\",",
+									"        \"name\": \"Guns and Roses\",",
 									"        \"albums\": [],",
-									"        \"country\": \"USA\",",
+									"        \"country\": \"United States\",",
 									"    });",
 									"    ",
 									"});",

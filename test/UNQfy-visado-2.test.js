@@ -66,6 +66,30 @@ describe('UNQfy', () => {
             
         })
     })
+
+    describe('Actualizacion de datos de artista', () => {
+        it('si no existe el artista arroja una excepcion', () => {
+            const unqfy           = makeUNQfy()
+            const invalidArtistId = 123123
+            
+            expect(() =>
+                unqfy.updateArtist(invalidArtistId, { name: 'new name' })
+            ).to.throw(`Error: Could not find "artist" with "id" equal to "${invalidArtistId}"`)
+        })
+
+        it('actualiza los datos de un artista', () => {
+            const unqfy = makeUNQfy()
+
+            const artistName = 'artist name'
+            const artist     = unqfy.addArtist({name: artistName, country: 'argentina'})
+
+            const newName = 'newName'
+
+            unqfy.updateArtist(artist.id, { name: newName })
+
+            expect(artist.name).to.eq(newName)
+        })
+    })
 })
 
 function expectHasOnly(expectedElements, aCollection) {
