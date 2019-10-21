@@ -13,12 +13,14 @@ class UNQfy {
 
   constructor(
     albumsDataProvider = {findFor: artistName => []},
+    lyricsProvider     = {find: () => ''},
     entitiesRepository = new EntitiesRepository()
   )
   {
     this._entitiesRepository = entitiesRepository
     this._nextId             = 0
     this._albumsDataProvider = albumsDataProvider
+    this._lyricsProvider     = lyricsProvider
   }
 
   _generateUniqueId() { return this._nextId++ }

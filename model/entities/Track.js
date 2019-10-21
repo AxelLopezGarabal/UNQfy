@@ -1,3 +1,5 @@
+const nullLyricsProvider = { find: () => '' }
+
 class Track {
 
   constructor(dataObject) {
@@ -7,6 +9,8 @@ class Track {
     this._name     = name
     this._duration = duration
     this._genres   = genres
+    
+    this._lyricsProvider = nullLyricsProvider
   }
 
   toJSON() { // TODO: no tiene test
@@ -24,7 +28,11 @@ class Track {
   get duration() { return this._duration }
   get genres()   { return this._genres }
 
+  get lyrics()   { return this._lyricsProvider.find() }  
+
   set name(newName) { this._name = newName }
+  
+  set lyricsProvider(aLyricsProvider) { this._lyricsProvider = aLyricsProvider }
 
   // Testing
   matchGenre(aGenre) {

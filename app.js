@@ -8,14 +8,15 @@ const albumController    = require('./routes/controllers/album/AlbumController')
 
 const { UNQfy } = require('./model/unqfy')
 const albumsDataProvider = require('./apis_helpers/SpotifyAlbumsDataProvider')
+const lyricsProvider     = require('./apis_helpers/MusicMatchLyricsProvider')
 
 // const unqfy = new UNQfy(albumsDataProvider)
 const unqfy = new UNQfy()
 
-unqfy.addArtist({name: 'pepe', country: 'argentina'})
-unqfy.addArtist({name: 'juan', country: 'argentina'})
-const theBeatles = unqfy.addArtist({name: 'the beatles', country: 'argentina'})
-const album = unqfy.addAlbum(theBeatles.id, {name: 'album beatles', year: 1970})
+// unqfy.addArtist({name: 'pepe', country: 'argentina'})
+// unqfy.addArtist({name: 'juan', country: 'argentina'})
+// const theBeatles = unqfy.addArtist({name: 'the beatles', country: 'argentina'})
+// const album = unqfy.addAlbum(theBeatles.id, {name: 'album beatles', year: 1970})
 
 // unqfy.populateAlbumsForArtist('the beatles')
 

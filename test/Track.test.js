@@ -34,4 +34,20 @@ describe('Track', () => {
     expect(track01.matchSomeGenreFrom(['Ccasd', '123123'])).to.equal(false)
     expect(track01.matchSomeGenreFrom([])).to.equal(false)
   })
+
+  // VISADO 2
+  it('se le puede asignar un proveedor de letras', () => {
+    const lyrics = 'la la la la la'
+    const lyricsProvider = { find: () => lyrics }
+
+    const track = new Track({ id, name, duration, genres })
+    track.lyricsProvider = lyricsProvider
+
+    expect(track.lyrics).to.equal(lyrics)
+  })
+
+  it('si no se le asigna un proveedor de letras retorna un string vacio', () => {
+    const track = new Track({ id, name, duration, genres })
+    expect(track.lyrics).to.equal('')
+  })
 })
