@@ -62,7 +62,7 @@ describe(artistsEndPoint, () => {
           chai.request(app)
             .post(albumsEndPoint)
             .send({ artistId, ...albumData })
-            .end((error, res) => {
+            .then(res => {
               expectResponse(res, 201, {
                 id: 1,
                 tracks: [],

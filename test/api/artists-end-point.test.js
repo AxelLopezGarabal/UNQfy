@@ -38,7 +38,7 @@ describe(artistsEndPoint, () => {
       chai.request(app)
         .post(artistsEndPoint)
         .send(jsonMalFormado)
-        .end((error, res) => {
+        .then(res => {
           
           expectResponse(res, 400, badRequestRespondBody)
           done()
