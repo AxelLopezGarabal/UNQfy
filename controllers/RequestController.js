@@ -4,6 +4,7 @@ const {
   NO_CONTENT,
   BAD_REQUEST,
   NOT_FOUND,
+  RELATED_RESOURCE_NOT_FOUND,
   CONFLICT
 } = require('./status-codes')
 
@@ -59,11 +60,15 @@ class RequestController {
   }
 
   resourceNotFound(res) {
-    res.status(NOT_FOUND).json({ errorCode: "RESOURCE_NOT_FOUND" })
+    res.status(NOT_FOUND).json({ status: NOT_FOUND, errorCode: "RESOURCE_NOT_FOUND" })
+  }
+
+  respondeRelatedResourceNotFound(res) {
+    res.status(RELATED_RESOURCE_NOT_FOUND).json({ status: RELATED_RESOURCE_NOT_FOUND, errorCode: "RELATED_RESOURCE_NOT_FOUND" })
   }
   
   respondResourceAlreadyExist(res) {
-    res.status(CONFLICT).json({ errorCode: 'RESOURCE_ALREADY_EXIST' })
+    res.status(CONFLICT).json({ status: CONFLICT, errorCode: 'RESOURCE_ALREADY_EXIST' })
   }
 
 }

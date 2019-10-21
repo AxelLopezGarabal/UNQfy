@@ -3,14 +3,11 @@ const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
-const artistsControllers = require('./controllers/artist/artistsControllers')
-const albumController    = require('./controllers/album/AlbumController')
-
 const { UNQfy } = require('./model/unqfy')
 const albumsDataProvider = require('./apis_helpers/SpotifyAlbumsDataProvider')
 const lyricsProvider     = require('./apis_helpers/MusicMatchLyricsProvider')
 
-// const unqfy = new UNQfy(albumsDataProvider)
+// const unqfy = new UNQfy(albumsDataProvider, lyricsProvider)
 const unqfy = new UNQfy()
 
 // unqfy.addArtist({name: 'pepe', country: 'argentina'})
@@ -20,17 +17,16 @@ const unqfy = new UNQfy()
 
 // unqfy.populateAlbumsForArtist('the beatles')
 
-const artistsRout = express.Router()
+const artistsControllers = require('./controllers/artist/artistsControllers')
+const albumController    = require('./controllers/album/AlbumController')
 
-artistsRout
+const artistsRout = express.Router()
 	.get('/'      , artistsControllers.getAll(unqfy))
 	.get('/:id'   , artistsControllers.getOne(unqfy))
 	.post('/'     , artistsControllers.post(unqfy))
 	.delete('/:id', artistsControllers.delete(unqfy))
 
 const albumsRout = express.Router()
-
-albumsRout
 	.get('/'      , albumController.getAll(unqfy))
 	.get('/:id'   , albumController.getOne(unqfy))
 	.post('/'     , albumController.post(unqfy))
@@ -53,9 +49,8 @@ app
 	.use((error, req, res, next) => {
 		res.status(error.status || 500);
 		res.json({
-			error:{
-				message: error.message
-			}
+			status: 404,
+			errorCode: 'RESOURCE_NOT_FOUND'
 		})
 })
 

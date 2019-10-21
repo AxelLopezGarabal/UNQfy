@@ -15,7 +15,8 @@ class PostController extends RequestController {
 
     _errorHandlers() {
         return {
-           RepeatedAlbumNameInArtist: (error, req, res) => this.respondResourceAlreadyExist(res)
+            EntityNotFound: (error, req, res) => this.respondeRelatedResourceNotFound(res),
+            RepeatedAlbumNameInArtist: (error, req, res) => this.respondResourceAlreadyExist(res)
         }
     }
 
