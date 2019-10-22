@@ -29,7 +29,8 @@ class UNQfy {
   get artists()   { return this._entitiesRepository.artists }
   get albums()    { return this._entitiesRepository.albums }
   get tracks()    { return this._entitiesRepository.tracks }
-
+  get id()        { return this._nextId }
+  
   /////////////////////
   addUser({name}) {
     const newUser = new UserCreation(this, {name}).handle()
