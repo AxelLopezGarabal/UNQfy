@@ -1,9 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
+const system = require('../backend/mockBBDD')
+
 router.post('/', (req, res, next) => {
 	res.status(200).json({
 		method: 'POST',
+		model: system
 	})
 });
 
@@ -22,6 +25,7 @@ router.patch('/:id', (req, res, next) => {
 router.get('/', (req, res, next) => {
 	res.status(200).json({
 		method: 'GET',
+		model: system
 	})
 });
 

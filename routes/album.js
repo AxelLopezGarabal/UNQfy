@@ -2,6 +2,8 @@
 const express = require('express');
 const router = express.Router();
 
+const model = '../backend/mockBBDD'
+
 router.post('/', (req, res, next) => {
 	res.status(200).json({
 		method: 'POST',
@@ -12,7 +14,8 @@ router.post('/', (req, res, next) => {
 router.get('/:id', (req, res, next) => {
 	res.status(200).json({
 		method: 'GET',
-		shouldHave: 'param en la URL'
+		shouldHave: 'param en la URL',
+		model: model
 	})
 });
 
