@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const artistRoutes = require('./routes/artist');
 const albumRoutes  = require('./routes/album');
 const trackRoutes  = require('./routes/tracks');
+const playlistRoutes  = require('./routes/playlist');
 
 app
 	.use(morgan('dev'))
@@ -15,6 +16,7 @@ app
 	.use('/api/artists', artistRoutes)
 	.use('/api/albums', albumRoutes)
 	.use('/api/tracks', trackRoutes)
+	.use('/api/playlist', playlistRoutes)
 
 
     .use((req, res, next) => {
