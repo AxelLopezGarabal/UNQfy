@@ -8,9 +8,13 @@ class PostController extends RequestController {
     }
 
     _doTask(req, res) {
-        const { artistId, name, year } = req.body
-        const album = this._unqfy.addAlbum(artistId, { name, year })
-        this.respondCreated(res, album.toJSON())
+        const albumData = req.body
+        const name = albumData.name;
+        const year = albumData.year;
+        if(albumData.artistId != undefined && name != undefined && year != undefined){
+            const album = this._unqfy.addAlbum(albumData.artistId, { name, year })
+            this.respondCreated(res, album.toJSON())
+        }
     }
 
     _errorHandlers() {

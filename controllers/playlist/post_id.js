@@ -1,4 +1,4 @@
-const postScheme        = require('./post-artist-schema')
+//const postScheme        = require('./post-artist-schema')
 const RequestController = require('../RequestController')
 
 class PostController extends RequestController {
@@ -8,9 +8,8 @@ class PostController extends RequestController {
     }
 
     _doTask(req, res) {
-        const artistData = req.body
-        if (artistData.name != undefined && artistData.country != undefined){
-            const artist     = this._unqfy.addArtist(artistData)
+        const playlistData = req.body
+        if (playlistData.name != undefined){
             this.respondCreated(res, artist.toJSON())
         }
     }

@@ -20,12 +20,15 @@ const unqfy = new UNQfy()
 const makeCrudRoute      = require('./routes/make-crud-route')
 const artistsControllers = require('./controllers/artist/artistsControllers')
 const albumController    = require('./controllers/album/AlbumController')
+const playlistController    = require('./controllers/playlist/PlaylistController')
 
 const artistsRout = makeCrudRoute(artistsControllers, unqfy)
 const albumsRout  = makeCrudRoute(albumController   , unqfy)
+const playlistRout = makeCrudRoute(playlistController, unqfy)
 
 artistsRout.put('/:id', require('./controllers/artist/put')(unqfy))
 albumsRout.patch('/:id', require('./controllers/album/patch')(unqfy))
+//playlistRout.post()
 
 app
 	.use(morgan('dev'))
@@ -34,6 +37,7 @@ app
 
 	.use('/api/artists', artistsRout)
 	.use('/api/albums', albumsRout)
+	.use('/api/playlist', playlistRout)
 
 	.use((req, res, next) => {
 		const error = new Error('Not found')
