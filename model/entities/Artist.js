@@ -28,6 +28,13 @@ class Artist {
     return this.albums.includes(anAlbum)
   }
 
+  isTheAuthor(anAlbum) {
+    let res = false
+    this.albums.forEach(elem => {
+      res = res || anAlbum == elem.getName()
+    })
+  }
+
   isTheAuthorOfTrack(aTrack) {
     return this.allTracks.includes(aTrack)
   }

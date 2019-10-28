@@ -18,7 +18,7 @@ class UNQfy {
   )
   {
     this._entitiesRepository = entitiesRepository
-    this._nextId             = 0
+    this._nextId             = 1
     this._albumsDataProvider = albumsDataProvider
     this._lyricsProvider     = lyricsProvider
   }
@@ -36,6 +36,10 @@ class UNQfy {
     const newUser = new UserCreation(this, {name}).handle()
     this._entitiesRepository.add('user', newUser)
     return newUser
+  }
+
+  verifyId(id){
+    return this._nextId >= id
   }
 
   registerListening(userId, trackId) {
@@ -78,6 +82,10 @@ class UNQfy {
     return this._entitiesRepository.someHas('artist', {prop: 'id', value: id})
   }
 
+  existsArtistWithName(name){
+    return this._entitiesRepository.someHas('artist', {prop: 'name', value: name})
+  }
+
   existSomeoneCalled(aName) {
     return this._entitiesRepository.someHas('artist', {prop: 'name', value: aName}) ||
            this._entitiesRepository.someHas('user'  , {prop: 'name', value: aName})
@@ -85,10 +93,14 @@ class UNQfy {
 
   /* ALBUM */
   addAlbum(artistId, {name, year}) {
-    const newAlbum = new AlbumCreation(this, {name, year}).handle()
+    const newAlbum = new Album({ id: this._generateUniqueId(), ...{name, year} })
     const artist   = this.getArtistById(artistId)
     artist.addAlbum(newAlbum)
     return newAlbum
+  }
+
+  verifyAlbum(artistId, name){
+    return this.getArtistById(artistId);
   }
 
   removeAlbum(albumId) {
@@ -140,7 +152,7 @@ class UNQfy {
   getUserById(id)        { return this._entitiesRepository.findBy('user'    , {prop: 'id', value: id}) }
 
   getArtistByName(aName) { return this._entitiesRepository.findBy('artist', { prop: 'name', value: aName }) }
-
+  
   getTracksMatchingGenres(genres) {
     return this._entitiesRepository.filter('track', track => track.matchSomeGenreFrom(genres))
   }
@@ -157,6 +169,12 @@ class UNQfy {
 
   _getAuthorOfAlbum(anAlbum) {
     return this._entitiesRepository.find('artist', artist => artist.isTheAuthorOfAlbum(anAlbum))
+  }
+
+  isAuthorOfAlbum(id, name){
+    const artist = this.getArtistById(id)
+    const album  = this.searchByName(name).albums[0]
+    return artist.isTheAuthorOfAlbum(album)
   }
 
   getAuthorOfTrack(aTrack) {
