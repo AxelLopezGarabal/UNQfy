@@ -7,7 +7,7 @@ class EntityCreation {
   }
 
   handle() {
-    this._validateDataObject()
+    //this._validateDataObject()
     this._createObject()
     return this._newObject
   }
