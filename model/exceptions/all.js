@@ -1,10 +1,9 @@
 module.exports = {
-    RepeatedTrackInAlbum:            require('./RepeatedTrackInAlbum'),
-    RepeatedAlbumInArtist:           require('./RepeatedAlbumInArtist'),
     ArtistaNoTieneRegistradoUnAlbum: require('./ArtistaNoTieneRegistradoUnAlbum'),
-    RepeatedAlbumInArtist:           require('./RepeatedAlbumInArtist'),
+    ArtistaYaExiste:                  require('./ArtistaYaExiste'),
     IncorrectNumbersOfArgsForCommand:require('./IncorrectNumbersOfArgsForCommand'),
-    SomeoneAlreadyRegisterUnderName: require('./SomeoneAlreadyRegisterUnderName'),
-    RepeatedTrackNameInAlbum:        require('./RepeatedTrackNameInAlbum'),
-    RepeatedAlbumNameInArtist:       require('./RepeatedAlbumNameInArtist')
+    RepeatedAlbumInArtist:           require('./RepeatedAlbumInArtist'),
+    RepeatedAlbumNameInArtist:       require('./RepeatedAlbumNameInArtist'),
+    RepeatedTrackInAlbum:            require('./RepeatedTrackInAlbum'),
+    RepeatedTrackNameInAlbum:        require('./RepeatedTrackNameInAlbum')
 }

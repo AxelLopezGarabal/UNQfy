@@ -5,27 +5,45 @@ const CREDENTIALS_FILENAME = 'spotifyResponse.json';
 
 const rp = require('request-promise');
 //	/v1/artists/{id}/albums
-const artistOptions = {
-    url: 'https://api.spotify.com/v1/search?q=artist:gorillaz&type=artist',
-    headers: { Authorization: 'Bearer ' + creds },
-    json: true,
-    limit: 50
-    };
+
+
+function artistOption(artistName){
+    return{
+        url: 'https://api.spotify.com/v1/search?q=artist:'+artistName+'&type=artist',
+        headers: { Authorization: 'Bearer ' + creds },
+        json: true,
+        limit: 50
+        }
+}
 function albumOptions(id) {
     return{
-        url: 'https://api.spotify.com/v1/artists/'+id+'/albums',
+        url: 'https://api.spotify.com/v1/artists/'+id+'/albums?',
         headers: { Authorization: 'Bearer ' + creds },
         json: true,
         limit: 50
         }
     }
-rp.get(artistOptions)
-    .then((response) => {console.log(response)
-        console.log( );console.log( );console.log( );console.log( )
-    console.log(response.artists.items[0]);console.log( )
-    return response.artists.items[0].id
-    }).then(id =>
-    rp.get(albumOptions(id)).then(response2 => {console.log(response)
-        console.log( );console.log( );console.log( );console.log(response2)}))
-    
-    .catch(error => console.log(error))
+
+
+
+class Populator{//devuelve la lista de albumes tal como la manda spotify
+    constructor(){}
+    populateResult(artistName){
+        const artistOptions = artistOption(artistName)
+        return rp.get(artistOptions)
+        .then((response) => {
+        return response.artists.items[0].id
+        }).then(id => {
+            const x = rp.get(albumOptions(id))
+            console.log('spot',x)
+
+            return x
+    })
+        .catch(error => console.log(error))
+    }
+
+}
+
+    exports.module = {
+        Populator,
+    }

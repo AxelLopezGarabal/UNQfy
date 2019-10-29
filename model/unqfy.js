@@ -1,8 +1,10 @@
 const picklify = require('picklify') // para cargar/guarfar unqfy
 const fs = require('fs') // para cargar/guarfar unqfy
+const populatorModule = require('../spotify')// contiene la funcion de request a spotify
+//const rp = require('../MusicMatch')// contiene la funcion de request a MusicMatch
 
 const { Artist, Album, Track, User, Playlist, Listening } = require('./entities/all') // esto hace falta para el framework de persistencia
-const {ArtistCreation, AlbumCreation, TrackCreation, UserCreation} = require('./entities-creation/all') // Method objects
+const {ArtistCreation, TrackCreation, UserCreation} = require('./entities-creation/all') // Method objects
 
 const PlaylistGenerator = require('./PlaylistGenerator.js')
 
@@ -12,14 +14,12 @@ const EntitiesRepository = require('./entities-repositories/EntitiesRepository')
 class UNQfy {
 
   constructor(
-    albumsDataProvider = {findFor: artistName => []},
     lyricsProvider     = {find: () => ''},
     entitiesRepository = new EntitiesRepository()
   )
   {
     this._entitiesRepository = entitiesRepository
     this._nextId             = 1
-    this._albumsDataProvider = albumsDataProvider
     this._lyricsProvider     = lyricsProvider
   }
 
@@ -219,11 +219,11 @@ class UNQfy {
 
   /*  VISADO 2 */
   getAlbumsForArtist(artistName) {
-    //return this.getArtistByName(artistName).albumsNames()
-    populateAlbumsForArtist(artistName);
+    //his.populateAlbumsForArtist(artistName);
     return this.getArtistByName(artistName).albums
+    //return this.getArtistByName(artistName).albumsNames()
   }
-  //Do we really need this??
+  
   updateArtist(artistId, artistData) {
     const artist = this.getArtistById(artistId)
     artist.update(artistData)
@@ -237,25 +237,12 @@ class UNQfy {
   }
 
   async populateAlbumsForArtist(artistName) {
-    const artist = this.getArtistByName(artistName)
-    /*make the consult to spotifyConsultor?
-    'https://api.spotify.com/v1/search?q=artist:'+artistName+'&type=album'
-    .then()
-    */
-    this.artistFinder.find(artist.name)
-    .then(artistAlbums => 
-      this.addAlbums(artistAlbums))
-    .catch() /*
-    this._albumsDataProvider.findFor(artistName)
-      .then(albumsData =>
-        albumsData.forEach(({name, year, tracks}) => {
-          const addedAlbum = this.addAlbum(artist.id, { name, year })
-          
-          tracks.forEach((trackData) =>
-            this.addTrack(addedAlbum.id, trackData)
-          ) 
-        })
-      )    */
+    const artist = this.getArtistByName(artistName);
+    const spotResp = new populatorModule.module.Populator().populateResult(artistName);
+    
+    /*
+    spotResp.forEach(element => {
+    })*/
   }
 }
 

@@ -12,7 +12,8 @@ describe('UNQfy', () => {
 
     beforeEach(() => {
         unqfy = new UNQfy()
-        artist       = unqfy.addArtist(makeArtistData())
+        artistName   = 'pepe'
+        artist       = unqfy.addArtist(makeArtistData(artistName))
         album01      = unqfy.addAlbum(artist.id, makeAlbumData('album01'))
         trackAlbum01 = unqfy.addTrack(album01.id, {name: 't1', duration: 100, genres: ['punk']})
         
@@ -90,12 +91,11 @@ describe('UNQfy', () => {
 
     describe('registro de artistas...', () => {
         it('no se puede registrar un artista cuando ya existe uno con el mismo nombre', () => {
-            const nombre = 'juan'
-            unqfy.addArtist({ name: nombre, country: 'argentina' })
+            //unqfy.addArtist({ name: artistName, country: 'argentina' })
             
             expect(() =>
-                unqfy.addArtist({ name: nombre, country: 'uruguay' })
-            ).to.throw(`Alguien ya esta registrado con el nombre ${nombre}`)
+                unqfy.addArtist({ name: artistName, country: 'uruguay' })
+            ).to.throw(`Ya existe un artista registrado con el nombre ${artistName}`)
         })
     })
 
@@ -315,7 +315,7 @@ describe('UNQfy', () => {
     // })
 })
 
-const makeArtistData = () => ({name: 'pepe', country: 'argentina'})
+const makeArtistData = (artistName) => ({name: artistName, country: 'argentina'})
 const makeAlbumData  = name => ({ name })
 const makeTrackData  = () => ({ })
 

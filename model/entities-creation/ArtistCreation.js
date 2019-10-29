@@ -1,6 +1,6 @@
 const EntityCreation = require('./EntityCreation')
 const Artist = require('../entities/Artist')
-const SomeoneAlreadyRegisterUnderName = require('../exceptions/SomeoneAlreadyRegisterUnderName')
+const ArtistaYaExiste = require('../exceptions/ArtistaYaExiste')//const SomeoneAlreadyRegisterUnderName = require('../exceptions/SomeoneAlreadyRegisterUnderName')
 
 module.exports =
 class ArtistCreation extends EntityCreation {
@@ -11,7 +11,7 @@ class ArtistCreation extends EntityCreation {
 
   _validateDataObject() {
     if (this._isArtistNameAlreadyRegister) {
-      throw new SomeoneAlreadyRegisterUnderName(this._dataObject.name)
+      throw new ArtistaYaExiste(this._dataObject.name)
     }
   }
 

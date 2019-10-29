@@ -9,7 +9,7 @@ class UserCreation extends EntityCreation {
     return User
   }
 
- _validateDataObject() {
+  _validateDataObject() {
     if (this._isArtistNameAlreadyRegister) {
       throw new SomeoneAlreadyRegisterUnderName(this._dataObject.name)
     }

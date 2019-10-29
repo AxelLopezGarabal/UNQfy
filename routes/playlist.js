@@ -6,7 +6,6 @@ const system = require('../backend/mockBBDD')
 
 router.post('/', (req, res, next) => {
 	const body = req.body
-	const c1
 	res.status(201).json({
 		id: newartist.id,
 		name: newartist.name,
