@@ -28,6 +28,7 @@ function albumOptions(id) {
 
 class Populator{//devuelve la lista de albumes tal como la manda spotify
     constructor(){}
+    
     populateResult(artistName){
         const artistOptions = artistOption(artistName)
         return rp.get(artistOptions)
@@ -35,8 +36,6 @@ class Populator{//devuelve la lista de albumes tal como la manda spotify
         return response.artists.items[0].id
         }).then(id => {
             const x = rp.get(albumOptions(id))
-            console.log('spot',x)
-
             return x
     })
         .catch(error => console.log(error))

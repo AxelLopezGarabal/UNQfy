@@ -142,6 +142,10 @@ class Artist {
     return albumsNamesReturn;
   }
 
+  addAlbumByForce(anAlbum){
+    this._albums.push(anAlbum);
+  }
+
 }
 
 module.exports = Artist

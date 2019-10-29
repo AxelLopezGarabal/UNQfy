@@ -95,7 +95,7 @@ class UNQfy {
   addAlbum(artistId, {name, year}) {
     const newAlbum = new Album({ id: this._generateUniqueId(), ...{name, year} })
     const artist   = this.getArtistById(artistId)
-    artist.addAlbum(newAlbum)
+    artist.addAlbumByForce(newAlbum)
     return newAlbum
   }
 
@@ -219,7 +219,7 @@ class UNQfy {
 
   /*  VISADO 2 */
   getAlbumsForArtist(artistName) {
-    //his.populateAlbumsForArtist(artistName);
+    this.populateAlbumsForArtist(artistName);
     return this.getArtistByName(artistName).albums
     //return this.getArtistByName(artistName).albumsNames()
   }
@@ -238,11 +238,12 @@ class UNQfy {
 
   async populateAlbumsForArtist(artistName) {
     const artist = this.getArtistByName(artistName);
-    const spotResp = new populatorModule.module.Populator().populateResult(artistName);
-    
-    /*
-    spotResp.forEach(element => {
-    })*/
+     const x = ((new populatorModule.module.Populator()).populateResult(artistName)
+    .then( response => {return response.items})
+      .then( items => items.forEach(elem => {
+          this.addAlbum(artist.id, {name: elem.name, year: elem.release_date})
+      })).then(res => console.log(artist))
+    ).catch(error => {console.log(error)})
   }
 }
 
