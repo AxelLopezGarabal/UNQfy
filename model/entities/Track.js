@@ -6,7 +6,6 @@ class Track {
     if (!dataObject) return // Hubo que hacer esto por culpa del framework de persistencia
     const { id, name, duration, genres, album} = dataObject
     this._id       = id
-    this._album    = album
     this._name     = name
     this._duration = duration
     this._genres   = genres

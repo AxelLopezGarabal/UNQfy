@@ -95,7 +95,7 @@ class UNQfy {
   addAlbum(artistId, {name, year}) {
     const newAlbum = new Album({ id: this._generateUniqueId(), ...{name, year} })
     const artist   = this.getArtistById(artistId)
-    artist.addAlbum(newAlbum)
+    artist.addAlbumByForce(newAlbum)
     return newAlbum
   }
 
@@ -219,7 +219,7 @@ class UNQfy {
 
   /*  VISADO 2 */
   getAlbumsForArtist(artistName) {
-    //his.populateAlbumsForArtist(artistName);
+    this.populateAlbumsForArtist(artistName);
     return this.getArtistByName(artistName).albums
     //return this.getArtistByName(artistName).albumsNames()
   }
@@ -238,18 +238,16 @@ class UNQfy {
 
   async populateAlbumsForArtist(artistName) {
     const artist = this.getArtistByName(artistName);
-    (new populatorModule.module.Populator().populateResult(artistName))
-    .then(response => response.items.forEach(album => {console.log(album), artist.addAlbum({name: album.name, year: album.release_date})
-    
-  }))
-    
-    .catch(error=>{console.log(error)});
-    
-    /*
-    spotResp.forEach(element => {
-    })*/
+    const x = ((new populatorModule.module.Populator()).populateResult(artistName)
+    .then( response => {return response.items})
+      .then( items => items.forEach(elem => {
+          this.addAlbum(artist.id, {name: elem.name, year: elem.release_date})
+      })).then(res => console.log(artist))
+    ).catch(error => {console.log(error)})
   }
-}
+}/*
+getLyiricsFor(trackName){
+}*/
 
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
 module.exports = {

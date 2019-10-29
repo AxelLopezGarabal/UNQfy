@@ -20,7 +20,7 @@ class LyricFinder{
             qs: {
             apikey: 'a5f2515454732b5a519e3f23258b630d',
                 q_track: trackName,
-                q_artist: trackArtist
+                q_artist: trackArtist   
             },
             json: true // Automatically parses the JSON string in the response
         };

@@ -24,6 +24,7 @@ function albumOptions(id) {
 
 class Populator{//devuelve la lista de albumes tal como la manda spotify
     constructor(){}
+    
     populateResult(artistName){
         const artistOptions = artistOption(artistName)
         return rp.get(artistOptions)
