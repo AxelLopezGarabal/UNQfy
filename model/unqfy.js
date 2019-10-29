@@ -238,7 +238,12 @@ class UNQfy {
 
   async populateAlbumsForArtist(artistName) {
     const artist = this.getArtistByName(artistName);
-    const spotResp = new populatorModule.module.Populator().populateResult(artistName);
+    (new populatorModule.module.Populator().populateResult(artistName))
+    .then(response => response.items.forEach(album => {console.log(album), artist.addAlbum({name: album.name, year: album.release_date})
+    
+  }))
+    
+    .catch(error=>{console.log(error)});
     
     /*
     spotResp.forEach(element => {

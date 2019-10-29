@@ -1,10 +1,6 @@
 
 const creds = require('./spotifyCreds.json').access_token
-const fs = require('fs');
-const CREDENTIALS_FILENAME = 'spotifyResponse.json';
-
 const rp = require('request-promise');
-//	/v1/artists/{id}/albums
 
 
 function artistOption(artistName){
@@ -31,12 +27,11 @@ class Populator{//devuelve la lista de albumes tal como la manda spotify
     populateResult(artistName){
         const artistOptions = artistOption(artistName)
         return rp.get(artistOptions)
-        .then((response) => {
+        .then(response => {
         return response.artists.items[0].id
-        }).then(id => {
+        })
+        .then(id => {
             const x = rp.get(albumOptions(id))
-            console.log('spot',x)
-
             return x
     })
         .catch(error => console.log(error))

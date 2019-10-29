@@ -4,11 +4,13 @@ class Track {
 
   constructor(dataObject) {
     if (!dataObject) return // Hubo que hacer esto por culpa del framework de persistencia
-    const { id, name, duration, genres } = dataObject
+    const { id, name, duration, genres, album} = dataObject
     this._id       = id
+    this._album    = album
     this._name     = name
     this._duration = duration
     this._genres   = genres
+    this._lyrics   = undefined
     
     this._lyricsProvider = nullLyricsProvider
   }
@@ -18,7 +20,8 @@ class Track {
       id: this.id,
       name: this.name,
       duration: this.duration,
-      genres: this.genres
+      genres: this.genres,
+      lyrics: this._lyrics
     }
   }
 
@@ -26,11 +29,15 @@ class Track {
   get id()       { return this._id }
   get name()     { return this._name }
   get duration() { return this._duration }
-  get genres()   { return this._genres }
-
-  get lyrics()   { return this._lyricsProvider.find() }  
+  get genres()   { return this._genres } 
 
   set name(newName) { this._name = newName }
+
+  getLyrics(){
+    if (this._lyrics === undefined){
+      this._lyricsFinder.getLyrics(this.name, album.artist.name).then(lyric=> this._lyrics = lyric);
+    }
+    return this._lyrics } 
   
   set lyricsProvider(aLyricsProvider) { this._lyricsProvider = aLyricsProvider }
 
