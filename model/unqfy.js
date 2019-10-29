@@ -152,7 +152,7 @@ class UNQfy {
   getUserById(id)        { return this._entitiesRepository.findBy('user'    , {prop: 'id', value: id}) }
 
   getArtistByName(aName) { return this._entitiesRepository.findBy('artist', { prop: 'name', value: aName }) }
-  
+
   getTracksMatchingGenres(genres) {
     return this._entitiesRepository.filter('track', track => track.matchSomeGenreFrom(genres))
   }
@@ -176,7 +176,7 @@ class UNQfy {
     const album  = this.searchByName(name).albums[0]
     return artist.isTheAuthorOfAlbum(album)
   }
-
+  
   getAuthorOfTrack(aTrack) {
     return this._entitiesRepository.find('artist', artist => artist.isTheAuthorOfTrack(aTrack))
   }
@@ -186,7 +186,17 @@ class UNQfy {
   }
 
   filterAllBy({prop, value}) {
-    return this._entitiesRepository.filterAllBy({prop, value})
+    return this._entitiesRepository.filterAllBy({prop, value})}
+
+  getPlaylistByQuery(query){
+    const durationLT = query.durationLT === undefined
+    const durationGT = query.durationGT === undefined
+    const name       = query.name       === undefined
+    var playlist = this.playlists.filter(playlist =>
+      ((durationLT)||(playlist.duration <= query.durationLT))
+    &&((durationGT)||(playlist.duration >= query.durationGT))
+    &&((   name   )||(new RegExp(query.name, 'i').test(playlist.name))))
+    return playlist
   }
 
   /** PERSISTENCIA **/
@@ -209,10 +219,11 @@ class UNQfy {
 
   /*  VISADO 2 */
   getAlbumsForArtist(artistName) {
+    //return this.getArtistByName(artistName).albumsNames()
     populateAlbumsForArtist(artistName);
     return this.getArtistByName(artistName).albums
   }
-
+  //Do we really need this??
   updateArtist(artistId, artistData) {
     const artist = this.getArtistById(artistId)
     artist.update(artistData)
@@ -227,7 +238,14 @@ class UNQfy {
 
   async populateAlbumsForArtist(artistName) {
     const artist = this.getArtistByName(artistName)
-    
+    /*make the consult to spotifyConsultor?
+    'https://api.spotify.com/v1/search?q=artist:'+artistName+'&type=album'
+    .then()
+    */
+    this.artistFinder.find(artist.name)
+    .then(artistAlbums => 
+      this.addAlbums(artistAlbums))
+    .catch() /*
     this._albumsDataProvider.findFor(artistName)
       .then(albumsData =>
         albumsData.forEach(({name, year, tracks}) => {
@@ -237,7 +255,7 @@ class UNQfy {
             this.addTrack(addedAlbum.id, trackData)
           ) 
         })
-      )   
+      )    */
   }
 }
 

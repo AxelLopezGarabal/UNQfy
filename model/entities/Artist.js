@@ -136,6 +136,12 @@ class Artist {
       throw new AlreadyFollowedBySomeone(this, aUser)
   }
 
+  albumsNames(){
+    var albumsNamesReturn = [];
+    this.albums.forEach(album => albumsNamesReturn.push(album.name));
+    return albumsNamesReturn;
+  }
+
 }
 
 module.exports = Artist

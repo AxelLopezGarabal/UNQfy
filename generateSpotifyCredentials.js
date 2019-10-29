@@ -16,7 +16,7 @@ const CREDENTIALS_FILENAME = 'spotifyCreds.json';
 
 const CLIENT_ID = 'd38a0113ad3e429c9dbfe4ed483a2874'; // Your client id
 const CLIENT_SECRET = 'a9176cac20db4393877e6a0ffb99bff3'; // Your secret
-const REDIRECT_URI = `http://0.0.0.0:${PORT}/spotify_cb`; // Your redirect uri
+const REDIRECT_URI = `http://localhost:${PORT}/spotify_cb`; // Your redirect uri
 
 let server = null;
 
