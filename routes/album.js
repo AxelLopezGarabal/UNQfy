@@ -1,3 +1,7 @@
+const badRequestErrorModule = require('../errors/BadRequestError')
+const resourceAlreadyExistErrorModule = require('../errors/ResourceAlreadyExistError')
+const resourceNotFoundErrorModule = require('../errors/ResourceNotFoundError')
+const relatedResourceNotFoundErrorModule = require('../errors/RelatedResourceNotFoundError')
 
 const express = require('express');
 const router = express.Router();
@@ -18,29 +22,18 @@ router.post('/', (req, res, next) => {
 			const year = body.year	
 			if(!system.isAuthorOfAlbum(id, name)){
 				const album = system.addAlbum(id, {name: name, year: year})
-				res.status(201).json(
-					album
-				)
+				res.status(201).json(album)
 			}
 			else{
-				res.status(409).json({
-					status: 409,
-					errorCode: "RESOURCE_ALREADY_EXISTS"
-				});
+				next(new resourceAlreadyExistErrorModule.ResourceAlreadyExistError())
 			}
 		}
 		else{
-			res.status(404).json({
-				status: 404,
-				errorCode: 'RELATED_RESOURCE_NOT_FOUND'
-			});	
+			next(new relatedResourceNotFoundErrorModule.RelatedResourceNotFoundError())
 		}
 	}
 	else{
-		res.status(400).json({
-			status: 400,
-			errorCode: 'BAD_REQUEST'
-		});
+		next( new badRequestErrorModule.BadRequestError())
 	}
 });
 
@@ -48,15 +41,10 @@ router.get('/:id', (req, res, next) => {
 	const id = parseInt(req.params.id)
 	if(system.verifyId(id) && id > 0){
 		const album = system.getAlbumById(id);
-		res.status(200).json(
-			album
-		)
+		res.status(200).json( album )
 	}
 	else{
-		res.status(404).json({
-			status: 404,
-			errorCode: 'RESOURCE_NOT_FOUND'
-		})
+		next(new resourceNotFoundErrorModule.ResourceNotFoundError())
 	}
 });
 
@@ -84,10 +72,7 @@ router.patch('/:id', (req, res, next) => {
 		)
 	}
 	else{
-		res.status(404).json({
-			status: 404,
-			errorCode: 'RESOURCE_NOT_FOUND'
-		})
+		next(new resourceNotFoundErrorModule.ResourceNotFountError())
 	}
 });
 
@@ -99,10 +84,8 @@ router.delete('/:id', (req, res, next) => {
 		})
 	}
 	else{
-		res.status(404).json({
-			status: 404,
-			errorCode: 'RESOURCE_NOT_FOUND'
-		})
+
+		next(new resourceNotFoundErrorModule.ResourceNotFoundError())
 	}
 });
 
