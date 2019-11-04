@@ -1,8 +1,10 @@
 const picklify = require('picklify') // para cargar/guarfar unqfy
 const fs = require('fs') // para cargar/guarfar unqfy
+const lyricFinderModule = require('../musicMatch') // contiene la request a MusicMatch
 const populatorModule = require('../spotify')// contiene la funcion de request a spotify
 //const rp = require('../MusicMatch')// contiene la funcion de request a MusicMatch
 
+const ArtistNotFound = require('./exceptions/ArtistNotFound')
 const { Artist, Album, Track, User, Playlist, Listening } = require('./entities/all') // esto hace falta para el framework de persistencia
 const {ArtistCreation, TrackCreation, UserCreation} = require('./entities-creation/all') // Method objects
 
@@ -13,14 +15,13 @@ const EntitiesRepository = require('./entities-repositories/EntitiesRepository')
 
 class UNQfy {
 
-  constructor(
-    lyricsProvider     = {find: () => ''},
+  constructor( 
     entitiesRepository = new EntitiesRepository()
   )
   {
     this._entitiesRepository = entitiesRepository
     this._nextId             = 1
-    this._lyricsProvider     = lyricsProvider
+    this.lyricsProvider      = new lyricFinderModule.module.LyricFinder(this)
   }
 
   _generateUniqueId() { return this._nextId++ }
@@ -112,7 +113,8 @@ class UNQfy {
 
   /* TRACK */
   addTrack(albumId, {name, duration, genres}) {
-    const newTrack = new TrackCreation(this, {name, duration, genres}).handle()
+    const lyricsProvider = this.lyricsProvider;
+    const newTrack = new TrackCreation(this, {name, duration, genres, lyricsProvider}).handle()
     const album    = this.getAlbumById(albumId)
     const artist   = this._getAuthorOfAlbum(album)
     artist.addTrackTo(album, newTrack)
@@ -157,10 +159,8 @@ class UNQfy {
     return this._entitiesRepository.filter('track', track => track.matchSomeGenreFrom(genres))
   }
 
-  getTracksMatchingArtist(artistName) {
-    // TODO: en los tests que nos pasaron se le pasa "un artista" pero el parametro se llama "artistName"
-    //return this.getArtistByName(artistName).allTracks
-    return artistName.allTracks
+  getTracksMatchingArtist(artist) {
+    return artist.allTracks
   }
 
   getTracksMatchingArtistName(artistName) {
@@ -219,8 +219,13 @@ class UNQfy {
 
   /*  VISADO 2 */
   getAlbumsForArtist(artistName) {
-    this.populateAlbumsForArtist(artistName);
-    return this.getArtistByName(artistName).albums
+    if(this.existsArtistWithName(artistName)){
+      this.populateAlbumsForArtist(artistName);
+      return this.getArtistByName(artistName).albums
+    }else{
+      throw new ArtistNotFound(artistName)
+    }
+      
     //return this.getArtistByName(artistName).albumsNames()
   }
   

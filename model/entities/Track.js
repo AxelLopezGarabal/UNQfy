@@ -4,14 +4,14 @@ class Track {
 
   constructor(dataObject) {
     if (!dataObject) return // Hubo que hacer esto por culpa del framework de persistencia
-    const { id, name, duration, genres, album} = dataObject
+    const { id, name, duration, genres, lyricsProvider} = dataObject
     this._id       = id
     this._name     = name
     this._duration = duration
     this._genres   = genres
-    this._lyrics   = undefined
+    this._lyrics   = ''
     
-    this._lyricsProvider = nullLyricsProvider
+    this._lyricsProvider = lyricsProvider
   }
 
   toJSON() { // TODO: no tiene test
@@ -20,7 +20,7 @@ class Track {
       name: this.name,
       duration: this.duration,
       genres: this.genres,
-      lyrics: this._lyrics
+      lyrics: this.lyrics
     }
   }
 
@@ -29,12 +29,14 @@ class Track {
   get name()     { return this._name }
   get duration() { return this._duration }
   get genres()   { return this._genres } 
+  get lyrics()   { return this._lyrics } 
 
   set name(newName) { this._name = newName }
 
   getLyrics(){
-    if (this._lyrics === undefined){
-      this._lyricsFinder.getLyrics(this.name, album.artist.name).then(lyric=> this._lyrics = lyric);
+    if (this._lyrics === ''){
+      (this._lyricsProvider.getLyrics(this)).then(lyric=> this._lyrics = lyric);
+      console.log(this)
     }
     return this._lyrics } 
   

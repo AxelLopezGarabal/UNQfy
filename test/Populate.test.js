@@ -1,14 +1,16 @@
 const expect = require('chai').expect
+const lyrpro = require('../musicMatch').module.LyricFinder
 
 const UNQfymodule = require('../model/unqfy')
 const { Artist, Album} = require('../model/entities/all.js')
 
 const unqfy = new UNQfymodule.UNQfy()
 unqfy.addArtist({name:'Gorillaz',country:'USA'})
-<<<<<<< HEAD
-unqfy.populateAlbumsForArtist('Gorillaz');
-console.log(unqfy.albums)
-=======
-console.log(unqfy.getAlbumsForArtist('Gorillaz'))
->>>>>>> 43826f2de88d1aedd1596b09c0d02294eaf2b8ba
+//console.log(unqfy.getAlbumsForArtist('Gorillaz'))
+unqfy.addAlbum(1,{name:'popo', year:'2020'})
+unqfy.addTrack(2, {name:'Dare',duration: 1, genres: []})
+
+console.log('musicMatch',(new lyrpro()).getLyrics('Dare', 'Gorillaz'))
+
+//console.log((unqfy.getTrackById(3)).getLyrics())
 

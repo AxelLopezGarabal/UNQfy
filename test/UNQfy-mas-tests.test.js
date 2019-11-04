@@ -90,9 +90,7 @@ describe('UNQfy', () => {
     })
 
     describe('registro de artistas...', () => {
-        it('no se puede registrar un artista cuando ya existe uno con el mismo nombre', () => {
-            //unqfy.addArtist({ name: artistName, country: 'argentina' })
-            
+        it('no se puede registrar un artista cuando ya existe uno con el mismo nombre', () => {            
             expect(() =>
                 unqfy.addArtist({ name: artistName, country: 'uruguay' })
             ).to.throw(`Ya existe un artista registrado con el nombre ${artistName}`)
