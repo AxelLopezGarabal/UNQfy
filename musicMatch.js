@@ -34,7 +34,7 @@ function lyricsRequest(trackId){
 class LyricFinder{
     constructor(){
     }
-    getLyrics(trackName, artistName, track){
+    getLyrics(trackName, artistName, track, unqfy){
         const BASE_URL = 'http://api.musixmatch.com/ws/1.1';
         var options = {
             uri: BASE_URL + '/matcher.lyrics.get',
@@ -59,12 +59,12 @@ class LyricFinder{
             return track
         })
         .then(result=> {
-            console.log(result)
+            //console.log(result)
+            unqfy.save('./backend/backend.json')
         })
         .catch((error) => {
             console.log(error);
-        }
-        );
+        });
     }
 }
 exports.module = {

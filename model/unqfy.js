@@ -210,10 +210,10 @@ class UNQfy {
     fs.writeFileSync(filename, JSON.stringify(serializedData, null, 2))
   }
 
-  static load(filename) {
+  load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'})
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy, Artist, Album, Track, Playlist, EntitiesRepository];
+    const classes = [UNQfy, Artist, Album, Track, Playlist, EntitiesRepository, LyricFinder];
     return picklify.unpicklify(JSON.parse(serializedData), classes)
   }
 
@@ -221,7 +221,7 @@ class UNQfy {
   getAlbumsForArtist(artistName) {
     if(this.existsArtistWithName(artistName)){
       this.populateAlbumsForArtist(artistName);
-      return this.getArtistByName(artistName).albums
+      //return this.getArtistByName(artistName).albums
     }else{
       throw new ArtistNotFound(artistName)
     }
@@ -245,7 +245,7 @@ class UNQfy {
     .then( response => {return response.items})
       .then( items => items.forEach(elem => {
           this.addAlbum(artist.id, {name: elem.name, year: elem.release_date})
-      })).then(res => this.save('backend'))
+      })).then(res => this.save('backend.json'))
     ).catch(error => {console.log(error)})
   }
 
@@ -254,7 +254,7 @@ class UNQfy {
     if(tracks.length != 0){
       let firstMatch = tracks[0]
       if(firstMatch.lyrics == ''){
-        this.lyricsProvider.getLyrics(artistname, trackName, firstMatch)
+        this.lyricsProvider.getLyrics(artistname, trackName, firstMatch, this)
         return 'sorry, try again later'
       }
       else{

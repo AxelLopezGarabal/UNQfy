@@ -8,7 +8,7 @@
   "objects": {
     "__00001__": {
       "_entitiesRepository": "__00002__",
-      "_nextId": 24,
+      "_nextId": 25,
       "lyricsProvider": "__00003__",
       "listeners": "__00004__"
     },
@@ -184,7 +184,8 @@
       "_tracks": "__00053__"
     },
     "__00033__": {
-      "0": "__00054__"
+      "0": "__00054__",
+      "1": "__00055__"
     },
     "__00034__": {},
     "__00035__": {},
@@ -210,10 +211,18 @@
       "_id": 3,
       "_name": "humility",
       "_duration": 4000,
-      "_genres": "__00055__",
+      "_genres": "__00056__",
       "_lyrics": "Calling the world from isolation\n'Cause right now, that's the ball where we be chained\nAnd if you're coming back to find me\nYou'd better have good aim\nShoot it true, I need you in the picture\nThat's why I'm calling you\n\nI'm the lonely twin, the left hand\nReset myself and get back on track\nI don't want this isolation\nSee the state I'm in now?\n\nCalling the hunter with the rifle\n...\n\n******* This Lyrics is NOT for Commercial use *******\n(1409618699332)"
     },
-    "__00055__": {}
+    "__00055__": {
+      "_id": 24,
+      "_name": "Dare",
+      "_duration": 4000,
+      "_genres": "__00057__",
+      "_lyrics": "It's coming up\nIt's coming up\nIt's coming up\nIt's coming up\nIt's coming up\nIt's coming up\nIt's dare\n\nIt's dare\n\nYou've got to press it on you\nYou've just been thinking\nThat's what you do, baby\nHold it down, dare\n\nJump with them all and move it\nJump back and forth\nIt feels like you were there yourself, work it out\n\nNever did no harm\nNever did no harm\nIt's dare\nIt's coming up\nIt's coming up\nIt's coming up\n...\n\n******* This Lyrics is NOT for Commercial use *******\n(1409618699332)"
+    },
+    "__00056__": {},
+    "__00057__": {}
   },
   "types": {
     "__00001__": "UNQfy",
@@ -270,6 +279,8 @@
     "__00052__": "Array",
     "__00053__": "Array",
     "__00054__": "Track",
-    "__00055__": "Array"
+    "__00055__": "Track",
+    "__00056__": "Array",
+    "__00057__": "Array"
   }
 }
