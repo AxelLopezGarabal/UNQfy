@@ -22,6 +22,7 @@ router.post('/', (req, res, next) => {
 			const year = body.year	
 			if(!system.isAuthorOfAlbum(id, name)){
 				const album = system.addAlbum(id, {name: name, year: year})
+				//system.save('./backend/backend.json')
 				res.status(201).json(album)
 			}
 			else{
@@ -67,6 +68,7 @@ router.patch('/:id', (req, res, next) => {
 	const body = {year: req.body.year}
 	if(system.verifyId(id) && id > 0){
 		const album = system.updateAlbum(id, body);
+		//system.save('./backend/backend.json')
 		res.status(200).json(
 			album
 		)
@@ -80,6 +82,7 @@ router.delete('/:id', (req, res, next) => {
 	const idParam = parseInt(req.params.id);
 	if(system.verifyId(idParam) && idParam > 0){
 		const artist = system.removeAlbum(idParam);
+		system.save('./backend/backend.json')
 		res.status(204).json({
 		})
 	}

@@ -60,6 +60,7 @@ class LyricFinder{
         })
         .then(result=> {
             //console.log(result)
+            //unqfy.save('./backend.json')
             unqfy.save('./backend/backend.json')
         })
         .catch((error) => {

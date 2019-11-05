@@ -15,6 +15,7 @@ router.post('/', (req, res, next) => {
 	if( c1 && c2 && c3){
 		if(! system.existsArtistWithName(body.name)){
 			const newartist = system.addArtist(body)
+			//system.save('./backend/backend.json')
 			res.status(201).json(newartist);
 		}
 		else{
@@ -42,6 +43,7 @@ router.put('/:id', (req, res, next) => {
 	const body = req.body
 	if(system.verifyId(idParam) && idParam > 0){
 		const modArtist = system.updateArtist(idParam, body)
+		//system.save('./backend/backend.json')
 		res.status(200).json(modArtist)
 	}
 	else{
@@ -67,6 +69,7 @@ router.delete('/:id', (req, res, next) => {
 	const idParam = parseInt(req.params.id);
 	if(system.verifyId(idParam) && idParam > 0){
 		const artist = system.removeArtist(idParam);
+		//system.save('./backend/backend.json')
 		res.status(204).json({
 		})
 	}

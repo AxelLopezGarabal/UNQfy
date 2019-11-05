@@ -15,6 +15,7 @@ router.post('/', (req, res, next)=> {
 	if(model.verifyId(albumId) && albumId > 0){
 		const track = model.addTrack(albumId, {name: trackname, duration:duration, genres: genres})
 		const album = model.getAlbumById(albumId)
+		//system.save('./backend/backend.json')
 		res.status(200).json({
 			method: 'GET',
 			body: {

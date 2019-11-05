@@ -245,7 +245,7 @@ class UNQfy {
     .then( response => {return response.items})
       .then( items => items.forEach(elem => {
           this.addAlbum(artist.id, {name: elem.name, year: elem.release_date})
-      })).then(res => this.save('backend.json'))
+      })).then(res => this.save('./backend.json'))
     ).catch(error => {console.log(error)})
   }
 
