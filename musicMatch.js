@@ -30,12 +30,11 @@ function lyricsRequest(trackId){
     };
     return options
 }
-    //url:'https://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id='+id
 
 class LyricFinder{
     constructor(){
     }
-    getLyrics(trackName, artistName){
+    getLyrics(trackName, artistName, track){
         const BASE_URL = 'http://api.musixmatch.com/ws/1.1';
         var options = {
             uri: BASE_URL + '/matcher.lyrics.get',
@@ -49,16 +48,21 @@ class LyricFinder{
         rp.get(options)
         .then((response) => {
             var header = response.message.header;
-            //var body = response.message.body;
             if (header.status_code !== 200){
                 throw new Error('status code != 200');
             }
             var lyrics = (response.message.body.lyrics.lyrics_body)
-            console.log(lyrics)
             return lyrics
         })
+        .then(res => {
+            track.setLyrics(res)
+            return track
+        })
+        .then(result=> {
+            console.log(result)
+        })
         .catch((error) => {
-            console.log('algo salio mal', error);
+            console.log(error);
         }
         );
     }

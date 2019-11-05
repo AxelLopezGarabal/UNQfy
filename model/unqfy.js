@@ -2,7 +2,7 @@ const picklify = require('picklify') // para cargar/guarfar unqfy
 const fs = require('fs') // para cargar/guarfar unqfy
 const lyricFinderModule = require('../musicMatch') // contiene la request a MusicMatch
 const populatorModule = require('../spotify')// contiene la funcion de request a spotify
-//const rp = require('../MusicMatch')// contiene la funcion de request a MusicMatch
+const LyricFinder = require('../musicMatch').module.LyricFinder
 
 const ArtistNotFound = require('./exceptions/ArtistNotFound')
 const { Artist, Album, Track, User, Playlist, Listening } = require('./entities/all') // esto hace falta para el framework de persistencia
@@ -21,7 +21,7 @@ class UNQfy {
   {
     this._entitiesRepository = entitiesRepository
     this._nextId             = 1
-    this.lyricsProvider      = new lyricFinderModule.module.LyricFinder(this)
+    this.lyricsProvider      = new LyricFinder()
   }
 
   _generateUniqueId() { return this._nextId++ }
@@ -225,8 +225,6 @@ class UNQfy {
     }else{
       throw new ArtistNotFound(artistName)
     }
-      
-    //return this.getArtistByName(artistName).albumsNames()
   }
   
   updateArtist(artistId, artistData) {
@@ -247,12 +245,26 @@ class UNQfy {
     .then( response => {return response.items})
       .then( items => items.forEach(elem => {
           this.addAlbum(artist.id, {name: elem.name, year: elem.release_date})
-      })).then(res => console.log(artist))
+      })).then(res => this.save('backend'))
     ).catch(error => {console.log(error)})
   }
-}/*
-getLyiricsFor(trackName){
-}*/
+
+  getLyiricsFor(artistname, trackName){
+    let tracks = this.getTracksMatchingArtistName(artistname).filter(elem => elem.name == trackName);
+    if(tracks.length != 0){
+      let firstMatch = tracks[0]
+      if(firstMatch.lyrics == ''){
+        this.lyricsProvider.getLyrics(artistname, trackName, firstMatch)
+        return 'sorry, try again later'
+      }
+      else{
+        return firstMatch.lyrics
+      }
+    }
+  }
+}
+
+  
 
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
 module.exports = {
