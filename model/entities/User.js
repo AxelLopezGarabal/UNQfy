@@ -7,6 +7,7 @@ class User {
     if (!dataObject) return // Hubo que hacer esto por culpa del framework de persistencia
     this._id            = dataObject.id
     this._name          = dataObject.name
+    this._email         = dataObject.email
     this._notifications = []
     this._followings    = []
     this._listenings    = []
@@ -15,6 +16,7 @@ class User {
 
   get id()             { return this._id }
   get name()           { return this._name }
+  get email()          { return this._email }
   get notifications()  { return this._notifications }
   get listenings()     { return this._listenings }
   get listenedTracks() { return [...new Set(this._allListenedTracksInOrder)] }

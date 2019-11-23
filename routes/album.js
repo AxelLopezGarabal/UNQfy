@@ -82,12 +82,11 @@ router.delete('/:id', (req, res, next) => {
 	const idParam = parseInt(req.params.id);
 	if(system.verifyId(idParam) && idParam > 0){
 		const artist = system.removeAlbum(idParam);
-		//system.save('./backend/backend.json')
+		system.save('./backend/backend.json')	
 		res.status(204).json({
 		})
 	}
 	else{
-
 		next(new resourceNotFoundErrorModule.ResourceNotFoundError())
 	}
 });

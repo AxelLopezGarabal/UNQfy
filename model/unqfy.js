@@ -33,8 +33,8 @@ class UNQfy {
   get id()        { return this._nextId }
   
   /////////////////////
-  addUser({name}) {
-    const newUser = new UserCreation(this, {name}).handle()
+  addUser({name, email}) {
+    const newUser = new UserCreation(this, {name, email}).handle()
     this._entitiesRepository.add('user', newUser)
     return newUser
   }
@@ -154,6 +154,8 @@ class UNQfy {
   getUserById(id)        { return this._entitiesRepository.findBy('user'    , {prop: 'id', value: id}) }
 
   getArtistByName(aName) { return this._entitiesRepository.findBy('artist', { prop: 'name', value: aName }) }
+  getUserByName(aName) { return this._entitiesRepository.findBy('user', { prop: 'name', value: aName }) }
+  getUserByEmail(aEmail) { return this._entitiesRepository.findBy('user', { prop: 'email', value: aEmail }) }
 
   getTracksMatchingGenres(genres) {
     return this._entitiesRepository.filter('track', track => track.matchSomeGenreFrom(genres))

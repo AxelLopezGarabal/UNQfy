@@ -9,6 +9,7 @@ const artistRoutes = require('./routes/artist');
 const albumRoutes  = require('./routes/album');
 const trackRoutes  = require('./routes/tracks');
 const playlistRoutes  = require('./routes/playlist');
+const userRoutes = require('./routes/user');
 
 app
 	.use(morgan('dev'))
@@ -19,6 +20,7 @@ app
 	.use('/api/albums', albumRoutes)
 	.use('/api/tracks', trackRoutes)
 	.use('/api/playlist', playlistRoutes)
+	.use('/api', userRoutes)
 
 	.use(errorHandler)
 
