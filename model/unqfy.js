@@ -3,6 +3,8 @@ const fs = require('fs') // para cargar/guarfar unqfy
 const lyricFinderModule = require('../musicMatch') // contiene la request a MusicMatch
 const populatorModule = require('../spotify')// contiene la funcion de request a spotify
 const LyricFinder = require('../musicMatch').module.LyricFinder
+const API = require('../api')
+
 
 const ArtistNotFound = require('./exceptions/ArtistNotFound')
 const { Artist, Album, Track, User, Playlist, Listening } = require('./entities/all') // esto hace falta para el framework de persistencia
@@ -96,7 +98,18 @@ class UNQfy {
   addAlbum(artistId, {name, year}) {
     const newAlbum = new Album({ id: this._generateUniqueId(), ...{name, year} })
     const artist   = this.getArtistById(artistId)
-    artist.addAlbumByForce(newAlbum)
+    artist.addAlbumByForce(newAlbum);
+    API.post('/notify', {
+        "artistId": 1,
+        "message": "mail desde unqfy porque se le agrego al artista "+artist.name+"",
+        "subject": "te llego el mail desde UNQfy"
+    })
+    .then( response => {
+      console.log(response.data)
+    })
+    .catch( err => {
+      console.log(err)
+    })
     return newAlbum
   }
 
