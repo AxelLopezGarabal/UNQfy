@@ -4,6 +4,7 @@ const lyricFinderModule = require('../musicMatch') // contiene la request a Musi
 const populatorModule = require('../spotify')// contiene la funcion de request a spotify
 const LyricFinder = require('../musicMatch').module.LyricFinder
 const API = require('../api')
+const axios = require('axios')
 
 
 const ArtistNotFound = require('./exceptions/ArtistNotFound')
@@ -71,7 +72,17 @@ class UNQfy {
   /* ARTIST */
   addArtist({name, country}) {
     const newArtist = new ArtistCreation(this, {name, country}).handle()
-    this._entitiesRepository.add('artist', newArtist)
+    this._entitiesRepository.add('artist', newArtist);
+    // LOG
+    API.postLog({
+      "message": "se agrego el album al artistista " + newArtist.name +"."
+    })
+    .then( response => {
+      console.log(response.data)
+    })
+    .catch( err => {
+      console.log(err)
+    })
     return newArtist
   }
 
@@ -98,11 +109,25 @@ class UNQfy {
   addAlbum(artistId, {name, year}) {
     const newAlbum = new Album({ id: this._generateUniqueId(), ...{name, year} })
     const artist   = this.getArtistById(artistId)
+    const msg = "se le a agregado al artista "+artist.name+" el album "+newAlbum.name+"."
     artist.addAlbumByForce(newAlbum);
+
+    // notify
     API.post('/notify', {
         "artistId": 1,
-        "message": "mail desde unqfy porque se le agrego al artista "+artist.name+"",
+        "message": "unqfy te informa que "+ msg,
         "subject": "te llego el mail desde UNQfy"
+    })
+    .then( response => {
+      console.log(response.data)
+    })
+    .catch( err => {
+      console.log(err)
+    })
+
+    // LOG
+    API.postLog({
+      "message": msg
     })
     .then( response => {
       console.log(response.data)
@@ -128,9 +153,22 @@ class UNQfy {
   addTrack(albumId, {name, duration, genres}) {
     const lyricsProvider = this.lyricsProvider;
     const newTrack = new TrackCreation(this, {name, duration, genres, lyricsProvider}).handle()
-    const album    = this.getAlbumById(albumId)
-    const artist   = this._getAuthorOfAlbum(album)
-    artist.addTrackTo(album, newTrack)
+    const album    = this.getAlbumById(albumId);
+    const artist   = this._getAuthorOfAlbum(album);
+    artist.addTrackTo(album, newTrack);
+    const msg = "se le a agregado al album "+album.name+" el track "+newTrack.name+".";
+    
+    //LOG
+    API.postLog({
+      "message": msg
+    })
+    .then( response => {
+      console.log(response.data)
+    })
+    .catch( err => {
+      console.log(err)
+    })
+
     return newTrack
   }
   
