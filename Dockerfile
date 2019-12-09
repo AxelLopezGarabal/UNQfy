@@ -15,6 +15,14 @@ COPY package-lock.json .
 
 ADD . / /home/node/UNQfy/
 
+# Le da permisos al usuario node para escribir en /home/node/my_node_app
+# Como comentario, notar que el comando RUN nos permite ejecutar culquier comando bash valido.
+RUN chown node:users /home/node/UNQfy/backend/*.js
+RUN chown node:users /home/node/UNQfy/backend/*.json
+RUN chown -R node:users /home/node/UNQfy/backend
+# Habilita el usuario node. Por defecto, los containers corren los comandos con el usuario root
+USER root
+
 # Ejecuta npm install. Esto produce que se instalen todas las dependencias necearias para correr la aplicación
 RUN ["npm", "install"]
 
@@ -24,13 +32,6 @@ EXPOSE 5000
 # Copia los fuentes dentro del container
 #COPY server.js /home/node/my_node_app/
 
-
-# Le da permisos al usuario node para escribir en /home/node/my_node_app
-# Como comentario, notar que el comando RUN nos permite ejecutar culquier comando bash valido.
-#RUN chown -R node:users /home/node/UNQfy
-#RUN chmod -R 777 /home/node/UNQfy
-# Habilita el usuario node. Por defecto, los containers corren los comandos con el usuario root
-USER root
 
 # Comando por defecto sino se provee uno al hacer docker run
 # El comando corre el servicio
