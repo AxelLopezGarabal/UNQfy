@@ -3,9 +3,8 @@ const fs = require('fs') // para cargar/guarfar unqfy
 const lyricFinderModule = require('../musicMatch') // contiene la request a MusicMatch
 const populatorModule = require('../spotify')// contiene la funcion de request a spotify
 const LyricFinder = require('../musicMatch').module.LyricFinder
-const API = require('../api')
-const axios = require('axios')
 
+const RequesterModule = require('./Request');
 
 const ArtistNotFound = require('./exceptions/ArtistNotFound')
 const { Artist, Album, Track, User, Playlist, Listening } = require('./entities/all') // esto hace falta para el framework de persistencia
@@ -25,6 +24,7 @@ class UNQfy {
     this._entitiesRepository = entitiesRepository
     this._nextId             = 1
     this.lyricsProvider      = new LyricFinder()
+    this.requester           = new RequesterModule.Requester()
   }
 
   _generateUniqueId() { return this._nextId++ }
@@ -73,16 +73,7 @@ class UNQfy {
   addArtist({name, country}) {
     const newArtist = new ArtistCreation(this, {name, country}).handle()
     this._entitiesRepository.add('artist', newArtist);
-    // LOG
-    API.postLog({
-      "message": "se agrego el album al artistista " + newArtist.name +"."
-    })
-    .then( response => {
-      console.log(response.data)
-    })
-    .catch( err => {
-      console.log(err)
-    })
+    this.requester.lognewArtist(newArtist.name);
     return newArtist
   }
 
@@ -111,30 +102,8 @@ class UNQfy {
     const artist   = this.getArtistById(artistId)
     const msg = "se le a agregado al artista "+artist.name+" el album "+newAlbum.name+"."
     artist.addAlbumByForce(newAlbum);
-
-    // notify
-    API.post('/notify', {
-        "artistId": 1,
-        "message": "unqfy te informa que "+ msg,
-        "subject": "te llego el mail desde UNQfy"
-    })
-    .then( response => {
-      console.log(response.data)
-    })
-    .catch( err => {
-      console.log(err)
-    })
-
-    // LOG
-    API.postLog({
-      "message": msg
-    })
-    .then( response => {
-      console.log(response.data)
-    })
-    .catch( err => {
-      console.log(err)
-    })
+    this.requester.notifyForNewAlbum(newAlbum.id, artist.name, newAlbum.name);
+    this.requester.logForNewAlbum(artist.name, newAlbum.name)
     return newAlbum
   }
 
@@ -156,19 +125,7 @@ class UNQfy {
     const album    = this.getAlbumById(albumId);
     const artist   = this._getAuthorOfAlbum(album);
     artist.addTrackTo(album, newTrack);
-    const msg = "se le a agregado al album "+album.name+" el track "+newTrack.name+".";
-    
-    //LOG
-    API.postLog({
-      "message": msg
-    })
-    .then( response => {
-      console.log(response.data)
-    })
-    .catch( err => {
-      console.log(err)
-    })
-
+    this.requester.logForTrack(album.name, newTrack.name);
     return newTrack
   }
   
