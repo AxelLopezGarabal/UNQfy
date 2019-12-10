@@ -24,7 +24,7 @@ class UNQfy {
     this._entitiesRepository = entitiesRepository
     this._nextId             = 1
     this.lyricsProvider      = new LyricFinder()
-    this.requester           = new RequesterModule.Requester()
+    this.requester           = new RequesterModule()
   }
 
   _generateUniqueId() { return this._nextId++ }
