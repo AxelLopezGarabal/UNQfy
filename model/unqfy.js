@@ -4,7 +4,9 @@ const lyricFinderModule = require('../musicMatch') // contiene la request a Musi
 const populatorModule = require('../spotify')// contiene la funcion de request a spotify
 const LyricFinder = require('../musicMatch').module.LyricFinder
 
-const RequesterModule = require('./Request');
+const artistObserver = require('./ObserverArtist');
+const albumObserver = require('./ObserverAlbum');
+const trackObserver = require('./ObserverTrack');
 
 const ArtistNotFound = require('./exceptions/ArtistNotFound')
 const { Artist, Album, Track, User, Playlist, Listening } = require('./entities/all') // esto hace falta para el framework de persistencia
@@ -18,13 +20,16 @@ const EntitiesRepository = require('./entities-repositories/EntitiesRepository')
 class UNQfy {
 
   constructor( 
-    entitiesRepository = new EntitiesRepository()
+    entitiesRepository = new EntitiesRepository(),
+    listOfObserbers
   )
   {
     this._entitiesRepository = entitiesRepository
     this._nextId             = 1
-    this.lyricsProvider      = new LyricFinder()
-    this.requester           = new RequesterModule()
+    this.lyricsProvider      = new LyricFinder();
+    this.artistObs           = new artistObserver();
+    this.albumObs            = new albumObserver();
+    this.trackObs            = new trackObserver();
   }
 
   _generateUniqueId() { return this._nextId++ }
@@ -73,7 +78,9 @@ class UNQfy {
   addArtist({name, country}) {
     const newArtist = new ArtistCreation(this, {name, country}).handle()
     this._entitiesRepository.add('artist', newArtist);
-    this.requester.lognewArtist(newArtist.name);
+
+    this.artistObs.update(newArtist.name);
+
     return newArtist
   }
 
@@ -100,10 +107,10 @@ class UNQfy {
   addAlbum(artistId, {name, year}) {
     const newAlbum = new Album({ id: this._generateUniqueId(), ...{name, year} })
     const artist   = this.getArtistById(artistId)
-    const msg = "se le a agregado al artista "+artist.name+" el album "+newAlbum.name+"."
     artist.addAlbumByForce(newAlbum);
-    this.requester.notifyForNewAlbum(newAlbum.id, artist.name, newAlbum.name);
-    this.requester.logForNewAlbum(artist.name, newAlbum.name)
+
+    this.albumObs.update(artist.id, artist.name, newAlbum.name)
+
     return newAlbum
   }
 
@@ -125,7 +132,9 @@ class UNQfy {
     const album    = this.getAlbumById(albumId);
     const artist   = this._getAuthorOfAlbum(album);
     artist.addTrackTo(album, newTrack);
-    this.requester.logForTrack(album.name, newTrack.name);
+    
+    this.trackObs.update(album.name, newTrack.name)
+
     return newTrack
   }
   

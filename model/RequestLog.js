@@ -1,10 +1,10 @@
 const API = require('../api');
 
-class Requester{
+class RequestLog{
     constructor(){
     }
 
-    lognewArtist(name){
+    newArtist(name){
         API.postLog({
             "message": "se agrego el artista " + name +"."
           })
@@ -16,22 +16,7 @@ class Requester{
           })
     }
 
-    notifyForNewAlbum(id, name, albumName){
-        const msg = "se le a agregado al artista "+name+" el album "+albumName+"."
-        API.post('/notify', {
-            "artistId": id,
-            "message": "unqfy te informa que "+ msg,
-            "subject": "te llego el mail desde UNQfy"
-        })
-        .then( response => {
-        console.log(response.data)
-        })
-        .catch( err => {
-        console.log(err)
-        })
-    }
-
-    logForNewAlbum(name, albumName){
+    newAlbum(name, albumName){
         const msg = "se le a agregado al artista "+name+" el album "+albumName+"."
         API.postLog({
             "message": msg
@@ -44,10 +29,8 @@ class Requester{
           })
     }
 
-
-    logForTrack(name, trackName){
+    newTrack(name, trackName){
         const msg = "se le a agregado al album "+name+" el track "+trackName+".";
-        //LOG
         API.postLog({
           "message": msg
         })
@@ -61,4 +44,4 @@ class Requester{
     }
 }
 
-module.exports = Requester;
+module.exports = RequestLog;
